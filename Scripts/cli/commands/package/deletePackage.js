@@ -12,7 +12,7 @@ function deletePackage() {
   });
 
   rl.question("Enter package name to delete: ", (packageName) => {
-    const packagePath = path.join(__dirname, "..", packageName);
+    const packagePath = path.join(process.cwd(), "..", packageName);
 
     if (!fs.existsSync(packagePath)) {
       console.error(`Package '${packageName}' does not exist.`);

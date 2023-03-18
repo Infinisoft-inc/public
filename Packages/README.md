@@ -27,7 +27,7 @@
                                     - Thomas Edison & Me
 ```
 
-# Welcome to Releases
+# Welcome to Packages
 The releases directory contains the stable releases of our projects and packages. These are production-ready versions that have been thoroughly tested and are ready for deployment.
 
 # Get Involved

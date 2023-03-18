@@ -1,9 +1,7 @@
-// myServer.js
-
 const http = require("http");
 const io = require("socket.io");
 
-class MyServer {
+class iBrainSignalCore {
   constructor(options = {}) {
     this.subscriptions = new Map();
     this.server = http.createServer();
@@ -98,4 +96,5 @@ class MyServer {
     this.server.close();
   }
 }
-module.exports = MyServer;
+
+exports.iBrainSignalCore = iBrainSignalCore;
