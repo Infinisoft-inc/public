@@ -1,0 +1,30 @@
+    // this.skills = {
+    //   hard: {
+    //     language_semantic: (message) => `Structure the answer exactly like that.
+    //     <text>{Anything the you want to communicate outside of programming code goes here}</text>
+    //     <code>{replace by programmingg code if there is, if not leave blank</code>
+    //     <lang>{replace here by the  international code spoken language of question below in format nn-XX}</lang>
+
+    //     ${message}
+    //     } `,
+
+    //     interpret_language: (inputString) => {
+    //       const textRegex = /<text>(.*?)<\/text>/s;
+    //       const codeRegex = /<code>(.*?)<\/code>/s;
+    //       const langRegex = /<lang>(.*?)<\/lang>/;
+
+    //       const text = (inputString.match(textRegex) || [])[1];
+    //       const code = (inputString.match(codeRegex) || [])[1];
+    //       const lang = (inputString.match(langRegex) || [])[1];
+
+    //       return {
+    //         text,
+    //         code,
+    //         lang,
+    //       };
+    //     },
+    //   },
+    //   soft: {
+    //     answer_attitude: (attitude) => `answer with ${attitude}.`,
+    //   },
+    // };

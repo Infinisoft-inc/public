@@ -1,0 +1,32 @@
+{
+  "name": "@brainstack/ibrain-voice",
+  "version": "1.0.0",
+  "description": "iBrain Voice Package",
+  "main": "dist/ibrain-voice.min.js",
+  "types": "dist/ibrain-voice.d.ts",
+  "scripts": {
+    "test": "start test/live.html",
+    "build": "webpack"
+  },
+  "files": [
+    "dist/"
+  ],
+  "keywords": [
+  ],
+  "author": "Infinisoft World Inc.",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Infinisoft-inc/public.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Infinisoft-inc/public/issues"
+  },
+  "homepage": "https://github.com/Infinisoft-inc/public",
+  "dependencies": {},
+  "devDependencies": {
+    "webpack": "^5.0.0",
+    "webpack-cli": "^4.0.0"
+  },
+  "peerDependencies": {}
+}
