@@ -1,16 +1,24 @@
 import voices from "./voices.js";
 
+export {voices}
+
 export class iBrainVoice extends EventTarget {
-  constructor(apiKey, _token, _iBrain) {
+  constructor({
+    options = {},
+    knowledge = "",
+    voice = "OK English Male",
+    lang = "en-US",
+    decision: decisionAction = (a) => a,
+  }) {
     super();
-    this.apiKey = apiKey;
     this.isRecording = false;
     this.chunks = [];
     this.conversationHistory = [];
-    this.voice = "UK English Male";
-    this.lang = "en";
-    this.token = _token;
-    this.iBrain= _iBrain;
+    this.lang = lang;
+    this.options = options;
+    this.voice = voice;
+    this.knowledge = knowledge;
+    this.decsionAction = decisionAction;
 
     this.initializeAudioRecording();
   }
@@ -40,7 +48,7 @@ export class iBrainVoice extends EventTarget {
             this.recorder.ondataavailable = (e) => this.chunks.push(e.data);
             this.recorder.onstop = () => {
               const blob = new Blob(this.chunks, { type: "audio/webm" });
-              this.sendToAPI(
+              this.analyze(
                 new File([blob], "recording.webm", { type: "audio/webm" })
               );
             };
@@ -52,40 +60,23 @@ export class iBrainVoice extends EventTarget {
     });
   }
 
-  sendToAPI(file) {
+  analyze(file) {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("model", "whisper-1");
-    fetch(this.iBrain, {
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-      },
+    fetch(this.knowledge, {
+      ...this.options,
+      mode: "cors",
       method: "POST",
       body: formData,
     })
-      .then((response) => response.json())
-      .then(answer => {
- 
-        this.speak(answer);
- 
-        // this.conversationHistory.push({ role: "user", content: result.text });
-        // fetch(this.conversationAPI, {
-        //   method: "POST",
-        //   body: JSON.stringify({ data: this.conversationHistory }),
-        //   headers: { "Content-Type": "application/json" },
-        // })
-        //   .then((response) => response.json())
-        //   .then((data) => {
-        //     this.speak(data.reply);
-        //     this.conversationHistory.push({
-        //       role: "assistant",
-        //       content: data.reply,
-        //     });
-        //   });
-
-
-
-
+      .then((response) => response.text())
+      .then((thought) => {
+       this.decsionAction(thought);
+      })
+      .catch((err) => {
+        console.log(`decsionAction Failed `, err);
+      })
+      .finally(() => {
         this.start();
       });
   }
@@ -93,13 +84,13 @@ export class iBrainVoice extends EventTarget {
   setSpeechLanguage(lang) {
     if (lang) {
       this.lang = lang;
-      this.voice = voices[lang]?.male || this.voice;
+      this.voice = voices?.[lang]?.male || this.voice;
     }
   }
 
   speak(message, lang) {
     if (!responsiveVoice.isPlaying()) {
-      responsiveVoice.speak(message, voices[lang]?.male || this.voice);
+      responsiveVoice.speak(message, this.voices?.[lang]?.male || this.voice);
     }
   }
 

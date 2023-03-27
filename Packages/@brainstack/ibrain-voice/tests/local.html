@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>iBrain Recorder Test</title>
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=Upp51X4Y"></script>
+    <body>
+      <h1>iBrain Recorder Test</h1>
+      <button id="startButton">Start</button>
+      <button id="stopButton">Stop</button>
+      <button id="speakButton">Speak</button>
+      <button id="speakFrenchButton">Speak French</button>
+      <div id="codePanel"></div>
+      <script src="./ibrain-voice.min.js"></script>
+      <script>
+
+        // Initialize the iBrainAssistant instance
+        const ibrain = new iBrainVoice.iBrainVoice({
+        options:{},
+          knowledge: "http://localhost:3000",
+          decision: (inputString) => {
+          const textRegex = /<text>(.*?)<\/text>/s;
+          const codeRegex = /<code>(.*?)<\/code>/s;
+          const langRegex = /<lang>(.*?)<\/lang>/;
+
+          const text = (inputString.match(textRegex) || [])[1];
+          const code = (inputString.match(codeRegex) || [])[1];
+          const lang = (inputString.match(langRegex) || [])[1];
+
+          ibrain.speak(text, lang)
+          const codePanel =  document.getElementById("codePanel")
+          const codeSpan = document.createElement('span')
+          codeSpan.textContent = text;
+          codePanel.appendChild(codeSpan)
+  
+
+          return {
+            text,
+            code,
+            lang,
+          };
+        },
+        } );
+  
+        // Define the onStart and onStop event handlers
+        const onStart = (event) => {
+          console.log("Listening started:", event.type);
+        };
+  
+        const onStop = (event) => {
+          console.log("Listening stopped:", event.type);
+        };
+  
+        // Attach the event handlers to the 'listen.start' and 'listen.stop' events
+        ibrain.addEventListener("listen.start", onStart);
+        ibrain.addEventListener("listen.stop", onStop);
+  
+        // Add event listeners for the buttons
+        document.getElementById("startButton").addEventListener("click", () => {
+          ibrain.start();
+        });
+  
+        document.getElementById("stopButton").addEventListener("click", () => {
+          ibrain.stop();
+        });
+
+        document.getElementById("speakButton").addEventListener("click", () => {
+          ibrain.speak("Hey what's up?")
+        });
+
+        document.getElementById("speakFrenchButton").addEventListener("click", () => {
+          ibrain.speak("Salut comment ca va?", "fr-FR")
+        });
+      </script>
+
+  </body>
+  
+</html>
