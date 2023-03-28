@@ -1,6 +1,6 @@
 ## iBrainVoice
 
-This module provides an `iBrainVoice` class that enables continuous voice-based streaming interaction with users. It uses Resonsive Voice API and OpenAI API to perform speech-to-text and text-to-speech functionality.
+This module provides an `iBrainVoice` class that enables continuous voice-based streaming interaction with users. It uses Responsive Voice API and  API to perform speech-to-text and text-to-speech functionality.
 
 ## Usage
 

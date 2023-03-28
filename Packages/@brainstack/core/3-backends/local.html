@@ -10,13 +10,13 @@
       <button id="speakButton">Speak</button>
       <button id="speakFrenchButton">Speak French</button>
       <div id="codePanel"></div>
-      <script src="./ibrain-voice.min.js"></script>
+      <script src="ibrain-voice.min.js"></script>
       <script>
 
         // Initialize the iBrainAssistant instance
         const ibrain = new iBrainVoice.iBrainVoice({
         options:{},
-          knowledge: "http://localhost:3000",
+          knowledge: "http://127.0.0.1:3001",
           decision: (inputString) => {
           const textRegex = /<text>(.*?)<\/text>/s;
           const codeRegex = /<code>(.*?)<\/code>/s;
