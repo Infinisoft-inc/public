@@ -1,6 +1,6 @@
 {
     "name": "@brainstack/framework",
-    "version": "0.0.2",
+    "version": "0.0.5",
     "description": "A Problem Solving Library Breakdown Pattern for Multidisciplinary Applications",
     "main": "src/index.js",
     "scripts": {

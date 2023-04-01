@@ -21,7 +21,7 @@ console.log("Bumping package version...");
 executeCommand("npm version patch");
 
 console.log("Publishing package to npm...");
-executeCommand("npm publish --dry-run");
+executeCommand("npm publish --access public");
 
 // Uncomment the following lines if you're using git
 // console.log("Pushing changes to git repository...");
