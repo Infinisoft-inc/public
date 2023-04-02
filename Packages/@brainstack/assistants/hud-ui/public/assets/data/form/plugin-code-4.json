@@ -1,0 +1,14 @@
+import React from 'react';
+import InputMask from 'react-input-mask';
+
+class FormPlugins extends React.Component {
+  render() {
+    return (
+      <div>
+        <InputMask mask="99/99/9999" className="form-control" placeholder="mm/dd/yyyy" />
+      </div>
+    )
+  }
+}
+
+export default FormPlugins;

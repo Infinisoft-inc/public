@@ -1,0 +1,15 @@
+import { AppSettings } from './../../config/app-settings.js';
+
+class LayoutFullHeight extends React.Component {
+  static contextType = AppSettings;
+  
+  componentDidMount() {
+    this.context.handleSetAppContentFullHeight(true);
+  }
+  
+  componentWillUnmount() {
+    this.context.handleSetAppContentFullHeight(false);
+  }
+}
+
+export default LayoutFullHeight;

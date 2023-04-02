@@ -1,0 +1,39 @@
+body .quill {
+	& .ql-toolbar {
+		border-color: $input-border-color;
+		
+		& .ql-stroke {
+			stroke: currentColor !important;
+		}
+		& .ql-picker {
+			& .ql-picker-label {
+				color: #999;
+				
+				& .ql-stroke {
+					stroke: var(--bs-theme) !important;
+				}
+				&:hover,
+				&:focus {
+					color: $white;
+				}
+			}
+			&.ql-expanded {
+				& .ql-picker-label {
+					border-color: $input-border-color;
+					color: $white;
+				}
+			}
+		}
+		& button {
+			color: #999;
+			
+			&:hover,
+			&:focus {
+				color: $white;
+			}
+		}
+	}
+	& .ql-container {
+		border-color: $input-border-color;
+	}
+}

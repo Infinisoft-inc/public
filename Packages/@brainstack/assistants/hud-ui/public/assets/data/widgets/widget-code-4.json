@@ -1,0 +1,106 @@
+import React from 'react';
+import Chart from 'chart.js/auto';
+import { Card, CardBody } from './../../components/card/card.jsx';
+
+class Widgets extends React.Component {
+  componentDidMount() {
+    var themeFont = (getComputedStyle(document.body).getPropertyValue('--bs-body-font-family')).trim();
+    var gray800Rgb = (getComputedStyle(document.body).getPropertyValue('--bs-gray-800-rgb')).trim();
+    
+    Chart.defaults.font.family = themeFont;
+    Chart.defaults.color = 'rgba(255, 255, 255, .5)';
+    Chart.defaults.plugins.legend.display = false;
+    Chart.defaults.plugins.tooltip.padding = 8;
+    Chart.defaults.plugins.tooltip.backgroundColor = 'rgba('+ gray800Rgb +', .95)';
+    Chart.defaults.plugins.tooltip.titleFont.family = themeFont;
+    Chart.defaults.plugins.tooltip.titleFont.weight = 600;
+    Chart.defaults.plugins.tooltip.footerFont.family = themeFont;
+    Chart.defaults.scale.grid.color = 'rgba(255, 255, 255, .25)';
+    Chart.defaults.scale.ticks.backdropColor = 'rgba(255, 255, 255, 0)';
+    
+    new Chart(document.getElementById('barChart'), {
+      type: 'bar',
+      data: {
+        labels: ['S','M','T','W','T','F','S'],
+        datasets: [{
+          label: 'Total Visitors',
+          data: [37,31,36,34,43,31,50],
+          backgroundColor: 'rgba(255, 255, 255, .5)',
+          borderColor: 'transparent'
+        }]
+      },
+      options: {
+        legend: { display: false },
+        tooltips: {
+          callbacks: {
+            title: function(tooltipItems, data) { 
+              var tooltipTitle = '';
+              switch (tooltipItems[0].index) {
+                case 0: tooltipTitle = 'Sunday'; break;
+                case 1: tooltipTitle = 'Monday'; break;
+                case 2: tooltipTitle = 'Tuesday'; break;
+                case 3: tooltipTitle = 'Wednesday'; break;
+                case 4: tooltipTitle = 'Thursday'; break;
+                case 5: tooltipTitle = 'Friday'; break;
+                case 6: tooltipTitle = 'Saturday'; break;
+                default: break;
+              }
+              return tooltipTitle;
+            },
+            labelColor: function(tooltipItem, chart) {
+              return {
+                borderColor: 'transparent',
+                backgroundColor: 'rgba(255, 255, 255, .5)'
+              };
+            }
+          }
+        },
+        scales: {
+          yAxes: {
+            gridLines: {
+              borderDashOffset: 10,
+              drawTicks: false,
+              drawBorder: false,
+              borderDash: [10]
+            },
+            ticks: { display: false }
+          },
+          xAxes: {
+            barPercentage: 1,
+            gridLines : { display : false }
+          }
+        }
+      }
+    });
+  }
+  render() {
+    return (
+      <div>
+        <Card>
+          <CardBody className="text-white text-center">
+            <div className="fs-16px fw-bold">Weekly Web Analytics</div>
+            <div className="fs-13px mb-3 text-white text-opacity-50">Week 11 May - 17 May</div>
+            <canvas id="barChart" height="120"></canvas>
+          </CardBody>
+          <hr className="m-0" />
+          <div className="list-group list-group-flush">
+            <div className="list-group-item border-top-0 rounded-top-0 d-flex align-items-center p-3">
+              <div className="w-40px h-40px bg-white bg-opacity-15 d-flex align-items-center justify-content-center">
+                <i className="fa fa-user fa-lg"></i>
+              </div>
+              <div className="flex-fill px-3">
+                <div className="fw-bold">Total Visitors</div>
+                <div className="small text-white text-opacity-50">11 May - 17 May</div>
+              </div>
+              <div>
+                <h2 className="mb-0">1.3m</h2>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    )
+  }
+}
+
+export default Widgets;

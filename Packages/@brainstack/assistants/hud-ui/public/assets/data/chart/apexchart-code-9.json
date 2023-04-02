@@ -1,0 +1,57 @@
+import React from 'react';
+import Chart from 'react-apexcharts';
+
+class ChartApex extends React.Component {
+  constructor(props) {
+    super(props);
+    
+    var themeColor = (getComputedStyle(document.body).getPropertyValue('--bs-theme')).trim();
+    var themeFont = (getComputedStyle(document.body).getPropertyValue('--bs-body-font-family')).trim();
+    var themeFontWeight = (getComputedStyle(document.body).getPropertyValue('--bs-body-font-weight')).trim();
+    
+    // heatmap chart
+    this.generateHeatmapData = function(count, yrange) {
+      var i = 0;
+      var series = [];
+      while (i < count) {
+        var x = 'w' + (i + 1).toString();
+        var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+        series.push({ x: x, y: y });
+        i++;
+      }
+      return series;
+    }
+    this.heatmapChartOptions = {
+      dataLabels: { enabled: false },
+      colors: [themeColor],
+      title: { text: 'HeatMap Chart (Single color)', style: { fontSize:  '14px', fontWeight:  'bold', fontFamily:  themeFont, color:  '#ffffff' } },
+      xaxis: {
+        axisBorder: { show: true, color: 'rgba(255, 255, 255, .25)', height: 1, width: '100%', offsetX: 0, offsetY: -1 },
+        axisTicks: { show: true, borderType: 'solid', color: 'rgba(255, 255, 255, .25)', height: 6, offsetX: 0, offsetY: 0 },
+        labels: { style: { colors: '#ffffff', fontSize: '12px', fontFamily: themeFont, fontWeight: themeFontWeight, cssClass: 'apexcharts-xaxis-label' } }
+      },
+      yaxis: { labels: { style: { colors: '#ffffff', fontSize: '12px', fontFamily: themeFont, fontWeight: themeFontWeight, cssClass: 'apexcharts-xaxis-label' } } }
+    }
+    this.heatmapChartData = [
+      { name: 'Metric1', data: this.generateHeatmapData(18, {  min: 0, max: 90 }) }, 
+      { name: 'Metric2', data: this.generateHeatmapData(18, {  min: 0, max: 90 }) }, 
+      { name: 'Metric3', data: this.generateHeatmapData(18, {  min: 0, max: 90 }) }, 
+      { name: 'Metric4', data: this.generateHeatmapData(18, {  min: 0, max: 90 }) }, 
+      { name: 'Metric5', data: this.generateHeatmapData(18, {  min: 0, max: 90 }) }, 
+      { name: 'Metric6', data: this.generateHeatmapData(18, {  min: 0, max: 90 }) }, 
+      { name: 'Metric7', data: this.generateHeatmapData(18, {  min: 0, max: 90 }) }, 
+      { name: 'Metric8', data: this.generateHeatmapData(18, {  min: 0, max: 90 }) }, 
+      { name: 'Metric9', data: this.generateHeatmapData(18, {  min: 0, max: 90 }) }
+    ];
+  }
+  
+  render() {
+    return (
+      <div>
+        <Chart type="heatmap" options={this.heatmapChartOptions} series={this.heatmapChartData} />
+      </div>
+    )
+  }
+}
+
+export default ChartApex;

@@ -1,0 +1,15 @@
+import { AppSettings } from './../../config/app-settings.js';
+
+class LayoutFixedFooter extends React.Component {
+  static contextType = AppSettings;
+  
+  componentDidMount() {
+    this.context.handleSetAppFooter(true);
+  }
+  
+  componentWillUnmount() {
+    this.context.handleSetAppFooter(false);
+  }
+}
+
+export default LayoutFixedFooter;

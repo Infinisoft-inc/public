@@ -1,0 +1,236 @@
+.rdt {
+	& .rdtPicker {
+		width: auto;
+		background: $dropdown-bg;
+		border: 1px solid $dropdown-border-color;
+		box-shadow: $box-shadow;
+		
+		& table {
+			& thead {
+				& tr {
+					& th {
+						&.rdtPrev,
+						&.rdtNext,
+						&.rdtSwitch {
+							line-height: 20px;
+							padding: 5px;
+							height: auto;
+							min-height: 30px;
+							border: none;
+							border-radius: $border-radius;
+							
+							&:hover,
+							&:focus {
+								background: $dropdown-link-hover-bg;
+								
+								& span:before {
+									color: $dropdown-link-hover-color;
+								}
+							}
+						}
+						&.rdtPrev,
+						&.rdtNext {
+							color: transparent;
+							width: 14.28%;
+							position: relative;
+							
+							& span {
+								color: transparent;
+								position: relative;
+								display: block;
+								border-radius: $border-radius;
+								
+								@include fontawesome();
+							
+								&:before {
+									color: rgba($white, .5);
+									position: absolute;
+									font-size: 14px;
+									top: 0;
+									left: 0;
+									right: 0;
+									bottom: 0;
+									line-height: 1;
+									display: flex;
+									align-items: center;
+									justify-content: center;
+								}
+								& i {
+									display: none;
+								}
+							}
+						}
+						&.rdtPrev {
+							& span:before {
+								content: '\f104';
+							}
+						}
+						&.rdtNext {
+							& span:before {
+								content: '\f105';
+							}
+						}
+						&.rdtSwitch {
+							width: auto;
+						}
+						&.dow {
+							padding: 5px 0;
+						}
+					}
+				}
+			}
+			& tfoot {
+				border: none;
+				
+				& tr {
+					& td {
+						&.rdtTimeToggle {
+							border: none;
+							font-weight: $font-weight-bold;
+							color: rgba($white, .5);
+							text-shadow: none;
+							border-radius: $border-radius;
+				
+							&:hover,
+							&:focus {
+								background: $dropdown-link-hover-bg;
+								text-shadow: none;
+							}
+						}
+					}	
+				}
+			}
+		}
+		& .rdtTime {
+			min-width: 180px;
+			
+			& .rdtCounters {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				
+				& > div {
+					float: none;
+				}
+				& .rdtCounter {
+					height: 110px;
+					width: 60px;
+					
+					& .rdtBtn {
+						height: 35%;
+						color: transparent;
+						position: relative;
+						border-radius: $border-radius;
+						
+						@include fontawesome();
+						
+						&:before {
+							content: '\f106';
+							position: absolute;
+							top: 0;
+							left: 0;
+							right: 0;
+							bottom: 0;
+							color: rgba($white, .5);
+							font-size: 18px;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+						}
+						&:hover,
+						&:focus {
+							background: $dropdown-link-hover-bg;
+						}
+					}
+					& .rdtCount {
+						height: 30%;
+						font-weight: $font-weight-bold;
+						color: rgba($white, .75);
+						font-size: 13px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						
+						& + .rdtBtn {
+							&:before {
+								content: '\f107';
+							}
+						}
+					}
+				}
+			}
+		}
+		& .rdtDays {
+			min-width: 290px;
+			
+			& .rdtDay {
+				font-weight: $font-weight-base;
+				color: rgba($white, .75);
+				padding: 5px;
+				line-height: 20px;
+				border-radius: $border-radius-lg;
+				
+				&:hover,
+				&:focus,
+				&.rdtSelected,
+				&.rdtHighlighted,
+				&.rdtRange {
+					background: $dropdown-link-hover-bg !important;
+					text-shadow: none;
+				}
+				&.rdtToday {
+					background: rgba($white, .25) !important;
+					color: $white !important;
+					
+					&:before {
+						border-bottom-color: var(--bs-theme);
+					}
+				}
+				&.rdtActive {
+					background: var(--bs-theme) !important;
+					color: $white !important;
+					text-shadow: none !important;
+				}
+				&.rdtOld {
+					color: rgba($white, .25);
+				}
+				&.rdtNew {
+					color: rgba($white, .5);
+				}
+				&.rdtDisabled {
+					color: rgba($white, .25);
+					
+					&:hover,
+					&:focus {
+						background: none !important;
+					}
+				}
+			}
+		}	
+		& .rdtMonths,
+		& .rdtYears {
+			min-width: 290px;
+			
+			& .rdtMonth,
+			& .rdtYear {
+				font-weight: $font-weight-bold;
+				color: rgba($white, .5);
+				text-shadow: none;
+				border-radius: $border-radius;
+				
+				&:hover,
+				&:focus {
+					background: $dropdown-link-hover-bg;
+				}
+				&.rdtFocused {
+					background: $dropdown-link-hover-bg;
+					color: $white;
+				}
+				&.rdtActive {
+					background: $dropdown-link-active-bg !important;
+					color: $white;
+				}
+			}
+		}
+	}
+}

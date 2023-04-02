@@ -1,0 +1,58 @@
+import React from 'react';
+import Chart from 'react-apexcharts';
+
+class ChartApex extends React.Component {
+  constructor(props) {
+    super(props);
+    
+    var themeColor = (getComputedStyle(document.body).getPropertyValue('--bs-theme')).trim();
+    var themeFont = (getComputedStyle(document.body).getPropertyValue('--bs-body-font-family')).trim();
+    var themeFontWeight = (getComputedStyle(document.body).getPropertyValue('--bs-body-font-weight')).trim();
+    var gray300Rgb = (getComputedStyle(document.body).getPropertyValue('--bs-gray-300-rgb')).trim();
+    
+    // radar chart
+    this.radarChartOptions = {
+      labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      plotOptions: {
+        radar: {
+          size: 140,
+          polygons: {
+            strokeColors: 'rgba(255, 255, 255, .25)',
+            strokeWidth: 1,
+            connectorColors: 'rgba(255, 255, 255, .25)',
+            fill: { colors: ['rgba('+ gray300Rgb +', .25)', 'rgba(255, 255, 255, .25)'] }
+          }
+        }
+      },
+      title: { text: 'Radar with Polygon Fill', style: { fontSize:  '14px', fontWeight:  'bold', fontFamily:  themeFont, color:  '#ffffff' } },
+      colors: [themeColor],
+      markers: { size: 4, colors: [themeColor], strokeColor: themeColor, strokeWidth: 2 },
+      tooltip: { y: { formatter: function(val) { return val } } },
+      xaxis: {
+        axisBorder: { show: true, color: 'rgba(255, 255, 255, .25)', height: 1, width: '100%', offsetX: 0, offsetY: -1 },
+        axisTicks: { show: true, borderType: 'solid', color: 'rgba(255, 255, 255, .25)', height: 6, offsetX: 0, offsetY: 0 },
+        labels: { style: { colors: '#ffffff', fontSize: '12px', fontFamily: themeFont, fontWeight: themeFontWeight, cssClass: 'apexcharts-xaxis-label' } }
+      },
+      yaxis: {
+        tickAmount: 7,
+        labels: { 
+          formatter: function(val, i) { return (i % 2 === 0) ? val : ''; },
+          style: { colors: '#ffffff', fontSize: '12px', fontFamily: themeFont, fontWeight: themeFontWeight, cssClass: 'apexcharts-xaxis-label' }
+        }
+      }
+    };
+    this.radarChartData = [
+      { name: 'Series 1', data: [20, 100, 40, 30, 50, 80, 33] }
+    ];
+  }
+  
+  render() {
+    return (
+      <div>
+        <Chart type="radar" options={this.radarChartOptions} series={this.radarChartData} />
+      </div>
+    )
+  }
+}
+
+export default ChartApex;

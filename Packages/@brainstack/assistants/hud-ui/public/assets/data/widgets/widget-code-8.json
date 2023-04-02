@@ -1,0 +1,32 @@
+<Card>
+  <div className="m-1 bg-white bg-opacity-15">
+    <div className="position-relative overflow-hidden" style={{height: '165px'}}>
+      <img src="/assets/img/gallery/widget-cover-1.jpg" className="card-img rounded-0" alt="" />
+      <CardImgOverlay className="text-white text-center bg-dark-transparent-5">
+        <div className="mb-2">
+          <img src="/assets/img/user/user-5.jpg" alt="" width="80" className="rounded-circle" />
+        </div>
+        <div>
+          <div className="fw-bold">Maurice Patterson</div>
+          <div className="fs-12px">Never give up</div>
+        </div>
+      </CardImgOverlay>
+    </div>
+    <CardBody className="py-2 px-3">
+      <div className="row text-center">
+        <div className="col-4">
+          <div className="fw-bold">415</div>
+          <div className="fs-12px">posts</div>
+        </div>
+        <div className="col-4">
+          <div className="fw-bold">140k</div>
+          <div className="fs-12px">followers</div>
+        </div>
+        <div className="col-4">
+          <div className="fw-bold">697</div>
+          <div className="fs-12px">following</div>
+        </div>
+      </div>
+    </CardBody>
+  </div>
+</Card>

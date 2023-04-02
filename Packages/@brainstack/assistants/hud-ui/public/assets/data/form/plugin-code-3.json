@@ -1,0 +1,29 @@
+import React from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
+class FormPlugins extends React.Component {
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      startDate: new Date()
+    };
+    
+    this.handleChange = (date) => {
+      this.setState({
+        startDate: date
+      });
+    }
+  }
+  
+  render() {
+    return (
+      <div>
+        <DatePicker selected={this.state.startDate} onChange={this.handleChange} className="form-control" />
+      </div>
+    )
+  }
+}
+
+export default FormPlugins;

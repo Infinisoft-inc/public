@@ -1,6 +1,7 @@
 {
   "name": "@brainstack/task-savedocument",
   "version": "1.0.0",
+  "private":true,
   "main": "src/index.js",
   "description": "Brainstack task for saving text to a file in both Node.js and browser environments",
   "author": "Infinisoft World Inc. <info@infinisoft.world>",

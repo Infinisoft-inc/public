@@ -1,0 +1,50 @@
+import React from 'react';
+import { SketchPicker, ChromePicker } from 'react-color';
+
+class FormPlugins extends React.Component {
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      sketchBackgroundColor: '#348fe2',
+      chromeBackgroundColor: '#8753de',
+    };
+    
+    this.handleSketchChangeComplete = (color) => {
+      this.setState({ sketchBackgroundColor: color.hex });
+    };
+    this.handleChromeChangeComplete = (color) => {
+      this.setState({ chromeBackgroundColor: color.hex });
+    };
+  }
+  
+  render() {
+    return (
+      <div>
+      	<!-- SketchPicker -->
+        <div className="input-group">
+          <input type="text" className="form-control" readOnly value={this.state.sketchBackgroundColor} />
+          <div className="dropdown-menu dropdown-menu-end p-0 border-0">
+            <SketchPicker color={ this.state.sketchBackgroundColor } onChangeComplete={ this.handleSketchChangeComplete } />
+          </div>
+          <span className="input-group-text" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+            <i style={{width: '16px', height: '16px', display: 'block', background: this.state.sketchBackgroundColor}}></i>
+          </span>
+        </div>
+        
+      	<!-- ChromePicker -->
+        <div className="input-group">
+          <input type="text" className="form-control" readOnly value={this.state.chromeBackgroundColor} />
+          <div className="dropdown-menu dropdown-menu-end p-0 border-0">
+            <ChromePicker color={ this.state.chromeBackgroundColor } onChangeComplete={ this.handleChromeChangeComplete } />
+          </div>
+          <span className="input-group-text" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+            <i style={{width: '16px', height: '16px', display: 'block', background: this.state.chromeBackgroundColor}}></i>
+          </span>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default FormPlugins;

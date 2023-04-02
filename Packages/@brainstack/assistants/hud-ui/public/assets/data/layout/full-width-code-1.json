@@ -1,0 +1,15 @@
+import { AppSettings } from './../../config/app-settings.js';
+
+class LayoutFullWidth extends React.Component {
+  static contextType = AppSettings;
+  
+  componentDidMount() {
+    this.context.handleSetAppSidebarNone(true);
+  }
+  
+  componentWillUnmount() {
+    this.context.handleSetAppSidebarNone(false);
+  }
+}
+
+export default LayoutFullWidth;

@@ -1,0 +1,20 @@
+import React from 'react';
+import { TagsInput } from 'react-tag-input-component';
+
+class FormPlugins extends React.Component {
+  constructor(props) {
+    super(props);
+    
+    this.selected = ['Apples', 'Pears'];
+  }
+  
+  render() {
+    return (
+      <div>
+        <TagsInput value={this.selected} name="fruits" placeHolder="enter fruits" />
+      </div>
+    )
+  }
+}
+
+export default FormPlugins;

@@ -1,0 +1,36 @@
+import React from 'react';
+import Chart from 'react-apexcharts';
+
+class ChartApex extends React.Component {
+  constructor(props) {
+    super(props);
+    
+    var themeColorRgb = (getComputedStyle(document.body).getPropertyValue('--bs-theme-rgb')).trim();
+    var themeFont = (getComputedStyle(document.body).getPropertyValue('--bs-body-font-family')).trim();
+    var themeFontWeight = (getComputedStyle(document.body).getPropertyValue('--bs-body-font-weight')).trim();
+    var indigoRgb = (getComputedStyle(document.body).getPropertyValue('--bs-indigo-rgb')).trim();
+    var pinkRgb = (getComputedStyle(document.body).getPropertyValue('--bs-pink-rgb')).trim();
+    var orangeRgb = (getComputedStyle(document.body).getPropertyValue('--bs-orange-rgb')).trim();
+    
+    // pie chart
+    this.pieChartOptions = {
+      dataLabels: { dropShadow: { enabled: false, top: 1, left: 1, blur: 1, opacity: 1 } },
+      stroke: { show: false },
+      colors: [ 'rgba('+ pinkRgb +', .75)',  'rgba('+ orangeRgb +', .75)',  'rgba('+ themeColorRgb +', .75)', 'rgba(255, 255, 255, .5)',  'rgba('+ indigoRgb +', .75)'],
+      labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+      title: { text: 'HeatMap Chart (Single color)', style: style: { fontSize:  '14px', fontWeight:  'bold', fontFamily:  themeFont, color:  '#ffffff' } },
+      legend: { fontFamily: themeFont, labels: { colors: '#ffffff' } }
+    };
+    this.pieChartData = [44, 55, 13, 43, 22];
+  }
+  
+  render() {
+    return (
+      <div>
+        <Chart type="pie" options={this.pieChartOptions} series={this.pieChartData} />
+      </div>
+    )
+  }
+}
+
+export default ChartApex;

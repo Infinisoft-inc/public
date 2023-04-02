@@ -2,9 +2,10 @@ const { Skill } = require("@brainstack/framework");
 const InformationGatheringTask = require("./InformationGatheringTask");
 
 class SpecificationAnalysisSkill extends Skill {
-  constructor(apiKey, messageSource) {
+  constructor(apiKey, messageSource, scenario) {
     super();
-    this.informationGatheringTask = new InformationGatheringTask(apiKey);
+    this.informationGatheringTask = new InformationGatheringTask(apiKey, scenario);
+    this.tasks = [this.informationGatheringTask]
     this.messageSource = messageSource;
   }
 

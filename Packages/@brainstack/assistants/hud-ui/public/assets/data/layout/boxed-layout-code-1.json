@@ -1,0 +1,15 @@
+import { AppSettings } from './../../config/app-settings.js';
+
+class LayoutBoxedLayout extends React.Component {
+  static contextType = AppSettings;
+  
+  componentDidMount() {
+    this.context.handleSetAppBoxedLayout(true);
+  }
+  
+  componentWillUnmount() {
+    this.context.handleSetAppBoxedLayout(false);
+  }
+}
+
+export default LayoutBoxedLayout;

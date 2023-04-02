@@ -1,0 +1,15 @@
+import { AppSettings } from './../../config/app-settings.js';
+
+class LayoutCollapsedSidebar extends React.Component {
+  static contextType = AppSettings;
+  
+  componentDidMount() {
+    this.context.handleSetAppSidebarCollapsed(true);
+  }
+  
+  componentWillUnmount() {
+    this.context.handleSetAppSidebarCollapsed(false);
+  }
+}
+
+export default LayoutCollapsedSidebar;

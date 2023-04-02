@@ -1,0 +1,31 @@
+import React from 'react';
+import Chart from 'chart.js/auto';
+
+class ChartJs extends React.Component {
+  componentDidMount() {
+    var themeColorRgb = (getComputedStyle(document.body).getPropertyValue('--bs-theme-rgb')).trim();
+    var gray900Rgb = (getComputedStyle(document.body).getPropertyValue('--bs-gray-900-rgb')).trim();
+    
+    new Chart(document.getElementById('pieChart'), {
+      type: 'pie',
+      data: {
+        labels: ['Total Visitor', 'New Visitor', 'Returning Visitor'],
+        datasets: [{
+          data: [300, 50, 100],
+          backgroundColor: ['rgba('+ themeColorRgb +', .5)', 'rgba(255, 255, 255, .2)' +', .5)', 'rgba('+ themeColorRgb +', .5)'],
+          hoverBackgroundColor: ['rgba('+ themeColorRgb +', 1)', 'rgba(255, 255, 255, 1)', 'rgba('+ gray900Rgb +', 1)'],
+          borderWidth: 0
+        }]
+      }
+    });
+  }
+  render() {
+    return (
+      <div>
+        <canvas id="pieChart"></canvas>
+      </div>
+    )
+  }
+}
+
+export default ChartJs;

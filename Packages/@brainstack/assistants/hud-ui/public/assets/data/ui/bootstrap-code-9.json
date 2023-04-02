@@ -1,0 +1,25 @@
+<!-- navbar-light -->
+<nav className="navbar navbar-expand-lg navbar-light bg-white bg-opacity-25 rounded">
+  <div className="container-fluid">
+    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLight">
+      <span className="navbar-toggler-icon"></span>
+    </button>
+    <div className="collapse navbar-collapse" id="navbarLight">
+      <a className="navbar-brand" href="#/">Hidden brand</a>
+      <ul className="navbar-nav me-auto mt-2 mt-lg-0">
+        <li className="nav-item active"><a className="nav-link" href="#/">Home</a></li>
+        <li className="nav-item"><a className="nav-link" href="#/">Link</a></li>
+        <li className="nav-item"><a className="nav-link disabled" href="#/">Disabled</a></li>
+      </ul>
+      <form className="form-inline my-2 my-lg-0">
+        <input className="form-control me-sm-2" type="search" placeholder="Search" />
+        <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<!-- navbar-dark -->
+<nav className="navbar navbar-expand-lg navbar-dark bg-black bg-opacity-25 rounded">
+  ...
+</nav>

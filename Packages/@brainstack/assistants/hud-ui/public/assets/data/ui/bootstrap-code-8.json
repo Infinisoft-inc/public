@@ -1,0 +1,12 @@
+<!-- default nav -->
+<nav className="nav">
+  <a className="nav-link active" href="#/">Active</a>
+  <a className="nav-link" href="#/">Link</a>
+  <a className="nav-link" href="#/">Link</a>
+  <a className="nav-link disabled" href="#/">Disabled</a>
+</nav>
+
+<!-- vertical nav -->
+<nav className="nav flex-column">
+  ...
+</nav>

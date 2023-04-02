@@ -1,0 +1,58 @@
+import React from 'react';
+import Chart from 'react-apexcharts';
+
+class ChartApex extends React.Component {
+  constructor(props) {
+    super(props);
+    
+    var themeFont = (getComputedStyle(document.body).getPropertyValue('--bs-body-font-family')).trim();
+    var themeFontWeight = (getComputedStyle(document.body).getPropertyValue('--bs-body-font-weight')).trim();
+    var gray300 = (getComputedStyle(document.body).getPropertyValue('--bs-gray-300')).trim();
+    var gray600 = (getComputedStyle(document.body).getPropertyValue('--bs-gray-600')).trim();
+    var indigo = (getComputedStyle(document.body).getPropertyValue('--bs-indigo')).trim();
+    
+    var chartOptions = {
+      title: {  },
+      tooltip: { style: { fontSize: '12px', fontFamily: themeFont } },
+      grid: { borderColor: 'rgba(255, 255, 255, .25)' },
+      dataLabels: { style: { fontSize: '12px', fontFamily: themeFont, fontWeight: 'bold', colors: undefined } },
+    };
+    
+    // column chart
+    this.columnChartOptions = {
+      title: { text: 'Profit & Margin Chart', align: 'center', style: { fontSize:  '14px', fontWeight:  'bold', fontFamily:  themeFont, color:  '#ffffff' } },
+      plotOptions: { bar: { horizontal: false, columnWidth: '55%', endingShape: 'rounded' } },
+      dataLabels: { enabled: false },
+      stroke: { show: true, width: 2, colors: ['transparent'] },
+      colors: [gray600, indigo, gray300],
+      xaxis: { 
+        categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+        axisBorder: { show: true, color: 'rgba(255, 255, 255, .25)', height: 1, width: '100%', offsetX: 0, offsetY: -1 },
+        axisTicks: { show: true, borderType: 'solid', color: 'rgba(255, 255, 255, .25)', height: 6, offsetX: 0, offsetY: 0 },
+        labels: { style: { colors: '#ffffff', fontSize: '12px', fontFamily: themeFont, fontWeight: themeFontWeight, cssClass: 'apexcharts-xaxis-label' } }
+      },
+      yaxis: { 
+        title: { text: '$ (thousands)' },
+        labels: { style: { colors: '#ffffff', fontSize: '12px', fontFamily: themeFont, fontWeight: themeFontWeight, cssClass: 'apexcharts-xaxis-label' } }
+      },
+      fill: { opacity: 1 },
+      legend: { fontFamily: themeFont, labels: { colors: '#ffffff' } },
+      tooltip: { y: { formatter: function (val) { return "$ " + val + " thousands" } } }
+    };
+    this.columnChartData = [
+      { name: 'Net Profit', data: [44, 55, 57, 56, 61, 58, 63, 60, 66] }, 
+      { name: 'Revenue', data: [76, 85, 101, 98, 87, 105, 91, 114, 94] }, 
+      { name: 'Free Cash Flow', data: [35, 41, 36, 26, 45, 48, 52, 53, 41] }
+    ];
+  }
+  
+  render() {
+    return (
+      <div>
+        <Chart type="bar" options={this.columnChartOptions} series={this.columnChartData} />
+      </div>
+    )
+  }
+}
+
+export default ChartApex;

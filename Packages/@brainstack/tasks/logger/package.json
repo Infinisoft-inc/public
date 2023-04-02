@@ -1,0 +1,20 @@
+{
+  "name": "@brainstack/task-logger",
+  "version": "1.0.0",
+  "private":true,
+  "description": "A Task To Log",
+  "main": "src/LoggerTask.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Infinisoft World Inc. <info@infinisoft.world>",
+  "license": "ISC",
+  "homepage": "https://www.infinisoft.world",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/Infinisoft-inc/public.git"
+  },
+  "bugs": {
+      "url": "https://github.com/Infinisoft-inc/public/issues"
+  }
+}

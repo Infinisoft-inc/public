@@ -1,0 +1,132 @@
+.dataTables_wrapper {
+	&.dt-bootstrap5 {
+		& .dataTables_length {
+			& .form-select {
+				margin: 0 $spacer * .5;
+			}
+		}
+		& .dataTables_scrollFootInner,
+		& .dataTables_scrollHeadInner {
+			& .table-bordered tr th:first-child {
+				border-left: 1px solid rgba(255,255,255,.3) !important;
+			}
+		}
+		& .dataTables_scrollBody {
+			border-left: 1px solid rgba(255,255,255,.3) !important;
+			
+			& thead {
+				& > tr {
+					& > th,
+					& > td {
+						&.sorting {
+							&:before,
+							&:after {
+								display: none !important;
+							}
+						}	
+					}
+				}
+			}
+		}
+		& .dt-buttons {
+			& .btn-outline-default {
+				background-color: transparent;
+				
+				&:hover,
+				&:focus {
+					background-color: $default;
+				}
+			}
+		}
+		& .dataTable {
+			&.dtr-inline {
+				& tr {
+					& td {
+						&.dtr-control {
+							&:before {
+								border-width: 1px;
+								margin-top: -8px;
+								border-color: $border-color;
+								background: none;
+								border-radius: 0;
+							}
+						}
+					}
+					&.parent {
+						& td {
+							&.dtr-control {
+								&:before {
+									border-color: var(--bs-theme);
+									color: var(--bs-theme);
+									background: none;
+								}
+							}
+						}
+					}
+				}
+			}
+			& thead {
+				& > tr {
+					& > th,
+					& > td {
+						&.sorting,
+						&.sorting_asc,
+						&.sorting_desc,
+						&.sorting_asc_disabled,
+						&.sorting_desc_disabled {
+							padding-right: rem(30px);
+							
+							&::before {
+								content: '\F235';
+								top: 20%;
+							
+								@include bootstrap-icons();
+							}
+							&::after {
+								content: '\F229';
+								top: 45%;
+							
+								@include bootstrap-icons();
+							}
+						}
+						&.sorting_asc:before, 
+						&.sorting_desc:after {
+							color: var(--bs-theme);
+							opacity: 1;
+						}
+					}
+				}
+			}
+			& thead,
+			& tbody,
+			& tfoot {
+				& .dtfc-fixed-left,
+				& .dtfc-fixed-right {
+					z-index: 1;
+					background-color: rgba(29,40,53,.95);
+					
+					&:first-child {
+						border-left: none;
+					}
+				}
+			}
+			&.dtfc-has-left {
+				& tfoot {
+					border: none !important;
+					
+					& > tr {
+						height: 0 !important;
+					}
+				}
+				& .dataTables_empty {
+					text-align: left !important;
+				}
+			}
+		}
+		& .dtfc-right-top-blocker {
+			height: auto !important;
+			margin-top: 0 !important;
+			background: rgba($white, .3) !important;
+		}
+	}
+}

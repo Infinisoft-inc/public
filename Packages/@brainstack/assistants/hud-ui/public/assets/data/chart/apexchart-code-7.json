@@ -1,0 +1,54 @@
+import React from 'react';
+import Chart from 'react-apexcharts';
+
+class ChartApex extends React.Component {
+  constructor(props) {
+    super(props);
+    
+    var themeColor = (getComputedStyle(document.body).getPropertyValue('--bs-theme')).trim();
+    var themeFont = (getComputedStyle(document.body).getPropertyValue('--bs-body-font-family')).trim();
+    var themeFontWeight = (getComputedStyle(document.body).getPropertyValue('--bs-body-font-weight')).trim();
+    var pink = (getComputedStyle(document.body).getPropertyValue('--bs-pink')).trim();
+    var orange = (getComputedStyle(document.body).getPropertyValue('--bs-orange')).trim();
+    
+    // bubble chart
+    this.generateBubbleChartData = function(baseval, count, yrange) {
+      var i = 0;
+      var series = [];
+      while (i < count) {
+        var x = Math.floor(Math.random() * (750 - 1 + 1)) + 1;;
+        var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+        var z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
+        series.push([x, y, z]);
+        baseval += 86400000;
+        i++;
+      }
+      return series;
+    }
+    this.bubbleChartOptions = {
+      dataLabels: { enabled: false },
+      colors: [themeColor, orange, 'rgba(255, 255, 255, .5)', pink],
+      fill: { opacity: 0.8 },
+      title: { text: 'Simple Bubble Chart', style: { fontSize:  '14px', fontWeight:  'bold', fontFamily:  themeFont, color:  '#ffffff' } },
+      xaxis: { tickAmount: 12, type: 'category', labels: { style: { colors: '#ffffff', fontSize: '12px', fontFamily: themeFont, fontWeight: themeFontWeight, cssClass: 'apexcharts-xaxis-label' } } },
+      yaxis: { max: 70, labels: { style: { colors: '#ffffff', fontSize: '12px', fontFamily: themeFont, fontWeight: themeFontWeight, cssClass: 'apexcharts-xaxis-label' } } },
+      legend: { fontFamily: themeFont, labels: { colors: '#ffffff' } }
+    };
+    this.bubbleChartData = [
+      { name: 'Bubble1', data: this.generateBubbleChartData(new Date('11 Feb 2017 GMT').getTime(), 20, { min: 10, max: 60 }) },
+      {  name: 'Bubble2', data: this.generateBubbleChartData(new Date('11 Feb 2017 GMT').getTime(), 20, { min: 10, max: 60 }) },
+      { name: 'Bubble3', data: this.generateBubbleChartData(new Date('11 Feb 2017 GMT').getTime(), 20, { min: 10, max: 60 }) },
+      { name: 'Bubble4', data: this.generateBubbleChartData(new Date('11 Feb 2017 GMT').getTime(), 20, { min: 10, max: 60 }) }
+    ];
+  }
+  
+  render() {
+    return (
+      <div>
+        <Chart type="bubble" options={this.bubbleChartOptions} series={this.bubbleChartData} />
+      </div>
+    )
+  }
+}
+
+export default ChartApex;

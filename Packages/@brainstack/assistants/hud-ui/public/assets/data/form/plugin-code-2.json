@@ -1,0 +1,24 @@
+import React from 'react';
+import Select from 'react-select';
+
+class FormPlugins extends React.Component {
+  constructor(props) {
+    super(props);
+    
+    this.selectOptions = [
+      { value: 'chocolate', label: 'Chocolate' },
+      { value: 'strawberry', label: 'Strawberry' },
+      { value: 'vanilla', label: 'Vanilla' }
+    ];
+  }
+  
+  render() {
+    return (
+      <div>
+        <Select options={this.selectOptions} classNamePrefix="react-select" />
+      </div>
+    )
+  }
+}
+
+export default FormPlugins;
