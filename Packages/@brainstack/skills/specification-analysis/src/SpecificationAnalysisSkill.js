@@ -1,17 +1,27 @@
-const GatherInformationTask = require("./GatherInformationTask");
-const DocumentOrganizationTask = require("./DocumentOrganizationTask");
-const ContentGenerationTask = require("./ContentGenerationTask");
-const SaveDocumentTask = require("./SaveDocumentTask");
+const { Skill } = require("@brainstack/framework");
+const InformationGatheringTask = require("./InformationGatheringTask");
 
-class SpecificationAnalysisSkill {
-  constructor() {
-    this.name = "SpecificationAnalysis";
-    this.process = this.process.bind(this);
+class SpecificationAnalysisSkill extends Skill {
+  constructor(apiKey, messageSource) {
+    super();
+    this.informationGatheringTask = new InformationGatheringTask(apiKey);
+    this.messageSource = messageSource;
   }
 
-  async process(input) {
-    // Implement the SpecificationAnalysisSkill process method
-    // by orchestrating the execution of the related tasks and actions.
+  async run() {
+    // Start the conversation
+    await this.messageSource.sendMessage("Starting conversation...");
+
+    // Execute the InformationGatheringTask
+    let userMessage = await this.messageSource.receiveMessage();
+    while (userMessage !== "quit") {
+      const output = await this.informationGatheringTask.run(userMessage);
+      await this.messageSource.sendMessage("AI response: " + output.response);
+      userMessage = await this.messageSource.receiveMessage();
+    }
+
+    // End the conversation
+    await this.messageSource.sendMessage("Ending conversation...");
   }
 }
 

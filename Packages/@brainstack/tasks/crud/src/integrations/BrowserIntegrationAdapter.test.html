@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>File System Access API Test</title>
+  <style>
+    #file-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    #file-list li {
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>File System Access API Test</h1>
+  <button id="request-directory-access">Request Directory Access</button>
+  <ul id="file-list"></ul>
+
+  <script>
+    const requestDirectoryAccessButton = document.getElementById('request-directory-access');
+    const fileListElement = document.getElementById('file-list');
+
+    async function requestDirectoryPermission() {
+      // Use the showDirectoryPicker method to request permission to a directory
+      const directoryHandle = await window.showDirectoryPicker();
+      return directoryHandle;
+    }
+
+    async function listFilesInDirectory(directoryHandle) {
+      // Clear the previous file list
+      fileListElement.innerHTML = '';
+
+      // Iterate over the entries in the directory
+      for await (const entry of directoryHandle.values()) {
+        // Create a list item for each file
+        const listItem = document.createElement('li');
+        listItem.textContent = entry.name;
+        fileListElement.appendChild(listItem);
+      }
+    }
+
+    requestDirectoryAccessButton.addEventListener('click', async () => {
+      try {
+        // Request directory permission and list files
+        const directoryHandle = await requestDirectoryPermission();
+        await listFilesInDirectory(directoryHandle);
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    });
+  </script>
+</body>
+</html>
