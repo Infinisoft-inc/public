@@ -1,0 +1,20 @@
+{
+  "name": "@brainstack/skill-documents",
+  "version": "1.0.0",
+  "description": "A Skill to create documents",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Infinisoft World Inc. <info@infinisoft.world>",
+  "license": "ISC",
+  "homepage": "https://www.infinisoft.world",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/Infinisoft-inc/public.git"
+  },
+  "bugs": {
+      "url": "https://github.com/Infinisoft-inc/public/issues"
+  }
+}

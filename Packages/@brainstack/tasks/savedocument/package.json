@@ -2,13 +2,21 @@
   "name": "@brainstack/task-savedocument",
   "version": "1.0.0",
   "main": "src/index.js",
+  "description": "Brainstack task for saving text to a file in both Node.js and browser environments",
+  "author": "Infinisoft World Inc. <info@infinisoft.world>",
+  "license": "ISC",
+  "homepage": "https://www.infinisoft.world",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/Infinisoft-inc/public.git"
+  },
+  "bugs": {
+      "url": "https://github.com/Infinisoft-inc/public/issues"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "src/run_test.sh",
     "build": "rollup -c --bundleConfigAsCjs"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-json": "^6.0.0",
@@ -28,6 +36,5 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "wrtc": "^0.4.7",
     "ws": "^8.13.0"
-  },
-  "description": "Brainstack task for saving text to a file in both Node.js and browser environments"
+  }
 }

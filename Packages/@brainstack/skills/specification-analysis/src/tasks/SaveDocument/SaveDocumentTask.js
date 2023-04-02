@@ -1,5 +1,5 @@
 const fs = require('fs');
-const SaveToFileAction = require('./SaveToFileAction');
+const SaveToFileAction = require('./actions/SaveToFileAction');
 
 class SaveDocumentTask {
   constructor(documentContent, outputFilename) {
