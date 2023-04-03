@@ -1,10 +1,9 @@
 import React from 'react';
 import { Rnd } from 'react-rnd';
 import ChatWidget from './ChatWidget';
-import "./corner-borders.svg";
 import CornerBorders from './CornerBorders';
 
-const ChatWidgetWrapper = () => {
+const IBrainWidget = () => {
   return (
     <Rnd
     // style={{ border: '1px solid #ccc' }} // Add a border to make resize handles more visible
@@ -36,4 +35,4 @@ const ChatWidgetWrapper = () => {
   );
 };
 
-export default ChatWidgetWrapper;
+export default IBrainWidget;

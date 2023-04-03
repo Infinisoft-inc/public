@@ -1,0 +1,34 @@
+.corner-border {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+.top-left {
+  border-width: 3px 0 0 3px;
+  border-style: solid;
+  top: 0;
+  left: 0;
+}
+
+.top-right {
+  border-width: 3px 3px 0 0;
+  border-style: solid;
+  top: 0;
+  right: 0;
+}
+
+.bottom-left {
+  border-width: 0 0 3px 3px;
+  border-style: solid;
+  bottom: 0;
+  left: 0;
+}
+
+.bottom-right {
+  border-width: 0 3px 3px 0;
+  border-style: solid;
+  bottom: 0;
+  right: 0;
+}
