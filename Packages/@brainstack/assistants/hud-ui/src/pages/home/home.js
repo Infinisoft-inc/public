@@ -1,22 +1,24 @@
-import React from 'react';
+import React from "react";
+import FileExplorer from "../../components/file-explorer/file-explorer";
 
 function Home() {
-	return (
-		<div>
-			<ul className="breadcrumb">
-				<li className="breadcrumb-item"><a href="#/">LAYOUT</a></li>
-				<li className="breadcrumb-item active">STARTER PAGE</li>
-			</ul>
-		
-			<h1 className="page-header">
-				Starter Page <small>page header description goes here...</small>
-			</h1>
-		
-			<p>
-				Start build your page here
-			</p>
-		</div>
-	)
+  return (
+    <div>
+      <ul className="breadcrumb">
+        <li className="breadcrumb-item">
+          <a href="#/">LAYOUT</a>
+        </li>
+        <li className="breadcrumb-item active">STARTER PAGE</li>
+      </ul>
+
+      <h1 className="page-header">
+        Starter Page <small>page header description goes here...</small>
+      </h1>
+
+      <p>Start build your page here</p>
+      <FileExplorer />
+    </div>
+  );
 }
 
 export default Home;
