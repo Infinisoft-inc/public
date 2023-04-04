@@ -1,24 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
+import { useChat } from "./useChat";
 
 const ChatWidget = () => {
-  const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const containerRef = useRef(null);
-
-  const sendMessage = () => {
-    if (inputMessage.trim() !== "") {
-      setMessages([...messages, { sender: "user", content: inputMessage }]);
-      setInputMessage("");
-      // Simulate a response from the system after 1 second
-      setTimeout(() => {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { sender: "system", content: "Hello, how can I assist you?" },
-        ]);
-      }, 1000);
-    }
-  };
+  const { messages, sendMessage } = useChat();
 
   useEffect(() => {
     if (containerRef.current) {
@@ -28,7 +15,8 @@ const ChatWidget = () => {
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
-      sendMessage();
+      sendMessage(inputMessage);
+      setInputMessage("");
     }
   };
 
