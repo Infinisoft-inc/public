@@ -20,6 +20,7 @@ To install the @brainstack/microstore package, use the following command:
 
 ```bash
 npm install @brainstack/microstore
+```
 
 ## Usage
 ```javascript
