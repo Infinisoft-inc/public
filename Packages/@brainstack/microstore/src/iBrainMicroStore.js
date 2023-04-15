@@ -46,4 +46,4 @@ const iBrainMicroStore = (initialState) => {
   return { getState, mutate, on, emit };
 };
 
-export default { iBrainMicroStore };
+modules.exports = iBrainMicroStore ;

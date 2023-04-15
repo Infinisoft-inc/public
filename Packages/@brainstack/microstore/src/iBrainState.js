@@ -56,4 +56,4 @@ const iBrainState = (initialState) => {
   return { getState, mutate };
 };
 
-export default {iBrainState};
+module.exports = iBrainState;

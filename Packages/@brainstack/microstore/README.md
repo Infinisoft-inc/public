@@ -1,8 +1,10 @@
-![Infinisoft World Inc.](https://pbs.twimg.com/profile_banners/1034959025857851392/1673900508/600x200)
-
 # @brainstack/microstore
 
-Synchronous Micro State Management for Microapps.
+![Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg)<br />
+![Infinisoft World Inc.](https://pbs.twimg.com/profile_banners/1034959025857851392/1673900508/600x200)
+
+
+# Synchronous Micro State Management for Microapps.
 
 **Incredibly Lightweight**: iBrainMicroStore is astonishingly small, weighing in at just **182 bytes**. A synchronous micro state management library designed for use in microapps. It is one of the pillar foundations of IBrain. The library is meant to be very small and very specific, breaking the boundaries between front-end and back-end, providing a unified hub. Its state is mutable and synchronous, allowing developers to focus on what's important with minimal boilerplate.
 

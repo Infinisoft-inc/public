@@ -65,4 +65,4 @@ const iBrainHub = () => {
   return { on, emit };
 };
 
-export default { iBrainHub };
+modules.export = iBrainHub ;
