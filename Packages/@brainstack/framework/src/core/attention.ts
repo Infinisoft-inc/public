@@ -19,9 +19,9 @@ enum AttentionOrientingStage {
 
 // Define the AttentionalShift class
 class AttentionalShift {
-  control: AttentionalControl;
-  shiftType: AttentionalShiftType;
-  currentStage: AttentionOrientingStage | null;
+  protected control: AttentionalControl;
+  protected shiftType: AttentionalShiftType;
+  protected currentStage: AttentionOrientingStage | null;
 
   constructor(control: AttentionalControl, shiftType: AttentionalShiftType) {
     this.control = control;

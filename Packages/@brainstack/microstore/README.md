@@ -26,7 +26,7 @@ npm install @brainstack/microstore
 
 ## Usage
 ```javascript
-const iBrainMicroStore = require('@brainstack/microstore');
+import {iBrainMicroStore} from '@brainstack/microstore';
 
 // Create a store with an initial state
 const store = iBrainMicroStore({ count: 0 });
