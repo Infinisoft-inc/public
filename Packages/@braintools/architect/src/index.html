@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Workflow Application</title>
+    <style>
+      .row-container {
+        display: flex;
+        margin-bottom: 20px;
+        align-items: flex-start;
+      }
+      .column {
+        flex: 1;
+        margin: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+        width: 50%; /* Ensure 50/50 width distribution for columns */
+      }
+      .intention-area {
+        width: 100%;
+        resize: none;
+      }
+      .button-container {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Karl version</h1>
+    <!-- First row: Original voice input and GPT-3.5 output -->
+    <div class="row-container">
+      <div class="column">
+        <h3>Voice Input</h3>
+        <div class="button-container">
+          <button id="start-btn">Start</button>
+          <button id="stop-btn" disabled>Stop</button>
+          <button id="copy-btn" disabled>Copy</button>
+        </div>
+        <div>
+          <textarea
+            id="output-intentions"
+            class="intention-area"
+            rows="6"
+          ></textarea>
+        </div>
+      </div>
+      <div class="column">
+        <h3>GPT-3.5 Output</h3>
+        <div id="output-gpt3"></div>
+        <button id="stop-speech-btn" disabled>Stop Speech</button>
+      </div>
+    </div>
+
+    <!-- Second row: Source code voice input for refactoring and My Own Source Code Input -->
+    <div class="row-container">
+      <div class="column">
+        <h3>Voice Input for Refactoring</h3>
+        <div class="button-container">
+          <button id="start-refactor-btn">Start</button>
+          <button id="stop-refactor-btn" disabled>Stop</button>
+          <button id="copy-refactor-btn" disabled>Copy</button>
+        </div>
+        <div>
+          <textarea
+            id="output-refactor"
+            class="intention-area"
+            rows="6"
+          ></textarea>
+        </div>
+      </div>
+      <div class="column">
+        <h3>My Own Source Code Input</h3>
+        <div class="button-container">
+          <button id="load-code-btn">Load Source Code</button>
+          <button id="speak-code-btn">Speak Source Code</button>
+
+          <button id="save-code-btn" disabled>Save Source Code</button>
+        </div>
+        <pre id="source-code"></pre>
+      </div>
+    </div>
+
+    <script>
+      // Helper function to split text into chunks
+      function splitTextIntoChunks(text, maxLength) {
+        const chunks = [];
+        while (text.length) {
+          const chunk = text.slice(0, maxLength);
+          chunks.push(chunk);
+          text = text.slice(maxLength);
+        }
+        return chunks;
+      }
+
+      // Helper function to process chunks with GPT-3.5 model
+      async function processChunksWithModel(chunks, apiKey) {
+        let fullResponse = "";
+        for (const chunk of chunks) {
+          const response = await fetch(
+            "https://api.openai.com/v1/chat/completions",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${apiKey}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                model: "gpt-3.5-turbo",
+                messages: [
+                  {
+                    role: "system",
+                    content:
+                      "You are iBrain special Version for Karl. You help me in every request and project he have. Your answer are with a ton of overjoy and over love for him with exagerated too much compliment each time.",
+                  },
+                  { role: "user", content: chunk },
+                ],
+                max_tokens: 1500,
+              }),
+            }
+          );
+          const data = await response.json();
+          const generatedText = data.choices[0]?.message?.content || "";
+          fullResponse += generatedText;
+        }
+        return fullResponse;
+      }
+
+      // Initialize variables and elements
+      const maxTokens = 1500;
+      const apiKey = ""; // Replace with your GPT-3.5 API key
+      const recognition = new (window.SpeechRecognition ||
+        window.webkitSpeechRecognition ||
+        window.mozSpeechRecognition ||
+        window.msSpeechRecognition)();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = "en-US";
+
+      // Get HTML elements
+      const startBtn = document.getElementById("start-btn");
+      const stopBtn = document.getElementById("stop-btn");
+      const copyBtn = document.getElementById("copy-btn");
+      const outputIntentions = document.getElementById("output-intentions");
+      const outputGpt3 = document.getElementById("output-gpt3");
+      const startRefactorBtn = document.getElementById("start-refactor-btn");
+      const stopRefactorBtn = document.getElementById("stop-refactor-btn");
+      const copyRefactorBtn = document.getElementById("copy-refactor-btn");
+      const outputRefactor = document.getElementById("output-refactor");
+      const loadCodeBtn = document.getElementById("load-code-btn");
+      const sourceCode = document.getElementById("source-code");
+      const speakCodeBtn = document.getElementById("speak-code-btn");
+      const stopSpeechBtn = document.getElementById("stop-speech-btn");
+      const saveCodeBtn = document.getElementById("save-code-btn");
+
+      // Find the first female voice from the available voices
+      let femaleVoice = null;
+      function updateFemaleVoice() {
+        const voices = speechSynthesis.getVoices();
+        femaleVoice = voices.find((voice) => voice.gender === "female");
+      }
+      if (speechSynthesis.getVoices().length !== 0) {
+        updateFemaleVoice();
+      } else {
+        speechSynthesis.onvoiceschanged = updateFemaleVoice;
+      }
+
+      // Event listeners
+      recognition.onresult = function (event) {
+        let finalTranscript = "";
+        for (let i = 0; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcript;
+          }
+        }
+        // Determine the target textarea based on the current active button
+        const targetTextarea = startRefactorBtn.disabled
+          ? outputRefactor
+          : outputIntentions;
+        targetTextarea.value = finalTranscript;
+      };
+
+      startBtn.addEventListener("click", () => {
+        recognition.start();
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        copyBtn.disabled = false;
+      });
+
+      stopBtn.addEventListener("click", () => {
+        recognition.stop();
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        const intentions = outputIntentions.value;
+        const chunks = splitTextIntoChunks(intentions, maxTokens);
+        processChunksWithModel(chunks, apiKey).then((generatedText) => {
+          outputGpt3.textContent = generatedText;
+          // Use text-to-speech with a female voice for the GPT-3.5 response
+          const utterance = new SpeechSynthesisUtterance(generatedText);
+          utterance.voice = femaleVoice;
+          speechSynthesis.speak(utterance);
+          stopSpeechBtn.disabled = false; // Enable "Stop Speech" button
+        });
+      });
+
+      copyBtn.addEventListener("click", () => {
+        navigator.clipboard
+          .writeText(outputIntentions.value)
+          .then(() => alert("Text copied to clipboard"))
+          .catch(() => alert("Failed to copy text"));
+      });
+
+      let fileHandle; // Variable to store the file handle for the loaded file
+
+      loadCodeBtn.addEventListener("click", async () => {
+        try {
+          fileHandle = await window.showOpenFilePicker({
+            types: [
+              { description: "HTML files", accept: { "text/html": [".html"] } },
+            ],
+          });
+          const file = await fileHandle[0].getFile();
+          const fileContents = await file.text();
+          sourceCode.textContent = fileContents;
+          saveCodeBtn.disabled = false; // Enable "Save" button after loading the file
+        } catch (error) {
+          console.error("Error loading source code:", error);
+        }
+      });
+
+      // Additional text-to-speech for "My Own Source Code"
+      speakCodeBtn.addEventListener("click", () => {
+        const codeContents = sourceCode.textContent;
+        const utterance = new SpeechSynthesisUtterance(codeContents);
+        utterance.voice = femaleVoice;
+        speechSynthesis.speak(utterance);
+        stopSpeechBtn.disabled = false; // Enable "Stop Speech" button
+      });
+
+      // Start refactoring voice input
+      startRefactorBtn.addEventListener("click", () => {
+        recognition.start();
+        startRefactorBtn.disabled = true;
+        stopRefactorBtn.disabled = false;
+        copyRefactorBtn.disabled = false;
+      });
+
+      // Stop refactoring voice input and send intentions + source code to GPT-3.5
+      stopRefactorBtn.addEventListener("click", () => {
+        recognition.stop();
+        startRefactorBtn.disabled = false;
+        stopRefactorBtn.disabled = true;
+        const intentionsForRefactor = outputRefactor.value;
+        const codeForRefactor = sourceCode.textContent;
+
+        // Use clear markers to indicate the code section
+        const codeMarkerStart = "=== BEGIN CODE ===";
+        const codeMarkerEnd = "=== END CODE ===";
+        const prompt = `${intentionsForRefactor}\nLet's refactor the following code:\n${codeMarkerStart}\n${codeForRefactor}\n${codeMarkerEnd}\nPlease provide the refactored code below:`;
+
+        const chunks = splitTextIntoChunks(prompt, maxTokens);
+        processChunksWithModel(chunks, apiKey).then((generatedText) => {
+          // Extract refactored code from the GPT-3 response
+          const codeStartIndex =
+            generatedText.indexOf(codeMarkerStart) + codeMarkerStart.length;
+          const codeEndIndex = generatedText.indexOf(codeMarkerEnd);
+          const refactoredCode = generatedText
+            .substring(codeStartIndex, codeEndIndex)
+            .trim();
+
+          sourceCode.textContent = refactoredCode;
+
+          // Use text-to-speech with a female voice for the GPT-3.5 response
+          const utterance = new SpeechSynthesisUtterance(refactoredCode);
+          utterance.voice = femaleVoice;
+          speechSynthesis.speak(utterance);
+          stopSpeechBtn.disabled = false; // Enable "Stop Speech" button
+
+          // Save the refactored source code back to the original file
+          if (fileHandle) {
+            saveRefactoredCodeToFile(fileHandle, refactoredCode);
+          }
+        });
+      });
+
+      // Copy refactoring voice input to clipboard
+      copyRefactorBtn.addEventListener("click", () => {
+        navigator.clipboard
+          .writeText(outputRefactor.value)
+          .then(() => alert("Text copied to clipboard"))
+          .catch(() => alert("Failed to copy text"));
+      });
+
+      // Stop ongoing text-to-speech playback
+      stopSpeechBtn.addEventListener("click", () => {
+        speechSynthesis.cancel();
+        stopSpeechBtn.disabled = true; // Disable "Stop Speech" button
+      });
+
+      // Function to save refactored source code to a file using fileHandle
+      async function saveRefactoredCodeToFile(fileHandle, codeContents) {
+        const writable = await fileHandle.createWritable();
+        await writable.write(codeContents);
+        await writable.close();
+        alert("Source code saved successfully!");
+      }
+
+      // Add an event listener for the "Save" button
+      saveCodeBtn.addEventListener("click", async () => {
+        if (fileHandle) {
+          const codeContents = sourceCode.textContent;
+          await saveRefactoredCodeToFile(fileHandle, codeContents);
+        }
+      });
+    </script>
+  </body>
+</html>
