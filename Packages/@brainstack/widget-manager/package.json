@@ -7,17 +7,17 @@
     "build": "rollup -c"
   },
   "dependencies": {
-    "@brainstack/microstore-react": "latest",
-    "react": "latest",
-    "react-dom": "latest"
+    "@brainstack/microstore-react": "^1.1.9",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "devDependencies": {
-    "rollup": "latest",
-    "rollup-plugin-peer-deps-external": "latest",
-    "rollup-plugin-babel": "latest",
     "@babel/core": "latest",
     "@babel/preset-env": "latest",
-    "@babel/preset-react": "latest"
+    "@babel/preset-react": "latest",
+    "rollup": "latest",
+    "rollup-plugin-babel": "latest",
+    "rollup-plugin-peer-deps-external": "latest"
   },
   "peerDependencies": {
     "react": "^18.0.0",

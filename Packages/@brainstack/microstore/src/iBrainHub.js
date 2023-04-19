@@ -60,7 +60,7 @@ export const iBrainHub = () => {
   const emit = (eventName, payload) => {
     const handlers = events.get(eventName);
     if (handlers) {
-      handlers.forEach((handler) => handler(payload));
+      handlers.forEach((handler) => handler({eventName, ...payload}));
     }
   };
   return { on, emit };

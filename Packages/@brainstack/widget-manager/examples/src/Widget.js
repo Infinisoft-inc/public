@@ -1,11 +1,16 @@
-import React from 'react';
-import { useMicroContext } from '@brainstack/microstore-react';
+import React from "react";
+import { useMicroContext } from "@brainstack/microstore-react";
 
-const Widget = ({ id, title, ContentComponent, context }) => {
+const Widget = ({
+  id,
+  title,
+  ContentComponent = () => <h1>Error</h1>,
+  context,
+}) => {
   const { emit } = useMicroContext();
 
   const onClose = () => {
-    emit('widget.close', { widgetId: id });
+    emit("widget.close", { widgetId: id });
   };
 
   return (
@@ -16,7 +21,7 @@ const Widget = ({ id, title, ContentComponent, context }) => {
       </div>
       <div className="widget-content">
         <ContentComponent {...context} />
-          </div>
+      </div>
     </div>
   );
 };

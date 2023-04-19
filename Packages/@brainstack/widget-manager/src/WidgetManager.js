@@ -1,24 +1,30 @@
-import React from 'react';
-import { useMicroStore, useOn } from '@brainstack/microstore-react';
-import Widget from './Widget';
+import React, { useState } from "react";
+import {
+  MicroStoreProvider,
+  useMicroContext,
+} from "@brainstack/microstore-react";
+import Widget from "./Widget";
 
-export const WidgetContext = createMicrostore({
-  widgets: {},
-});
+export const WidgetManager = (props) => (
+  <MicroStoreProvider>
+    <WidgetManagerContainer {...props}></WidgetManagerContainer>
+  </MicroStoreProvider>
+);
 
-export const WidgetManager = ({ initialWidgets }) => {
-  const { state, mutate } = useMicrostore({ widgets: initialWidgets });
+const WidgetManagerContainer = () => {
+  const [widgets, setWidgets] = useState()
+  const { useOn } = useMicroContext();
 
-  useOn('widget.add', (e, payload) => {
+  useOn("widget.add", (e, payload) => {
     const { event, widgetMeta } = payload;
-    mutate((prev) => ({
+    setWidgets((prev) => ({
       widgets: { ...prev.widgets, [event]: widgetMeta },
     }));
   });
 
-  useOn('widget.close', (e, payload) => {
+  useOn("widget.close", (e, payload) => {
     const { widgetId } = payload;
-    mutate((prev) => {
+    setWidgets((prev) => {
       const newWidgets = { ...prev.widgets };
       delete newWidgets[widgetId];
       return { widgets: newWidgets };
@@ -27,7 +33,7 @@ export const WidgetManager = ({ initialWidgets }) => {
 
   return (
     <div className="widget-manager">
-      {Object.entries(state.widgets).map(([event, widgetMeta]) => (
+      {Object.entries(widgets).map(([event, widgetMeta]) => (
         <Widget
           key={widgetMeta.id}
           id={widgetMeta.id}
