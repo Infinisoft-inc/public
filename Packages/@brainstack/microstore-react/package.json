@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/microstore-react",
-  "version": "1.0.10",
+  "version": "1.1.9",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "scripts": {

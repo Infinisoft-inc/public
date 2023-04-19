@@ -74,6 +74,11 @@ export default App;
   - `on`: (function) A function to subscribe to an event with a handler. Accepts a regular expression to match multiple events and a callback function to be executed when the event is emitted.
   - `emit`: (function) A function to emit an event with an optional payload. Accepts the name of the event to emit and an additional payload to be passed to the event handlers.
   - `useOn`: A React hook for subscribing to events in the store. Accepts an event name and a handler function.
+- `MicroStoreProvider`: A React component that provides the microstore context to its child components.
+  - `useMicroContext`: A custom hook for accessing the microstore context.
+  - `state`: (object) The current state of the store.
+  - `mutate`: (function) A function to mutate the state directly. Accepts a mutator function that receives the current state as input and should return the   new state.
+  - `useOn`: A React hook for subscribing to events in the store. Accepts an event name and a handler function.
 
 ## Contributing
 Contributions, issues, and feature requests are welcome. Feel free to check the issues page.
