@@ -49,24 +49,6 @@ store.mutate((state) => ({ ...state, count: 10 }));
 console.log(store.getState()); // Output: { count: 10 }
 ```
 
-## API
-- `.on(event, handler)`: Subscribe to an event with a handler.
-  - `event`: (string | RegExp) The name of the event to subscribe to or a regular expression to match multiple events.
-  - `handler`: (function) The callback function to be executed when the event is emitted. The handler receives the current state as input and should return the new state.
-
-- `.emit(event, payload)`: Emit an event with an optional payload.
-  - `event`: (string) The name of the event to emit.
-  - `payload`: (optional) An additional payload to be passed to the event handlers.
-
-- `.getState()`: Get the current state of the store.
-  - Returns: The current state of the store.
-
-- `.mutate(mutator)`: Mutate the state using a mutator function.
-  - `mutator`: (function) The mutator function that receives the current state as input and should return the new state.
-  - Returns: The new state after mutation.
-
-## Example usage
-
 You can subscribe to events in the hub using the `on` function and emit events using the `emit` function. Here are some examples:
 
 ```javascript
@@ -82,17 +64,34 @@ removeHandler();
 ```javascript
 // subscribing to an event with a regular expression pattern "^user.*"
 const removeHandler = on(/^user.*/, (eventData) => {
-  console.log(`User event: ${eventData.eventName}`);
+  console.log(`User event: ${eventData.eventName} Scope: `, eventData?.scope ?? "unknown");
 });
 
 // emitting events that match the subscribed pattern
-emit("userLoggedIn");
+emit("userLoggedIn", {scope: "read"});
 emit("userRegistered");
-emit("adminLoggedIn"); // does not match the pattern
+emit("adminLoggedIn", {scope: "rw"}); // does not match the pattern
 
 // later on, removing the handler from the subscribed event
 removeHandler();
 ```
+
+
+## API
+- `.on(event, handler)`: Subscribe to an event with a handler.
+  - `event`: (string | RegExp) The name of the event to subscribe to or a regular expression to match multiple events.
+  - `handler`: (function) The callback function to be executed when the event is emitted. The handler receives the current state as input and should return the new state.
+
+- `.emit(event, payload)`: Emit an event with an optional payload.
+  - `event`: (string) The name of the event to emit.
+  - `payload`: (optional) An additional payload to be passed to the event handlers.
+
+- `.getState()`: Get the current state of the store.
+  - Returns: The current state of the store.
+
+- `.mutate(mutator)`: Mutate the state using a mutator function.
+  - `mutator`: (function) The mutator function that receives the current state as input and should return the new state.
+  - Returns: The new state after mutation.
 
 ## Contributing
 Contributions, issues, and feature requests are welcome. Feel free to check the issues page.
