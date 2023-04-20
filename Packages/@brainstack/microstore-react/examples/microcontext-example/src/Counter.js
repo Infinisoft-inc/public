@@ -7,6 +7,9 @@ export const Counter = () => {
   useOn("state.changed", (e) => {
     console.log(`State changed`, e);
   });
+  useOn(/\.*/, (e) => {
+    console.log(`Intercetor: `, e);
+  });
 
   const increment = () => {
     console.log(`incrememnt `);
