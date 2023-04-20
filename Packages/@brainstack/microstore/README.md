@@ -65,6 +65,34 @@ console.log(store.getState()); // Output: { count: 10 }
   - `mutator`: (function) The mutator function that receives the current state as input and should return the new state.
   - Returns: The new state after mutation.
 
+## Example usage
+
+You can subscribe to events in the hub using the `on` function and emit events using the `emit` function. Here are some examples:
+
+```javascript
+// subscribing to an event named "userLoggedIn"
+const removeHandler = on("userLoggedIn", (eventData) => {
+  console.log(`User logged in: ${eventData.username}`);
+});
+
+// later on, removing the handler from the subscribed event
+removeHandler();
+```
+
+```javascript
+// subscribing to an event with a regular expression pattern "^user.*"
+const removeHandler = on(/^user.*/, (eventData) => {
+  console.log(`User event: ${eventData.eventName}`);
+});
+
+// emitting events that match the subscribed pattern
+emit("userLoggedIn");
+emit("userRegistered");
+emit("adminLoggedIn"); // does not match the pattern
+
+// later on, removing the handler from the subscribed event
+removeHandler();
+```
 
 ## Contributing
 Contributions, issues, and feature requests are welcome. Feel free to check the issues page.

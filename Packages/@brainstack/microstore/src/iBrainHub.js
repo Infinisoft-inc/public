@@ -1,29 +1,29 @@
 //
-//                                                                             
-//      ..........                                                                
-//   ...(%#%(*,......                                          ..                 
-//  ..,%,.,,,,,*%*,.......                                 .........              
-//  ..*(,(,...,,*(*((,.......                            ....,,,,,....            
-//  ..,#,/.......,.,#*/(,.......                      ...,,/#*,,,,*(,.. .         
-//   .,#*(,....,,,,,.,,(**#,,.......               ....,#*,,,,,..,,%,....         
-//   ..,(/,..,(,,,,,#*,,,,(//#*,......        .....,*#*,,,*(/,(,.,,#,.. .         
-//   .../*(,,,(,,(((/,,/*,,,*#*/#*,..............,(*,,,#*.,,,,,(*,**,...          
-//    ..,#*/,,/,**,(((*#*,(,,,,*(,/#,,........,*#,,,/*,...,.,,*#**(,,...          
-//    ...,#**,,(,(*//(#//(**(*,,,,(**((,,.,.,(/,,,#,........,,%**%,,...           
-//     ...,%**,,(*#((#&%///(,,(*,,,,*(,*%**(*,,,/,.........,,%,*#,,...            
-//      ...,%*/,,/*//(##//*(**,,(,..,,,/,/((,.,/..........,,%,*#,....             
-//       ...,(*(,,*(*(*(##*/*,*,,(,...,*%*,,/#/,........,,#*,**,....              
-//        ...,*(/,,,*(,*/((,,,/,.,/,,,,(**(,,#((,.....,,%*,*%,....                
-//         ....,#*%,,,,(/,,,*%,..,(,,*#,..,(,*,,*#(###/,,,#*.....                 
-//           ....*(*(,,..,,,,.....(,,%,...../#,.......,*%*.....                   
-//             ...,*(,(,.........,*,(*,.......//,,,,/#*.....                      
-//               ....*%*,//,,,,,#,,//....   .............                         
-//                 ....,*%**,,.,,,%,...                                           
-//                     ....,,***,....                                             
-//                         . .                                                    
-//                                                                                
 //
-//"I never fail, I learned 10 000 ways that doesn't work!"                                                                                
+//      ..........
+//   ...(%#%(*,......                                          ..
+//  ..,%,.,,,,,*%*,.......                                 .........
+//  ..*(,(,...,,*(*((,.......                            ....,,,,,....
+//  ..,#,/.......,.,#*/(,.......                      ...,,/#*,,,,*(,.. .
+//   .,#*(,....,,,,,.,,(**#,,.......               ....,#*,,,,,..,,%,....
+//   ..,(/,..,(,,,,,#*,,,,(//#*,......        .....,*#*,,,*(/,(,.,,#,.. .
+//   .../*(,,,(,,(((/,,/*,,,*#*/#*,..............,(*,,,#*.,,,,,(*,**,...
+//    ..,#*/,,/,**,(((*#*,(,,,,*(,/#,,........,*#,,,/*,...,.,,*#**(,,...
+//    ...,#**,,(,(*//(#//(**(*,,,,(**((,,.,.,(/,,,#,........,,%**%,,...
+//     ...,%**,,(*#((#&%///(,,(*,,,,*(,*%**(*,,,/,.........,,%,*#,,...
+//      ...,%*/,,/*//(##//*(**,,(,..,,,/,/((,.,/..........,,%,*#,....
+//       ...,(*(,,*(*(*(##*/*,*,,(,...,*%*,,/#/,........,,#*,**,....
+//        ...,*(/,,,*(,*/((,,,/,.,/,,,,(**(,,#((,.....,,%*,*%,....
+//         ....,#*%,,,,(/,,,*%,..,(,,*#,..,(,*,,*#(###/,,,#*.....
+//           ....*(*(,,..,,,,.....(,,%,...../#,.......,*%*.....
+//             ...,*(,(,.........,*,(*,.......//,,,,/#*.....
+//               ....*%*,//,,,,,#,,//....   .............
+//                 ....,*%**,,.,,,%,...
+//                     ....,,***,....
+//                         . .
+//
+//
+//"I never fail, I learned 10 000 ways that doesn't work!"
 //                                    - Thomas Edison & Me
 //
 //            Infinisoft World Inc.
@@ -39,6 +39,7 @@
 
 export const iBrainHub = () => {
   const events = new Map();
+  const regexHandlers = new Map();
   /**
    * Subscribes to an event in the hub.
    * @param {string | RegExp} event - The name of the event to subscribe to (string or regular expression).
@@ -47,22 +48,43 @@ export const iBrainHub = () => {
    */
   const on = (eventName, handler) => {
     const id = Symbol(handler);
-    const handlers = events.get(eventName) ?? new Map();
-    handlers.set(id, handler);
-    events.set(eventName, handlers);
-    return () => handlers.delete(id);
+    let handlers;
+
+    if (typeof eventName === "string") {
+      handlers = events.get(eventName) ?? new Map();
+      handlers.set(id, handler);
+      events.set(eventName, handlers);
+    } else if (eventName instanceof RegExp) {
+      handlers = regexHandlers.get(eventName.toString()) ?? new Map();
+      handlers.set(id, handler);
+      regexHandlers.set(eventName, handlers);
+    } else {
+      throw new Error("Invalid eventName");
+    }
+
+    return () => {
+      handlers.delete(id);
+    };
   };
   /**
    * Emits an event in the hub, triggering subscribed handlers.
    * @param {string} event - The name of the event to emit.
    * @param {Object} payload - The payload data to be passed to subscribed handlers.
    */
-  const emit = (eventName, payload) => {
+  function emit(eventName, payload = {}) {
     const handlers = events.get(eventName);
-    if (handlers) {
-      handlers.forEach((handler) => handler({eventName, ...payload}));
-    }
-  };
+
+    handlers?.forEach((handler, id) => handler({ eventName, ...payload }));
+
+    // Check for matching handlers for a regular expression
+    regexHandlers.forEach((handlersForRegex, regex) => {
+      if (new RegExp(regex).test(eventName)) {
+        handlersForRegex.forEach((handler, id) =>
+          handler({ eventName, ...payload })
+        );
+      }
+    });
+  }
+
   return { on, emit };
 };
-
