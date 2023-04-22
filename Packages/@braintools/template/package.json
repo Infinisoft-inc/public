@@ -1,13 +1,17 @@
 {
-  "name": "@brainstack/microstore",
-  "version": "1.1.10",
-  "description": "iBrainMicroStore is a synchronous micro state management library designed for use in microapps and is one of the pillar foundations of IBrain.",
+  "name": "@braintools/template",
+  "version": "1.0.0",
+  "description": "",
   "main": "dist/index.cjs.min.js",
   "module": "dist/index.esm.min.js",
   "unpkg": "dist/index.umd.js",
+  "bin": {
+    "generate_template":"node bin/generate_template.js",
+    "instantiate_template":"node bin/instantiate_template.js"
+  },
   "scripts": {
     "test": "jest --coverage --coverageReporters=html --coverageReporters=text-summary",
-    "debug": "node --inspect-brk src/iBrainMicroStore.js",
+    "debug": "node --inspect-brk src/index.js",
     "build": "rollup -c",
     "release": "node release.js"
   },
@@ -15,30 +19,9 @@
     "type": "git",
     "url": "https://github.com/Infinisoft-inc/public.git"
   },
-  "author": "Martin Ouimet <mouimet@infinisoft.dev>",
+  "author": "Infinisoft World <info@infinisoft.dev>",
   "license": "MIT",
-  "keywords": [
-    "microapp",
-    "state-management",
-    "synchronous",
-    "ibrain",
-    "mutable-state",
-    "unified-hub",
-    "micro-state",
-    "javascript-library",
-    "brainstack",
-    "microstore",
-    "state-hub",
-    "minimalistic",
-    "focused",
-    "flexible",
-    "extensible",
-    "cohesive",
-    "event-driven",
-    "real-time",
-    "infinisoft",
-    "event-hub"
-  ],
+  "keywords": [],
   "homepage": "https://infinisoft.world",
   "bugs": {
     "url": "https://github.com/Infinisoft-inc/public/issues"
@@ -63,6 +46,5 @@
   },
   "contribute": {
     "url": "https://github.com/Infinisoft-inc/public/blob/main/CONTRIBUTING.md"
-  },
-  "dependencies": {}
+  }
 }
