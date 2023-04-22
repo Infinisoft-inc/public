@@ -7,11 +7,15 @@
 
 **Incredibly Lightweight**: useMicroStore is a simple, lightweight, and efficient state management solution for React applications. It leverages React's built-in hooks to provide a synchronous and mutable state management system. With an event-driven architecture, useMicroStore allows developers to maintain a clean and organized codebase with minimal boilerplate.
 
+`MicroStore` is also compatible with NodeJs and non-React applications through the `@brainstack/microstore` package. To learn more, visit: https://www.npmjs.com/package/@brainstack/microstore
+
 ## Features
 
 - Mutable and synchronous state management
 - Event-driven architecture with publish-subscribe (pub-sub) pattern
+- Real-time communication for seamless state updates across components
 - Easy integration into any React application
+- NodeJs and Non-React support available via `@brainstack/microstore`
 - Minimal footprint, optimized for size and performance
 - Based on React's built-in hook `useSyncExternalStore`
 

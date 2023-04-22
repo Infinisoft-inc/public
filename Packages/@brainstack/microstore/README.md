@@ -8,11 +8,15 @@
 
 **Incredibly Lightweight**: iBrainMicroStore is astonishingly small, weighing in at just **182 bytes**. A synchronous micro state management library designed for use in microapps. It is one of the pillar foundations of IBrain. The library is meant to be very small and very specific, breaking the boundaries between front-end and back-end, providing a unified hub. Its state is mutable and synchronous, allowing developers to focus on what's important with minimal boilerplate.
 
+iBrainMicroStore is also available for React applications through the `@brainstack/microstore-react` package. To learn more, visit: https://www.npmjs.com/package/@brainstack/microstore-react
+
 ## Features
 
 - Mutable and synchronous state management
 - Event-driven architecture with publish-subscribe (pub-sub) pattern
+- Real-time communication for seamless state management
 - Easy integration into any microapp
+- React support available via `@brainstack/microstore-react`
 - Minimal footprint, optimized for size and performance
 - No dependencies
 
