@@ -144,4 +144,5 @@ echo '{
 }' > ./Packages/@braintools/monorepo-cli/package.json &&
 cd ./Packages/@braintools/monorepo-cli/bin &&
 npm install &&
-./monorepo-cli.sh
+
+./bin/monorepo-cli.sh

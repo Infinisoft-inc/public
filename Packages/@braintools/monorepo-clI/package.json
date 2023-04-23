@@ -2,9 +2,9 @@
   "name": "@braintools/monorepo-cli",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "cli": "node ./monorepo-cli.js"
+  "main": "bin/monorepo-cli.js",
+  "bin": {
+    "cli": "bin/monorepo-cli.js"
   },
   "keywords": [],
   "author": "",
