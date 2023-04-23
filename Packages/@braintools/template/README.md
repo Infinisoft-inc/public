@@ -11,6 +11,8 @@ Part of the Brainstack, `@braintools/template` is a zero-code template generatio
 - Metadata Saving: Saves token metadata (`__template__meta__.json`) in the template directory, making it easy to reuse and share templates.
 - Hassle-Free: User-friendly prompts guide you through the process, making it easy for both new and experienced developers.
 
+![Preview](./preview.gif)
+
 ## Installation
 
 To install the Template Generator and Instantiator tool, run the following command:
