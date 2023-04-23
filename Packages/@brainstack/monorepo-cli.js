@@ -1,15 +1,4 @@
-#!/bin/bash
-npm install -g lerna &&
-lerna init &&
-echo '{
-  "packages": ["Packages/@brainstack/*", "Packages/@braintools/*"],
-  "version": "independent"
-}' > lerna.json &&
-lerna bootstrap &&
-git add . &&
-git commit -m "Initialize Lerna and configure monorepo" &&
-npm install inquirer execa &&
-echo '#!/usr/bin/env node
+#!/usr/bin/env node
 const inquirer = require("inquirer");
 const execa = require("execa");
 
@@ -26,8 +15,7 @@ const actions = [
   { name: "Remove a dependency from all packages", value: "removeDependencyFromAll" },
 ];
 
-const+
-+performAction = async (action) => {
+const performAction = async (action) => {
   switch (action) {
     case "buildAll":
       await execa.command("lerna run build");
@@ -84,7 +72,7 @@ const+
       await execa.command(`lerna add ${depName}@${depVersion} --scope ${packageToAddDep}`);
       break;
     case "addDependencyToAll":
-  const { depNameAll, depVersionAll } = await inquirer.prompt([
+      const { depNameAll, depVersionAll } = await inquirer.prompt([
         {
           type: "input",
           name: "depNameAll",
@@ -96,6 +84,7 @@ const+
           message: "Enter the dependency version:",
         },
       ]);
+      await execa.command(`lerna add ${depName
       await execa.command(`lerna add ${depNameAll}@${depVersionAll}`);
       break;
     case "removeDependencyFromOne":
@@ -121,22 +110,4 @@ const+
 
   await performAction(action);
 })();
-' >> monorepo-cli.js &&
-chmod +x monorepo-cli.js &&
-mv monorepo-cli.js ./Packages/@brainstack &&
-echo '{
-  "name": "@braintools/monorepo-cli",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "cli": "node ./monorepo-cli.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "execa": "^6.0.0",
-    "inquirer": "^8.2.0"
-  }
-}' > ./Packages/@braintools/monorepo-cli/package.json
+
