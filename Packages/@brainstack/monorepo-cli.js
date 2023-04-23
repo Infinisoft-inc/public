@@ -72,7 +72,7 @@ const performAction = async (action) => {
       await execa.command(`lerna add ${depName}@${depVersion} --scope ${packageToAddDep}`);
       break;
     case "addDependencyToAll":
-      const { depNameAll, depVersionAll } = await inquirer.prompt([
+  const { depNameAll, depVersionAll } = await inquirer.prompt([
         {
           type: "input",
           name: "depNameAll",
@@ -84,7 +84,6 @@ const performAction = async (action) => {
           message: "Enter the dependency version:",
         },
       ]);
-      await execa.command(`lerna add ${depName
       await execa.command(`lerna add ${depNameAll}@${depVersionAll}`);
       break;
     case "removeDependencyFromOne":

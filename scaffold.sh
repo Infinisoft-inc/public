@@ -9,6 +9,7 @@ lerna bootstrap &&
 git add . &&
 git commit -m "Initialize Lerna and configure monorepo" &&
 npm install inquirer execa &&
+mkdir -p ./Packages/@braintools/monorepo-clI &&
 echo '#!/usr/bin/env node
 const inquirer = require("inquirer");
 const execa = require("execa");
