@@ -23,7 +23,7 @@
 //                         . .                                                    
 //                                                                                
 //
-//"I never fail, I learned 10 000 ways that doesn't work!"                                                                                
+//"I never fail, I learned 10 000 ways that does not work!"                                                                                
 //                                    - Thomas Edison & Me
 //
 //            Infinisoft World Inc.
@@ -53,7 +53,7 @@ export const iBrainState = (initialState) => {
     state = newState;
     return state;
   };
-  
+
   return { getState, mutate };
 };
 
