@@ -9,7 +9,8 @@ lerna bootstrap &&
 git add . &&
 git commit -m "Initialize Lerna and configure monorepo" &&
 npm install inquirer execa &&
-mkdir -p ./Packages/@braintools/monorepo-clI &&
+mkdir -p ./Packages/@braintools/monorepo-cli &&
+mkdir -p ./Packages/@braintools/monorepo-cli/bin &&
 echo '#!/usr/bin/env node
 const inquirer = require("inquirer");
 const execa = require("execa");
@@ -124,14 +125,14 @@ const+
 })();
 ' >> monorepo-cli.js &&
 chmod +x monorepo-cli.js &&
-mv monorepo-cli.js ./Packages/@brainstack &&
+mv monorepo-cli.js ./Packages/@brainstack/monorepo-cli/bin &&
 echo '{
   "name": "@braintools/monorepo-cli",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "cli": "node ./monorepo-cli.js"
+  "main": "bin/monorepo-cli.js",
+  "bin": {
+    "cli": "bin/monorepo-cli.js"
   },
   "keywords": [],
   "author": "",
@@ -140,4 +141,6 @@ echo '{
     "execa": "^6.0.0",
     "inquirer": "^8.2.0"
   }
-}' > ./Packages/@braintools/monorepo-cli/package.json
+}' > ./Packages/@braintools/monorepo-cli/package.json &&
+cd ./Packages/@braintools/monorepo-cli/bin &&
+./monorepo-cli.sh

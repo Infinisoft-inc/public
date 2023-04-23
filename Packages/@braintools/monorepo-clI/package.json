@@ -1,0 +1,16 @@
+{
+  "name": "@braintools/monorepo-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cli": "node ./monorepo-cli.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "execa": "^6.0.0",
+    "inquirer": "^8.2.0"
+  }
+}
