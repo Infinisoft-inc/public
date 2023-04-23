@@ -1,8 +1,8 @@
 {
   "name": "@braintools/monorepo-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
-  "private":true,
+  "private": true,
   "main": "bin/monorepo-cli.js",
   "bin": {
     "cli": "bin/monorepo-cli.js"

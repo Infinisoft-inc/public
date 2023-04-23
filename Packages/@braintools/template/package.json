@@ -1,6 +1,6 @@
 {
   "name": "@braintools/template",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "A template generation/instantiation tool for lazy coders",
   "bin": {
     "generate_template": "bin/generate_template.js",
