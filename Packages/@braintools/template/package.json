@@ -1,6 +1,6 @@
 {
   "name": "@braintools/template",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Part of the Brainstack, it's a 0 code template generation/instantiation tool for lazy coders",
   "bin": {
     "generate_template": "node bin/generate_template.js",
