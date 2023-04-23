@@ -1,4 +1,6 @@
-const welcome = (name, description) =>
+const {version, name, description} = require('../package.json')
+
+const welcome = () =>
   console.log(`
 
 
@@ -26,7 +28,7 @@ const welcome = (name, description) =>
                      ....,,***,....
                          . .
 
-                    Welcome to ${name}
+                    Welcome to ${name} version ${version}
                     ${description}
                     
                     Infinisoft World Inc.

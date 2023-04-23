@@ -77,5 +77,5 @@ async function instantiateTemplate() {
 }
 
 // Run the script
-welcome("Instantiate Template","A Template Instantiation Tool")
+welcome()
 instantiateTemplate();

@@ -139,6 +139,6 @@ async function generate_template() {
   }
 }
 
-welcome("Generate Template","A Template Creation Tool")
+welcome()
 // Run the script
 generate_template();
