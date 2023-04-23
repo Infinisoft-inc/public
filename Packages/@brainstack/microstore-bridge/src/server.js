@@ -1,15 +1,15 @@
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
-const MicroStore = require('@brainstack/microstore');
-const { StoreConnector } = require('./store-connector'); // Import StoreConnector class
+const {iBrainMicroStore} = require('@brainstack/microstore');
+const StoreConnector  = require('./store-connector'); // Import StoreConnector class
 
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 // Create an instance of MicroStore
-const backEndStore = new MicroStore();
+const backEndStore = iBrainMicroStore();
 
 wss.on('connection', (ws) => {
   console.log('Client connected');

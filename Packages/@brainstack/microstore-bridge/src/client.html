@@ -1,56 +1,83 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>WebSocket Frontend</title>
-  <script src="https://www.unpkg.com/@brainstack/microstore@1.1.10/dist/index.umd.min.js"></script> <!-- Import MicroStore from @brainstack/microstore -->
-  <script src="store-connector.js"></script> <!-- Import StoreConnector class -->
-</head>
-<body>
-  <!-- Input text field to enter the event name -->
-  <input type="text" id="eventNameInput" placeholder="Enter event name">
+  <head>
+    <title>WebSocket Frontend</title>
+    <!-- <script src="store-connector.js"></script> -->
+    <!-- Import StoreConnector class -->
+  </head>
+  <body>
+    <!-- Input text field to enter the event name -->
+    <input type="text" id="eventNameInput" placeholder="Enter event name" />
 
-  <!-- Button to trigger the event -->
-  <button id="triggerEventButton">Trigger Event</button>
+    <!-- Button to trigger the event -->
+    <button id="triggerEventButton">Trigger Event</button>
 
-  <script>
-    // Create an instance of MicroStore
-    const frontEndStore = new MicroStore();
+    <script
+    type="module"
+src="https://www.unpkg.com/@brainstack/microstore@1.1.11/dist/index.esm.min.js"
+    >
+          // Create an instance of MicroStore
+      // import iBrainMicroStore from "@brainstack/microstore"
+      // import StoreConnector from "store-connector.js"
 
-    // WebSocket server URL
-    const serverUrl = 'ws://localhost:3000';
-    const ws = new WebSocket(serverUrl);
+      // const iBrainMicroStore = () =>{}
 
-    // Create a StoreConnector instance for the connection
-    const frontEndConnector = new StoreConnector(frontEndStore, ws);
+          class StoreConnector {
+            constructor(store, _ws) {
+              this.store = store;
+              this.ws = _ws
 
-    ws.addEventListener('open', () => {
-      console.log('Connected to server');
-      ws.send('Hello, server!');
-    });
+              this.ws.addEventListener('message', (event) => {
+                const { eventName, payload } = JSON.parse(event.data);
+                store.emit(eventName, payload);
+              });
 
-    ws.addEventListener('message', (event) => {
-      console.log(`Received message: ${event.data}`);
-    });
+              const originalEmit = store.emit;
+              store.emit = (eventName, payload) => {
+                originalEmit.call(store, eventName, payload);
+                this.ws.send(JSON.stringify({ eventName, payload }));
+              };
+            }
+          }
 
-    ws.addEventListener('close', () => {
-      console.log('Disconnected from server');
-    });
 
-    ws.addEventListener('error', (error) => {
-      console.error(`WebSocket error: ${error}`);
-    });
 
-    // Handle button click to trigger event
-    document.getElementById('triggerEventButton').addEventListener('click', () => {
-      // Get the event name from the input text field
-      const eventName = document.getElementById('eventNameInput').value;
+          // WebSocket server URL
+          const serverUrl = 'ws://localhost:3000';
+          const ws = new WebSocket(serverUrl);
+          const frontEndStore = iBrainMicroStore();
 
-      // Emit the event with a sample payload
-      frontEndStore.emit(eventName, `Triggered event: ${eventName}`);
+          // Create a StoreConnector instance for the connection
+          const frontEndConnector = new StoreConnector(frontEndStore, ws);
 
-      // Clear the input text field
-      document.getElementById('eventNameInput').value = '';
-    });
-  </script>
-</body>
+          ws.addEventListener('open', () => {
+            console.log('Connected to server');
+            ws.send('Hello, server!');
+          });
+
+          ws.addEventListener('message', (event) => {
+            console.log(`Received message: ${event.data}`);
+          });
+
+          ws.addEventListener('close', () => {
+            console.log('Disconnected from server');
+          });
+
+          ws.addEventListener('error', (error) => {
+            console.error(`WebSocket error: ${error}`);
+          });
+
+          // Handle button click to trigger event
+          document.getElementById('triggerEventButton').addEventListener('click', () => {
+            // Get the event name from the input text field
+            const eventName = document.getElementById('eventNameInput').value;
+
+            // Emit the event with a sample payload
+            frontEndStore.emit(eventName, `Triggered event: ${eventName}`);
+            console.log(`Trigger`)
+            // Clear the input text field
+            document.getElementById('eventNameInput').value = '';
+          });
+    </script>
+  </body>
 </html>

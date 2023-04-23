@@ -1,8 +1,8 @@
 
 class StoreConnector {
-  constructor(store, url) {
+  constructor(store, _ws) {
     this.store = store;
-    this.ws = new WebSocket(url);
+    this.ws = _ws
 
     this.ws.addEventListener('message', (event) => {
       const { eventName, payload } = JSON.parse(event.data);

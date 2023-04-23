@@ -55,7 +55,7 @@ export const iBrainHub = () => {
       handlers.set(id, handler);
       events.set(eventName, handlers);
     } else if (eventName instanceof RegExp) {
-      handlers = regexHandlers.get(eventName.toString()) ?? new Map();
+      handlers = regexHandlers.get(eventName) ?? new Map();
       handlers.set(id, handler);
       regexHandlers.set(eventName, handlers);
     } else {
@@ -78,7 +78,7 @@ export const iBrainHub = () => {
 
     // Check for matching handlers for a regular expression
     regexHandlers.forEach((handlersForRegex, regex) => {
-      if (new RegExp(regex).test(eventName)) {
+      if (regex.test(eventName)) {
         handlersForRegex.forEach((handler, id) =>
           handler({ eventName, ...payload })
         );

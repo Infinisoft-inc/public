@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@brainstack/microstore": "^1.1.5"
+    "@brainstack/microstore": "^1.1.12"
   }
 }
