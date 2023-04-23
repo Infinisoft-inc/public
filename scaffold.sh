@@ -28,8 +28,7 @@ const actions = [
   { name: "Remove a dependency from all packages", value: "removeDependencyFromAll" },
 ];
 
-const+
-+performAction = async (action) => {
+const performAction = async (action) => {
   switch (action) {
     case "buildAll":
       await execa.command("lerna run build");
