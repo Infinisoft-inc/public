@@ -37,9 +37,10 @@
  * Allows for subscribing to events, emitting events, and executing handlers.
  */
 
-export const iBrainHub = () => {
+export const iBrainHub = (options) => {
   const events = new Map();
   const regexHandlers = new Map();
+  const source = options?.source ?? "unknown";
   /**
    * Subscribes to an event in the hub.
    * @param {string | RegExp} event - The name of the event to subscribe to (string or regular expression).
@@ -71,7 +72,8 @@ export const iBrainHub = () => {
    * @param {string} event - The name of the event to emit.
    * @param {Object} payload - The payload data to be passed to subscribed handlers.
    */
-  function emit(eventName, payload = {}) {
+  function emit(_eventName, payload = {}) {
+    const eventName = `${source}.${_eventName}`;
     const handlers = events.get(eventName);
 
     handlers?.forEach((handler, id) => handler({ eventName, ...payload }));
