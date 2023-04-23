@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const readline = require("readline");
+const {welcome} = require("./welcome.js")
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -138,5 +139,6 @@ async function generate_template() {
   }
 }
 
+welcome("Generate Template","A Template Creation Tool")
 // Run the script
 generate_template();
