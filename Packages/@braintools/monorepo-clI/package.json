@@ -2,6 +2,7 @@
   "name": "@braintools/monorepo-cli",
   "version": "1.0.0",
   "description": "",
+  "private":true,
   "main": "bin/monorepo-cli.js",
   "bin": {
     "cli": "bin/monorepo-cli.js"

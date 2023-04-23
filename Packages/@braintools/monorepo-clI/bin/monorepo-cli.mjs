@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-const inquirer = require("inquirer");
-const execa = require("execa");
+import inquirer from 'inquirer';
+import {execa,execaCommand} from 'execa';
 
 const actions = [
   { name: "Build everything once", value: "buildAll" },
@@ -15,11 +15,10 @@ const actions = [
   { name: "Remove a dependency from all packages", value: "removeDependencyFromAll" },
 ];
 
-const+
-+performAction = async (action) => {
+const performAction = async (action) => {
   switch (action) {
     case "buildAll":
-      await execa.command("lerna run build");
+      await execaCommand("lerna run build");
       break;
     case "buildOne":
       const { packageToBuild } = await inquirer.prompt([
@@ -29,11 +28,11 @@ const+
           message: "Enter the package name:",
         },
       ]);
-      await execa.command(`lerna run build --scope ${packageToBuild}`);
+      await execaCommand(`lerna run build --scope ${packageToBuild}`);
       break;
     case "buildAndReleaseAll":
-      await execa.command("lerna run build");
-      await execa.command("lerna publish --conventional-commits");
+      await execaCommand("lerna run build");
+      await execaCommand("lerna publish --conventional-commits");
       break;
     case "buildAndReleaseOne":
       const { packageToRelease } = await inquirer.prompt([
@@ -43,8 +42,8 @@ const+
           message: "Enter the package name:",
         },
       ]);
-      await execa.command(`lerna run build --scope ${packageToRelease}`);
-      await execa.command(`lerna publish --conventional-commits --scope ${packageToRelease}`);
+      await execaCommand(`lerna run build --scope ${packageToRelease}`);
+      await execaCommand(`lerna publish --conventional-commits --scope ${packageToRelease}`);
       break;
     case "addNewPackage":
       console.log("Please create the package folder and files manually in the appropriate directory.");
@@ -70,7 +69,7 @@ const+
           message: "Enter the dependency version:",
         },
       ]);
-      await execa.command(`lerna add ${depName}@${depVersion} --scope ${packageToAddDep}`);
+      await execaCommand(`lerna add ${depName}@${depVersion} --scope ${packageToAddDep}`);
       break;
     case "addDependencyToAll":
   const { depNameAll, depVersionAll } = await inquirer.prompt([
@@ -85,7 +84,7 @@ const+
           message: "Enter the dependency version:",
         },
       ]);
-      await execa.command(`lerna add ${depNameAll}@${depVersionAll}`);
+      await execaCommand(`lerna add ${depNameAll}@${depVersionAll}`);
       break;
     case "removeDependencyFromOne":
       console.log("Please remove the dependency manually from the appropriate package.json file.");
