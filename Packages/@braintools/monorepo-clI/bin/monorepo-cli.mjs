@@ -43,7 +43,8 @@ const performAction = async (action) => {
         },
       ]);
       await execaCommand(`lerna run build --scope ${packageToRelease}`);
-      await execaCommand(`lerna publish --conventional-commits --scope ${packageToRelease}`);
+      // Use the `--force-publish` option to specify the package to be published
+      await execaCommand(`lerna publish from-package --force-publish=${packageToRelease} --conventional-commits`);
       break;
     case "addNewPackage":
       console.log("Please create the package folder and files manually in the appropriate directory.");
