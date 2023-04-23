@@ -1,108 +1,60 @@
-# @brainstack/microstore
+# @braintools/template
 
-![Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg)<br />
 ![Infinisoft World Inc.](https://pbs.twimg.com/profile_banners/1034959025857851392/1673900508/600x200)
 
-
-# Synchronous Micro State Management for Microapps.
-
-**Incredibly Lightweight**: iBrainMicroStore is astonishingly small, weighing in at just **182 bytes**. A synchronous micro state management library designed for use in microapps. It is one of the pillar foundations of IBrain. The library is meant to be very small and very specific, breaking the boundaries between front-end and back-end, providing a unified hub. Its state is mutable and synchronous, allowing developers to focus on what's important with minimal boilerplate.
-
-iBrainMicroStore is also available for React applications through the `@brainstack/microstore-react` package. To learn more, visit: https://www.npmjs.com/package/@brainstack/microstore-react
+Part of the Brainstack, `@braintools/template` is a zero-code template generation and instantiation tool for lazy coders. This npm package allows you to create templates based on a source directory and then instantiate those templates by replacing tokens with user-specified values. The tool automatically handles token generation and replacement, making it a powerful utility to speed up the development process.
 
 ## Features
 
-- Mutable and synchronous state management
-- Event-driven architecture with publish-subscribe (pub-sub) pattern
-- Real-time communication for seamless state management
-- Easy integration into any microapp
-- React support available via `@brainstack/microstore-react`
-- Minimal footprint, optimized for size and performance
-- No dependencies
+- Token Generation: Automatically generates unique tokens based on the values you provide. No need for manual token management.
+- Token Replacement: Instantiates templates by replacing tokens with user-specified values, quickly creating new instances based on the template.
+- Metadata Saving: Saves token metadata (`__template__meta__.json`) in the template directory, making it easy to reuse and share templates.
+- Hassle-Free: User-friendly prompts guide you through the process, making it easy for both new and experienced developers.
 
 ## Installation
 
-To install the @brainstack/microstore package, use the following command:
+To install the Template Generator and Instantiator tool, run the following command:
 
-```bash
-npm install @brainstack/microstore
+```
+npm install @braintools/template
 ```
 
 ## Usage
-```javascript
-import {iBrainMicroStore} from '@brainstack/microstore';
 
-// Create a store with an initial state
-const store = iBrainMicroStore({ count: 0 });
+Once installed, you can use the tool by running the following commands:
 
-// Subscribe to an event
-store.on('increment', (state) => {
-  return { ...state, count: state.count + 1 };
-});
+### Generate Template
 
-// Emit an event
-store.emit('increment');
+To generate a template based on a source directory, run the following command:
 
-// Get the current state
-console.log(store.getState()); // Output: { count: 1 }
-
-// Mutate the state directly
-store.mutate((state) => ({ ...state, count: 10 }));
-
-// Get the updated state
-console.log(store.getState()); // Output: { count: 10 }
+```
+npx generate_template
 ```
 
-You can subscribe to events in the hub using the `on` function and emit events using the `emit` function. Here are some examples:
+Follow the prompts to specify the source directory, template directory, and values to be replaced with tokens.
 
-```javascript
-// subscribing to an event named "userLoggedIn"
-const removeHandler = on("userLoggedIn", (eventData) => {
-  console.log(`User logged in: ${eventData.username}`);
-});
+### Instantiate Template
 
-// later on, removing the handler from the subscribed event
-removeHandler();
+To instantiate a template by replacing tokens with user-specified values, run the following command:
+
+```
+npx instantiate_template
 ```
 
-```javascript
-// subscribing to an event with a regular expression pattern "^user.*"
-const removeHandler = on(/^user.*/, (eventData) => {
-  console.log(`User event: ${eventData.eventName} Scope: `, eventData?.scope ?? "unknown");
-});
+Follow the prompts to specify the source (template) directory, destination (output) directory, and values for tokens based on the descriptions provided in the metadata file.
 
-// emitting events that match the subscribed pattern
-emit("userLoggedIn", {scope: "read"});
-emit("userRegistered");
-emit("adminLoggedIn", {scope: "rw"}); // does not match the pattern
+## Repository
 
-// later on, removing the handler from the subscribed event
-removeHandler();
-```
+The source code for this package is available on GitHub:
 
-
-## API
-- `.on(event, handler)`: Subscribe to an event with a handler.
-  - `event`: (string | RegExp) The name of the event to subscribe to or a regular expression to match multiple events.
-  - `handler`: (function) The callback function to be executed when the event is emitted. The handler receives the current state as input and should return the new state.
-
-- `.emit(event, payload)`: Emit an event with an optional payload.
-  - `event`: (string) The name of the event to emit.
-  - `payload`: (optional) An additional payload to be passed to the event handlers.
-
-- `.getState()`: Get the current state of the store.
-  - Returns: The current state of the store.
-
-- `.mutate(mutator)`: Mutate the state using a mutator function.
-  - `mutator`: (function) The mutator function that receives the current state as input and should return the new state.
-  - Returns: The new state after mutation.
-
-## Contributing
-Contributions, issues, and feature requests are welcome. Feel free to check the issues page.
-
-## License
-This project is licensed under the terms of the MIT License.
+- Repository: [https://github.com/Infinisoft-inc/public.git](https://github.com/Infinisoft-inc/public.git)
+- Issues: [https://github.com/Infinisoft-inc/public/issues](https://github.com/Infinisoft-inc/public/issues)
+- Contribute: [https://github.com/Infinisoft-inc/public/blob/main/CONTRIBUTING.md](https://github.com/Infinisoft-inc/public/blob/main/CONTRIBUTING.md)
 
 ## Author
-Martin Ouimet mouimet@infinisoft.dev - Infinisoft World Inc. - www.infinisoft.world
-The future is now
+
+Infinisoft World <info@infinisoft.dev>
+
+## License
+
+This tool is provided "as is" under the MIT License. Feel free to use, modify, and distribute it as needed

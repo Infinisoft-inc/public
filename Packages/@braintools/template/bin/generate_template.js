@@ -1,60 +1,70 @@
 const fs = require('fs');
 const path = require('path');
+const readline = require('readline');
+const {welcome} = require("./welcome.js")
 
-// Constants for tokens
-const PROJECT_NAME_TOKEN = "{{PROJECT_NAME}}";
-const AUTHOR_TOKEN = "{{AUTHOR}}";
-const AUTHOR_EMAIL_TOKEN = "{{AUTHOR_EMAIL}}";
 
-// Define strings to be replaced with tokens
-const replacement_mapping = {
-  "@brainstack/microstore": PROJECT_NAME_TOKEN,
-  "Martin Ouimet": AUTHOR_TOKEN,
-  "mouimet@infinisoft.dev": AUTHOR_EMAIL_TOKEN,
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const replacement_mapping = [];
+const metaDescriptions = [];
+
+function prompt(question) {
+  return new Promise((resolve) => {
+    rl.question(question, resolve);
+  });
 }
 
-// Function to replace strings with tokens
-function replace_with_tokens(content) {
-  for (let [original, token] of Object.entries(replacement_mapping)) {
-    content = content.replace(original, token);
+function generateToken(value) {
+  return `{{${value.toUpperCase().replace(/[^A-Z0-9]/g, '_')}}}`;
+}
+
+async function promptForValueAndDescription() {
+  while (true) {
+    const value = await prompt('Enter value to be replaced with token (leave blank to finish): ');
+    if (!value) break;
+    const token = generateToken(value);
+    const description = await prompt(`Enter description for the token ${token}: `);
+    replacement_mapping.push({ value, token });
+    metaDescriptions.push({ token, value, description });
   }
-  return content;
 }
 
-// Function to generate template
-function generate_template(source_dir, template_dir, metadata_file) {
+async function generate_template() {
   try {
-    // Create the template directory if it doesn't exist
-    fs.mkdirSync(template_dir, { recursive: true });
+    const source_directory = await prompt('Enter source directory: ');
+    const template_directory = await prompt('Enter template directory: ');
+    const metaDescriptions_filename = path.join(template_directory, '__template__meta__.json');
 
-    // Save the replacement mapping to a metadata file
-    fs.writeFileSync(metadata_file, JSON.stringify(replacement_mapping));
+    await promptForValueAndDescription();
 
-    // Iterate through the source directory
-    for (const [root, file, pathToFile] of walkSync(source_dir)) {
-      // Construct file paths
+    fs.mkdirSync(template_directory, { recursive: true });
+    fs.writeFileSync(metaDescriptions_filename, JSON.stringify(metaDescriptions, null, 2));
+
+    for (const [root, file, pathToFile] of walkSync(source_directory)) {
       const source_path = path.join(root, file);
-      const relative_path = path.relative(source_dir, source_path);
-      const template_path = path.join(template_dir, relative_path);
+      const relative_path = path.relative(source_directory, source_path);
+      const template_path = path.join(template_directory, relative_path);
 
-      // Create the directory structure in the template directory
       fs.mkdirSync(path.dirname(template_path), { recursive: true });
 
-      // Read the file content and replace strings with tokens
       const content = fs.readFileSync(source_path, 'utf8');
       const template_content = replace_with_tokens(content);
 
-      // Write the modified content to the template file
       fs.writeFileSync(template_path, template_content);
     }
 
-    console.log("Template generation completed.");
+    console.log('Template generation completed.');
+    rl.close();
   } catch (err) {
     console.error(err);
+    rl.close();
   }
 }
 
-// Function to recursively walk through a directory
 function* walkSync(dir) {
   const files = fs.readdirSync(dir);
   for (const file of files) {
@@ -68,10 +78,18 @@ function* walkSync(dir) {
   }
 }
 
-// Define paths (customize as needed)
-const source_directory = "microtest";
-const template_directory = "template_microtest";
-const metadata_filename = "template_microtest_metadata.json";
+function replace_with_tokens(content) {
+  for (const { value, token } of replacement_mapping) {
+    content = content.replace(new RegExp(escapeRegExp(value), 'g'), token);
+  }
+  return content;
+}
 
+// Escape special characters for use in regular expression
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+welcome("Generate Template","A Template generating tools")
 // Run the script
-generate_template(source_directory, template_directory, metadata_filename);
+generate_template();
