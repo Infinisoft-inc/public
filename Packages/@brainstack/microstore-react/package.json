@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/microstore-react",
-  "version": "1.1.13",
+  "version": "1.1.14",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "scripts": {
@@ -45,7 +45,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@brainstack/microstore": "^1.1.9"
+    "@brainstack/microstore": "^1.1.13"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.21.4",
