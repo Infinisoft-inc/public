@@ -1,0 +1,17 @@
+[
+  {
+    "token": "Infinisoft World",
+    "value": "Martin Ouimet",
+    "description": "Authors Name"
+  },
+  {
+    "token": "info@infinisoft.dev",
+    "value": "mouimet@infinisoft.dev",
+    "description": "Authors email"
+  },
+  {
+    "token": "@brainstack/microstore-bridge",
+    "value": "@brainstack/microstore",
+    "description": "Package name"
+  }
+]

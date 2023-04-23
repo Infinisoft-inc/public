@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WebSocket Frontend</title>
+  <script src="https://www.unpkg.com/@brainstack/microstore@1.1.10/dist/index.umd.min.js"></script> <!-- Import MicroStore from @brainstack/microstore -->
+  <script src="store-connector.js"></script> <!-- Import StoreConnector class -->
+</head>
+<body>
+  <!-- Input text field to enter the event name -->
+  <input type="text" id="eventNameInput" placeholder="Enter event name">
+
+  <!-- Button to trigger the event -->
+  <button id="triggerEventButton">Trigger Event</button>
+
+  <script>
+    // Create an instance of MicroStore
+    const frontEndStore = new MicroStore();
+
+    // WebSocket server URL
+    const serverUrl = 'ws://localhost:3000';
+    const ws = new WebSocket(serverUrl);
+
+    // Create a StoreConnector instance for the connection
+    const frontEndConnector = new StoreConnector(frontEndStore, ws);
+
+    ws.addEventListener('open', () => {
+      console.log('Connected to server');
+      ws.send('Hello, server!');
+    });
+
+    ws.addEventListener('message', (event) => {
+      console.log(`Received message: ${event.data}`);
+    });
+
+    ws.addEventListener('close', () => {
+      console.log('Disconnected from server');
+    });
+
+    ws.addEventListener('error', (error) => {
+      console.error(`WebSocket error: ${error}`);
+    });
+
+    // Handle button click to trigger event
+    document.getElementById('triggerEventButton').addEventListener('click', () => {
+      // Get the event name from the input text field
+      const eventName = document.getElementById('eventNameInput').value;
+
+      // Emit the event with a sample payload
+      frontEndStore.emit(eventName, `Triggered event: ${eventName}`);
+
+      // Clear the input text field
+      document.getElementById('eventNameInput').value = '';
+    });
+  </script>
+</body>
+</html>
