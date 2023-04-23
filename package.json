@@ -1,9 +1,7 @@
 {
   "name": "root",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["Packages/@brainstack/*", "Packages/@braintools/*"],
   "devDependencies": {
     "lerna": "^6.6.1"
   },
