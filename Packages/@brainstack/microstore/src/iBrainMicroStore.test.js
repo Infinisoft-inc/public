@@ -32,7 +32,7 @@
 //            All rights reserved 2023
 //```
 
-import {iBrainMicroStore} from "../dist/index.cjs.min.js"
+import { iBrainMicroStore } from "../dist/index.cjs.min.js"
 // import {iBrainMicroStore} from "../src/iBrainMicroStore"
 
 describe('iBrainMicroStore', () => {

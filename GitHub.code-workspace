@@ -1,0 +1,288 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"name": "template_package",
+			"path": "Templates/template_package"
+		},
+		{
+			"name": "Microapps",
+			"path": "Templates/Microapps"
+		},
+		{
+			"name": "openai",
+			"path": "../world/projects/ibrain.uk/microservices/openai"
+		},
+		{
+			"name": "gpt3",
+			"path": "../world/projects/ibrain.uk/microservices/openai/gpt3"
+		},
+		{
+			"name": "IB-133-Storage-Services-NodeJS-Integration",
+			"path": "../world/projects/iBrain/IB-74-Codes-Business/IB-133-Storage-Services-NodeJS-Integration"
+		},
+		{
+			"name": "ibrain.micro.app",
+			"path": "../world/projects/ENG-306/ENG-315/ibrain.micro.app"
+		},
+		{
+			"name": "ibrain.help",
+			"path": "../world/projects/ENG-306/ENG-315/ibrain.help"
+		},
+		{
+			"name": "frontend",
+			"path": "../world/projects/ENG-277/ENG-281/frontend"
+		},
+		{
+			"name": "mitm",
+			"path": "../world/projects/ENG-173/ENG-299/mitm"
+		},
+		{
+			"name": "iBrainCli",
+			"path": "../world/projects/ENG-237/iBrainCli"
+		},
+		{
+			"name": "ibrainv0.0.1",
+			"path": "../world/projects/ENG-193/ENG-324/ibrainv0.0.1"
+		},
+		{
+			"name": "frontend",
+			"path": "../world/projects/ENG-193/ENG-324/microapp/frontend"
+		},
+		{
+			"name": "front-with-ui",
+			"path": "../world/projects/ENG-193/ENG-324/microapp/front-with-ui"
+		},
+		{
+			"name": "backend",
+			"path": "../world/projects/ENG-193/ENG-324/microapp/backend"
+		},
+		{
+			"name": "core-ai",
+			"path": "../world/projects/ENG-277/ENG-281/core-ai"
+		},
+		{
+			"name": "backend",
+			"path": "../world/projects/ENG-277/ENG-281/backend"
+		},
+		{
+			"name": "api",
+			"path": "../world/projects/ENG-193/ENG-309/api"
+		},
+		{
+			"name": "core-ai",
+			"path": "../world/projects/ENG-193/ENG-324/microapp/core-ai"
+		},
+		{
+			"name": "core-ai",
+			"path": "../world/projects/ENG-237/iBrainAssistant/microapp/core-ai"
+		},
+		{
+			"name": "frontend",
+			"path": "../world/projects/ENG-237/iBrainAssistant/microapp/frontend"
+		},
+		{
+			"name": "backend",
+			"path": "../world/projects/ENG-237/iBrainAssistant/microapp/backend"
+		},
+		{
+			"name": "PwaProxyApp",
+			"path": "../world/projects/ENG-237/iBrainAssistant/poc-brainstack-proxy-all-platform/PwaProxyApp"
+		},
+		{
+			"name": "ibrain-package-tempalte",
+			"path": "../world/projects/ENG-237/ENG-240/ibrain-package-tempalte"
+		},
+		{
+			"name": "ibrain-conversation",
+			"path": "../world/projects/ENG-237/ENG-240/ibrain-conversation"
+		},
+		{
+			"name": "ENG-239",
+			"path": "../world/projects/ENG-237/ENG-239"
+		},
+		{
+			"name": "ENG-220",
+			"path": "../world/projects/ENG-193/ENG-220"
+		},
+		{
+			"name": "ENG-219",
+			"path": "../world/projects/ENG-193/ENG-219"
+		},
+		{
+			"name": "ibrain-ui",
+			"path": "../world/releases/2-april-2023/ibrain-ui"
+		},
+		{
+			"name": "client",
+			"path": "../world/projects/ENG-237/ENG-239/client"
+		},
+		{
+			"name": "back",
+			"path": "../world/releases/2-april-2023/back"
+		},
+		{
+			"name": "cli",
+			"path": "Scripts/cli"
+		},
+		{
+			"name": "backend",
+			"path": "../world/releases/2-april-2023/archive/backend"
+		},
+		{
+			"name": "browser-ai",
+			"path": "../world/poc/browser-ai"
+		},
+		{
+			"name": "ENG-203-POC-Chat-Completition",
+			"path": "../world/poc/ENG-201/ENG-203-POC-Chat-Completition"
+		},
+		{
+			"name": "ENG-216-POC-OpenAI-API-Speetch-to-Text-Translate",
+			"path": "../world/poc/ENG-201/ENG-216-POC-OpenAI-API-Speetch-to-Text-Translate"
+		},
+		{
+			"name": "ibrain.uk",
+			"path": "../world/pipeline/dev/ibrain.uk"
+		},
+		{
+			"name": "prod",
+			"path": "../world/pipeline/ibrain.uk/prod"
+		},
+		{
+			"name": "ibrain.codes",
+			"path": "../world/microapps/ibrain.codes"
+		},
+		{
+			"name": "ENG-223",
+			"path": "Projects/ENG-223"
+		},
+		{
+			"name": "typescript",
+			"path": "Projects/ENG-237/ENG-319/typescript"
+		},
+		{
+			"name": "public",
+			"path": "."
+		},
+		{
+			"name": "monorepo-clI",
+			"path": "Packages/@braintools/monorepo-clI"
+		},
+		{
+			"name": "template",
+			"path": "Packages/@braintools/template"
+		},
+		{
+			"name": "ENG-282",
+			"path": "Packages/ENG-278/ENG-282"
+		},
+		{
+			"name": "microstore",
+			"path": "Packages/@brainstack/microstore"
+		},
+		{
+			"name": "logger",
+			"path": "Packages/@brainstack/tasks/logger"
+		},
+		{
+			"name": "examples",
+			"path": "Packages/@brainstack/microstore/examples"
+		},
+		{
+			"name": "express-api",
+			"path": "Packages/@brainstack/tasks/express-api"
+		},
+		{
+			"name": "directory-traversal",
+			"path": "Packages/@brainstack/tasks/directory-traversal"
+		},
+		{
+			"name": "microstore-bridge",
+			"path": "Packages/@brainstack/microstore-bridge"
+		},
+		{
+			"name": "microstore-react",
+			"path": "Packages/@brainstack/microstore-react"
+		},
+		{
+			"name": "microstore-example",
+			"path": "Packages/@brainstack/microstore-react/examples/microstore-example"
+		},
+		{
+			"name": "framework",
+			"path": "Packages/@brainstack/framework"
+		},
+		{
+			"name": "microcontext-example",
+			"path": "Packages/@brainstack/microstore-react/examples/microcontext-example"
+		},
+		{
+			"name": "mock-api",
+			"path": "../world/releases/@brainstack/mock-api"
+		},
+		{
+			"name": "hub",
+			"path": "../world/releases/@brainstack/hub"
+		},
+		{
+			"name": "framework",
+			"path": "../world/releases/@brainstack/framework"
+		},
+		{
+			"name": "mock-api",
+			"path": "Packages/@brainstack/mock-api"
+		}
+	],
+	"settings": {
+		"jest.disabledWorkspaceFolders": [
+			"GitHub",
+			"Microapps",
+			"openai",
+			"gpt3",
+			"IB-133-Storage-Services-NodeJS-Integration",
+			"ibrain.micro.app",
+			"ibrain.help",
+			"frontend",
+			"mitm",
+			"iBrainCli",
+			"ibrainv0.0.1",
+			"front-with-ui",
+			"backend",
+			"core-ai",
+			"api",
+			"ibrain-package-tempalte",
+			"ibrain-conversation",
+			"ENG-239",
+			"ENG-220",
+			"ENG-219",
+			"ibrain-ui",
+			"client",
+			"back",
+			"cli",
+			"browser-ai",
+			"ENG-203-POC-Chat-Completition",
+			"ENG-216-POC-OpenAI-API-Speetch-to-Text-Translate",
+			"ibrain.uk",
+			"prod",
+			"ibrain.codes",
+			"ENG-223",
+			"typescript",
+			"monorepo-clI",
+			"logger",
+			"examples",
+			"express-api",
+			"directory-traversal",
+			"microstore-example",
+			"framework",
+			"microcontext-example",
+			"mock-api",
+			"hub",
+			"PwaProxyApp",
+			"ENG-282",
+			"template"
+		]
+	}
+}

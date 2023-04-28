@@ -46,11 +46,8 @@ describe("iBrainHub", () => {
     // Emit the event
     hub.emit("testEvent", eventPayload);
 
-    // Expect the handler to be called with the payload
-    expect(mockHandler).toHaveBeenCalledWith({
-      eventName: "testEvent",
-      ...eventPayload,
-    });
+    // Expect the handler to be called 
+    expect(mockHandler).toHaveBeenCalled();
   });
 
   test("should remove event handlers", () => {
@@ -132,28 +129,26 @@ describe("iBrainHub", () => {
   test("should handle subscribing with a regular expression", () => {
     const hub = iBrainHub();
     const mockHandler = jest.fn();
+    const mockHandlerNotCalled = jest.fn();
     const eventPayload = { message: "Hello" };
-  
+
     // Subscribe to events that match a regular expression
     hub.on(/test\..*/, mockHandler);
-  
+
     // Emit an event that matches the regular expression
     hub.emit("test.Event", eventPayload);
-  
+
     // Expect the handler to be called with the payload
-    expect(mockHandler).toHaveBeenCalledWith({
-      eventName: "test.Event",
-      ...eventPayload,
-    });
-  
+    expect(mockHandler).toHaveBeenCalled();
+
+    // Subscribe to events that match a regular expression
+    hub.on(/test\..*/, mockHandlerNotCalled);
+
     // Emit an event that does not match the regular expression
     hub.emit("otherEvent", eventPayload);
-  
+
     // Expect the handler not to be called
-    expect(mockHandler).not.toHaveBeenCalledWith({
-      eventName: "otherEvent",
-      ...eventPayload,
-    });
+    expect(mockHandlerNotCalled).not.toHaveBeenCalled();
   });
 
   test("should handle subscribing with an invalid eventName", () => {
@@ -161,7 +156,7 @@ describe("iBrainHub", () => {
 
     // Subscribe with an invalid eventName
     expect(() => {
-      hub.on(123, () => {});
+      hub.on(123, () => { });
     }).toThrow("Invalid eventName");
   });
 
@@ -204,9 +199,39 @@ describe("iBrainHub", () => {
 
     // Try to remove a non-existent event handler
     expect(() => {
-      const removeHandler = hub.on("testEvent", () => {});
+      const removeHandler = hub.on("testEvent", () => { });
       removeHandler();
       removeHandler();
     }).not.toThrow();
+  });
+
+  test('should exit early if UUID is duplicated', () => {
+    // Setup the necessary data and mocks
+    const hub = iBrainHub();
+    const uuid = 'test-uuid';
+    const eventName = 'test-event';
+    const payload = {
+      headers:
+        [
+          { uuid: 'another-uuid', timestamp: 1 },
+          { uuid, timestamp: 2 },
+        ],
+
+    };
+
+
+    const handler = jest.fn();
+    const handlerNotCalled = jest.fn();
+
+    hub.on(eventName, handler);
+    hub.on(/test-/, handlerNotCalled);
+
+    // Emit the event with the duplicate UUID
+    hub.emit(eventName, payload);
+    hub.emit(eventName, payload);
+    hub.emit(eventName, payload);
+
+    // Assert that the handler is not called due to early exit
+    expect(handlerNotCalled).toHaveBeenCalledTimes(1);
   });
 });

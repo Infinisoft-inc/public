@@ -43,6 +43,5 @@ import {iBrainHub} from "./iBrainHub";
 export const iBrainMicroStore = (initialState) => {
   const { getState, mutate } = iBrainState(initialState);
   const { on, emit } = iBrainHub();
-  const d = 1;
   return { getState, mutate, on, emit };
 };
