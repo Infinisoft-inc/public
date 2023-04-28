@@ -7,5 +7,11 @@ module.exports = {
     moduleNameMapper: {
       '^.+\\.(css|less|scss)$': 'identity-obj-proxy',
     },
+    coveragePathIgnorePatterns: [
+      // Exclude dist directory from coverage
+      '/node_modules/',
+      '/dist/',
+      '/coverage/'
+    ],
   };
   

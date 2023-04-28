@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/microstore",
-  "version": "1.1.15",
+  "version": "1.1.17",
   "description": "iBrainMicroStore is a synchronous micro state management library designed for use in microapps and is one of the pillar foundations of IBrain.",
   "main": "dist/index.cjs.min.js",
   "module": "dist/index.esm.min.js",
