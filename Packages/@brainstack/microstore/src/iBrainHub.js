@@ -38,10 +38,9 @@
  */
 const uuidv1 = () => { let now = Date.now(); const mac = "xx:xx:xx:xx:xx:xx".replace(/x/g, () => (Math.random() * 16 | 0).toString(16)); return "xxxxxxxx-xxxx-1xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => { const r = (now + Math.random() * 16) % 16 | 0; now = Math.floor(now / 16); return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16); }).replace("yxxx", mac.slice(0, 4)).replace("xxxx", mac.slice(4)); };
 
-export const iBrainHub = (options) => {
+export const iBrainHub = (options={source:"unknown", logger: console}) => {
   const events = new Map();
   const regexHandlers = new Map();
-  const source = options?.source ?? "unknown";
   const uuid = uuidv1()
   /**
    * Subscribes to an event in the hub.
