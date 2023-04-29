@@ -1,17 +1,20 @@
 {
   "name": "@brainstack/microstore-bridge",
-  "version": "1.1.12",
-  "private": true,
+  "version": "1.1.20",
   "description": "![Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg)<br />\r ![Infinisoft World Inc.](https://pbs.twimg.com/profile_banners/1034959025857851392/1673900508/600x200)",
-  "main": "dist/index.cjs.min.js",
-  "module": "dist/index.esm.min.js",
-  "unpkg": "dist/index.umd.js",
+  "main": "dist/index.cjs.min.mjs",
+  "module": "dist/index.esm.min.mjs",
+  "unpkg": "dist/index.umd.mjs",
   "scripts": {
     "test": "jest --coverage --coverageReporters=html --coverageReporters=text-summary",
-    "debug": "node --inspect-brk src/iBrainMicroStore.js",
-    "builddisble": "rollup -c",
-    "release": "node release.js"
+    "debug": "node --inspect-brk src/index.mjs",
+    "build": "rollup -c",
+    "release": "node release.js patch"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Infinisoft-inc/public.git"
@@ -19,26 +22,18 @@
   "author": "Infinisoft World <info@infinisoft.dev>",
   "license": "MIT",
   "keywords": [
-    "microapp",
-    "state-management",
-    "synchronous",
-    "ibrain",
-    "mutable-state",
-    "unified-hub",
-    "micro-state",
-    "javascript-library",
-    "brainstack",
     "microstore",
-    "state-hub",
-    "minimalistic",
-    "focused",
-    "flexible",
-    "extensible",
-    "cohesive",
-    "event-driven",
+    "websocket",
     "real-time",
-    "infinisoft",
-    "event-hub"
+    "communication",
+    "synchronization",
+    "data",
+    "frontend",
+    "backend",
+    "integration",
+    "javascript",
+    "library",
+    "event-driven"
   ],
   "homepage": "https://infinisoft.world",
   "bugs": {
@@ -48,8 +43,8 @@
     "access": "public"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.4",
-    "@babel/preset-env": "^7.21.4",
+    "@babel/core": "^7.21.5",
+    "@babel/preset-env": "^7.21.5",
     "@jest/globals": "^29.5.0",
     "@jest/transform": "^29.5.0",
     "@rollup/plugin-commonjs": "^24.1.0",
@@ -57,6 +52,7 @@
     "@testing-library/react-hooks": "^8.0.1",
     "babel-jest": "^29.5.0",
     "jest": "^27.4.7",
+    "jest-websocket-mock": "^2.4.0",
     "rollup": "^2.79.1",
     "rollup-plugin-strip": "^1.2.2",
     "rollup-plugin-terser": "^7.0.2",
@@ -66,13 +62,10 @@
     "url": "https://github.com/Infinisoft-inc/public/blob/main/CONTRIBUTING.md"
   },
   "dependencies": {
-    "@brainstack/microstore": "^1.1.15",
+    "@brainstack/microstore": "^1.1.18",
     "events": "^3.3.0",
     "express": "^4.18.2",
     "http": "^0.0.1-security",
     "ws": "^8.13.0"
-  },
-  "directories": {
-    "example": "examples"
-  }
+  } 
 }

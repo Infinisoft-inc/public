@@ -1,51 +1,89 @@
-# @brainstack/microstore-bridge
 
-![Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg)<br />
+# Microstore Bridge
+
 ![Infinisoft World Inc.](https://pbs.twimg.com/profile_banners/1034959025857851392/1673900508/600x200)
 
+Microstore Bridge is a practical JavaScript library that simplifies the connection between your frontend and backend applications. By integrating Microstore with WebSockets, it enables real-time communication and data synchronization, allowing you to build responsive and interactive applications with greater ease.
 
-@brainstack/microstore-bridge is a package that manages WebSocket connections and provides an interface for interacting with a remote store. It simplifies the process of listening for events, sending messages, and handling reconnections.
+Eliminate the need for repetitive boilerplate code associated with fetch or axios, and shift your focus towards creating exceptional user experiences and interactions.
+
+## Installation
+
+```
+npm install --save @brainstack/microstore-bridge
+```
 
 ## Usage
 
-To use @brainstack/micro-bridge, first create a `Store` instance that extends the `EventEmitter` class. This store is used to manage events and their listeners.
-
-Next, create a `WebSocket` instance for the WebSocket server you want to connect to.
-
-Finally, create a `Microbridge` instance with the `Store` and `WebSocket` instances.
-
-Here's an example of how to use the Microbridge class:
+Here's a basic example of using Microstore Bridge to connect a Microstore instance to a WebSocket:
 
 ```javascript
-const EventEmitter = require('events');
-class Store extends EventEmitter {}
-const WebSocket = require('ws');
-const Microbridge = require('@brainstack/micro-bridge');
+import { createStore } from "@brainstack/microstore";
+import { microbridge } from "@brainstack/microstore-bridge";
 
-const store = new Store();
-const ws = new WebSocket('ws://localhost:8080');
-const microbridge = new Microbridge(store, ws, { reconnectDelayInMs: 5000, logger: console.log });
+// Create a Microstore instance
+const store = createStore();
 
-store.on('example.event', (payload) => console.log('Received:', payload));
-store.emit('example.event', { message: 'Hello, World!' });
+// Create a WebSocket instance
+const websocket = new WebSocket("wss://example.com/your-websocket-endpoint");
+
+// Initialize Microbridge with the Microstore and WebSocket instances
+const bridge = microbridge(store, websocket, {
+  reconnectDelayInMs: 5000,
+  logger: console,
+});
+
+// Start the Microbridge
+bridge.start();
+
+// ... your application logic ...
+
+// Stop the Microbridge when it's no longer needed
+bridge.stop();
 ```
 
-When you're done using the Microbridge instance, call the `destroy()` method to clean up resources:
+## Configuration Options
+
+The `microbridge` function accepts an optional configuration object with the following properties:
+
+- `reconnectDelayInMs`: The delay in milliseconds for reconnecting to the WebSocket server. Defaults to 5000 (5 seconds).
+- `logger`: The logger function for logging events. Defaults to the `console` object.
+
+Example of custom configuration:
 
 ```javascript
-microbridge.destroy();
+const bridge = microbridge(store, websocket, {
+  reconnectDelayInMs: 10000, // Reconnect every 10 seconds
+  logger: customLogger, // Use a custom logger function
+});
 ```
 
-## Constructor Options
+## Events
 
-The Microbridge constructor accepts an options object with the following properties:
+The Microstore Bridge emits several events through the connected Microstore instance:
 
-- `reconnectDelayInMs` (default: 5000): The delay in milliseconds for reconnecting to the WebSocket server.
-- `logger` (default: console.log): The logger function for logging events.
+- `microstore.bridge.connected`: Emitted when the WebSocket connection is successfully established.
+- `microstore.bridge.disconnected`: Emitted when the WebSocket connection is closed.
+- `microstore.bridge.error`: Emitted when an error occurs with the WebSocket connection.
 
-## Methods
+You can listen to these events in your application:
 
-- `stop_heartbeat()`: Stops the heartbeat interval, which is responsible for checking the connection status and reconnecting.
-- `start_heartbeat()`: Starts the heartbeat interval.
-- `init()`: Initializes the Microbridge instance by setting up event listeners and starting the heartbeat.
-- `destroy()`: Cleans up resources by closing the WebSocket connection and stopping the heartbeat.
+```javascript
+store.on("microstore.bridge.connected", () => {
+  console.log("WebSocket connected");
+});
+
+store.on("microstore.bridge.disconnected", () => {
+  console.log("WebSocket disconnected");
+});
+
+store.on("microstore.bridge.error", () => {
+  console.log("WebSocket error");
+});
+```
+
+## Sending and Receiving Events
+
+When the Microstore emits an event, the Microstore Bridge sends the event data through the connected WebSocket as a JSON string. The receiving side can parse the JSON string and process the event accordingly.
+
+Similarly, when the Microstore Bridge receives a message through the WebSocket, it emits the corresponding event through the connected Microstore. Your application can listen to these events and update its state accordingly.
