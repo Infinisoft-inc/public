@@ -82,6 +82,35 @@ removeHandler();
 
 
 ## API
+
+The main export of the library is the `iBrainMicroStore` function.
+
+## iBrainMicroStore(initialState, [options={ id: "microstore" }])
+
+This function creates a new store.
+
+**Parameters:**
+
+- `initialState` {Object} - The initial state of the store.
+- `options` {Object} - Optional. The options for the store.
+  - `options.id` {string} - Optional. The ID of the store. Default is "microstore".
+
+**Returns:**
+
+- {Object} - The created micro store.
+  - `.getState` {Function} - Function to get the current state of the store.
+  - `.mutate` {Function} - Function to mutate the state of the store.
+  - `.on` {Function} - Function to add an event listener.
+  - `.emit` {Function} - Function to emit an event.
+  - `.id` {string} - The ID of the store.
+
+**Example:**
+
+```javascript
+const store = iBrainMicroStore({ count: 0 }, { id: "counterStore" });
+store.mutate((state) => ({ count: state.count + 1 }));
+console.log(store.getState()); // { count: 1 }
+
 - `.on(event, handler)`: Subscribe to an event with a handler.
   - `event`: (string | RegExp) The name of the event to subscribe to or a regular expression to match multiple events.
   - `handler`: (function) The callback function to be executed when the event is emitted. The handler receives the current state as input and should return the new state.

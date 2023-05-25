@@ -18,14 +18,18 @@
  * bridge.start();
  */
 
+
+// namescape
+// /store.scope.source.action/
+
 export const microstoreBridge = (store, _ws, options = { reconnectDelayInMs: 5000, logger: console }) => {
   let ws = _ws;
 
   const start = () => {
-    store.on(/.*/, (e) => {
+    store.on(/.*\.sync\..*/, (e) => {
       try {
         options.logger.log(`event: `, e);
-        ws.send(JSON.stringify(e));
+        ws.send(JSON.stringify(e).replace("sync","remote"));
       } catch (e) {
         console.error(e);
       }
@@ -38,15 +42,15 @@ export const microstoreBridge = (store, _ws, options = { reconnectDelayInMs: 500
     };
 
     ws.onopen = (e) => {
-      store.emit("microstore.bridge.connected");
+      store.emit("microstore.local.bridge.connected");
     };
 
     ws.onclose = (e) => {
-      store.emit("microstore.bridge.disconnected");
+      store.emit("microstore.local.bridge.disconnected");
     };
 
     ws.onerror = (e) => {
-      store.emit("microstore.bridge.error");
+      store.emit("microstore.local.bridge.error");
 
       if (ws.readyState === ws.CLOSED) {
         ws = new WebSocket(_ws.url);

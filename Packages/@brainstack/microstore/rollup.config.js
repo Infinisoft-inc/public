@@ -1,6 +1,5 @@
 import { terser } from "rollup-plugin-terser";
 import resolve from "@rollup/plugin-node-resolve";
-import strip from "rollup-plugin-strip";
 
 export default [
   {

@@ -1,8 +1,8 @@
 {
   "name": "@brainstack/microstore-bridge",
-  "version": "1.1.20",
+  "version": "1.1.21",
   "description": "![Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg)<br />\r ![Infinisoft World Inc.](https://pbs.twimg.com/profile_banners/1034959025857851392/1673900508/600x200)",
-  "main": "dist/index.cjs.min.mjs",
+  "main": "dist/index.cjs.min.js",
   "module": "dist/index.esm.min.mjs",
   "unpkg": "dist/index.umd.mjs",
   "scripts": {
@@ -67,5 +67,5 @@
     "express": "^4.18.2",
     "http": "^0.0.1-security",
     "ws": "^8.13.0"
-  } 
+  }
 }
