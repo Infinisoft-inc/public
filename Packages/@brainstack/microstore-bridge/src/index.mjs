@@ -3,7 +3,7 @@ export const microstoreBridge = (store, _ws, options = { reconnectDelayInMs: 500
   const bridgeUuid = uuidv1(); // Generate a unique UUID for the bridge
 
   const start = () => {
-    store.on(/.*/, (e) => {
+    store.on(/.*\.sync\..*/, (e) => {
       try {
         if (!isBridgeMessage(e?.eventName, e, bridgeUuid)) {
           options.logger.log(`event: `, e);
@@ -25,15 +25,15 @@ export const microstoreBridge = (store, _ws, options = { reconnectDelayInMs: 500
     };
 
     ws.onopen = (e) => {
-      store.emit("microstore.bridge.connected");
+      store.emit("microstore.local.bridge.connected");
     };
 
     ws.onclose = (e) => {
-      store.emit("microstore.bridge.disconnected");
+      store.emit("microstore.local.bridge.disconnected");
     };
 
     ws.onerror = (e) => {
-      store.emit("microstore.bridge.error");
+      store.emit("microstore.local.bridge.error");
 
       if (ws.readyState === ws.CLOSED) {
         ws = new WebSocket(_ws.url);
