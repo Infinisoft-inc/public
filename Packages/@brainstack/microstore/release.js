@@ -14,8 +14,8 @@ try {
   execSync(`npm version ${versionOption} -m "Bump version to %s"`, { stdio: 'inherit' });
 
   // Push changes to the Git repository
-  execSync('git push', { stdio: 'inherit' });
-  execSync('git push --tags', { stdio: 'inherit' });
+  // execSync('git push', { stdio: 'inherit' });
+  // execSync('git push --tags', { stdio: 'inherit' });
 
   // Publish the package to the npm registry
   execSync('npm publish', { stdio: 'inherit' });

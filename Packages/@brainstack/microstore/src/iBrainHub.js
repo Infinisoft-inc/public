@@ -32,8 +32,8 @@
 //            All rights reserved 2023
 //
 //
-/**
- * iBrainHub - The event hub module for managing events and handlers.
+
+/* iBrainHub - The event hub module for managing events and handlers.
  * Allows for subscribing to events, emitting events, and executing handlers.
  */
 const uuidv1 = () => { let now = Date.now(); const mac = "xx:xx:xx:xx:xx:xx".replace(/x/g, () => (Math.random() * 16 | 0).toString(16)); return "xxxxxxxx-xxxx-1xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => { const r = (now + Math.random() * 16) % 16 | 0; now = Math.floor(now / 16); return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16); }).replace("yxxx", mac.slice(0, 4)).replace("xxxx", mac.slice(4)); };
@@ -95,5 +95,5 @@ export const iBrainHub = (options={source:"unknown", logger: console}) => {
     });
   }
 
-  return { on, emit };
+  return { on, emit, uuid };
 };

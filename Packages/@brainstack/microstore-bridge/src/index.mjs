@@ -1,31 +1,16 @@
-/**
- * Creates a Microstore bridge instance that connects a Microstore to a WebSocket for real-time communication.
- * @function
- * @param {Object} store - The Microstore instance.
- * @param {WebSocket} _ws - The WebSocket instance.
- * @param {Object} [options] - The options for the Microbridge.
- * @param {number} [options.reconnectDelayInMs=5000] - The delay in milliseconds for reconnecting to the WebSocket server.
- * @param {function} [options.logger=console] - The logger function for logging events.
- * @returns {Object} - An object containing `start` and `stop` functions to control the Microstore bridge.
- *
- * @example
- * const store = createStore();
- * const websocket = new WebSocket("wss://example.com/your-websocket-endpoint");
- * const bridge = microbridge(store, websocket, {
- *   reconnectDelayInMs: 5000,
- *   logger: console,
- * });
- * bridge.start();
- */
-
 export const microstoreBridge = (store, _ws, options = { reconnectDelayInMs: 5000, logger: console }) => {
   let ws = _ws;
+  const bridgeUuid = uuidv1(); // Generate a unique UUID for the bridge
 
   const start = () => {
     store.on(/.*/, (e) => {
       try {
-        options.logger.log(`event: `, e);
-        ws.send(JSON.stringify(e));
+        if (!isBridgeMessage(e?.eventName, e, bridgeUuid)) {
+          options.logger.log(`event: `, e);
+          const message = addBridgeUuid(e, bridgeUuid);
+          message.eventName = addMessageBridged(message.eventName)
+          _ws?.send?.(JSON.stringify(message));
+        }
       } catch (e) {
         console.error(e);
       }
@@ -33,8 +18,10 @@ export const microstoreBridge = (store, _ws, options = { reconnectDelayInMs: 500
 
     ws.onmessage = (e) => {
       const { eventName = "unknown", payload = {} } = JSON.parse(e.data);
-      options.logger.log(`Message Received: `, eventName, payload);
-      store.emit(eventName, payload);
+      options.logger.log(`Message Received: `, eventName, e.data);
+      if (!isBridgeMessage(eventName, payload, bridgeUuid)) {
+        store.emit(eventName, payload);
+      }
     };
 
     ws.onopen = (e) => {
@@ -52,17 +39,40 @@ export const microstoreBridge = (store, _ws, options = { reconnectDelayInMs: 500
         ws = new WebSocket(_ws.url);
       }
     };
-  }
+  };
 
   const stop = () => {
     if (ws && ws.readyState === ws.OPEN) {
       ws.close();
     }
     ws = null;
-  }
+  };
 
   return {
     stop,
     start
-  }
+  };
+};
+
+// Helper function to check if a message contains the bridge UUID
+const isBridgeMessage = (eventName, message, bridgeUuid) => {
+  const headers = message?.headers || [];
+  return headers.join("").includes(bridgeUuid) || eventName.includes('bridge');
+};
+
+// Helper function to add the bridge UUID to a message
+const addBridgeUuid = (message, bridgeUuid) => {
+  const headers = message?.headers || [];
+  const updatedHeaders = [...headers, { uuid: bridgeUuid, timestamp: Date.now() }];
+  return { ...message, headers: updatedHeaders };
+};
+
+// Helper function to  identify message already bridge avoiding infinite loop
+const addMessageBridged = (eventName) => `${eventName}.bridge`
+
+// Generate a UUID
+const uuidv1 = () => {
+  // Implement your own UUID generation logic here
+  // This is just a simple example using a random number
+  return Math.random().toString();
 };

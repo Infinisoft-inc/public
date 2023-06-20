@@ -32,7 +32,7 @@
 //            All rights reserved 2023
 //
 //
-import { iBrainHub } from "../src/iBrainHub";
+import { iBrainHub } from "../dist";
 
 describe("iBrainHub", () => {
   test("should subscribe and emit events", () => {
