@@ -1,10 +1,10 @@
 {
-  "name": "@brainstack/micrologger",
-  "version": "1.1.15",
+  "name": "@brainstack/microconfig",
+  "version": "1.1.10",
   "description": "",
   "main": "dist/index.cjs.min.js",
-  "module": "dist/index.esm.min.mjs",
-  "unpkg": "dist/index.umd.mjs",
+  "module": "dist/index.esm.min.js",
+  "unpkg": "dist/index.umd.js",
   "scripts": {
     "test": "jest --coverage --coverageReporters=html --coverageReporters=text-summary",
     "debug": "node --inspect-brk src/iBrainMicroStore.js",
@@ -15,7 +15,7 @@
     "type": "git",
     "url": "https://github.com/Infinisoft-inc/public.git"
   },
-  "author": "Martin Ouimet <mouimet@infinisoft.dev>",
+  "author": "Infinisoft World <info@infinisoft.dev>",
   "license": "MIT",
   "keywords": [
     "microapp",
@@ -63,5 +63,6 @@
   },
   "contribute": {
     "url": "https://github.com/Infinisoft-inc/public/blob/main/CONTRIBUTING.md"
-  }
+  },
+  "dependencies": {}
 }

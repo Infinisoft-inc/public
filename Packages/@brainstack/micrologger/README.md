@@ -67,7 +67,7 @@ To use the default console integration, follow these steps:
 1. Import the MicroLogger class and create an instance:
 
    ```javascript
-   import { MicroLogger } from 'micro-logger';
+   import { MicroLogger } from '@brainstack/micrologger';
 
    const logger = new MicroLogger(3);
    ```
@@ -104,7 +104,7 @@ To remove a custom integration, use the `removeIntegration`
 
 
 ```javascript
-import { MicroLogger } from 'micro-logger';
+import { MicroLogger } from '@brainstack/micrologger';
 import * as Sentry from '@sentry/node';
 
 // Configure Sentry.io
@@ -132,3 +132,6 @@ logger.warn('This is a warning message'); // Logged to console and Sentry.io
 logger.error('This is an error message'); // Logged to console and Sentry.io
 logger.verbose('This is a verbose message'); // Logged to console and Sentry.io
 ```
+
+/mnt/c/Code/public-1/Packages/@brainstack/microconfig
+C:\Code\public-1\Templates\template_package

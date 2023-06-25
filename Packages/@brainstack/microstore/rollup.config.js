@@ -11,12 +11,12 @@ export default [
         format: "cjs",
       },
       {
-        file: "dist/index.esm.min.js", // Output file for ECMAScript Module format
+        file: "dist/index.esm.min.mjs", // Output file for ECMAScript Module format
         plugins: [terser()],
         format: "esm",
       },
       {
-        file: "dist/index.umd.min.js", // Minified output file
+        file: "dist/index.umd.min.mjs", // Minified output file
         format: "umd",
         plugins: [terser()],
         name: "iBrainMicroStore",

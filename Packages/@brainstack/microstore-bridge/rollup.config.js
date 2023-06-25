@@ -1,7 +1,7 @@
-import { terser } from "rollup-plugin-terser";
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
-import strip from "rollup-plugin-strip";
+import { terser } from 'rollup-plugin-terser';
+
 
 export default [
   {
@@ -25,14 +25,8 @@ export default [
       },
     ],
     plugins: [
-      strip({
-        // Specify options for the strip plugin here.
-        // For example, to remove all comments:
-        pattern: /^\s*($|\/\/[^\n]*|\/\*[\s\S]*?\*\/|```[\s\S]*?```)\s*$/g,
-      }),
       resolve(),
-      commonjs(),
-      terser(),
+      commonjs()
     ],
   },
 ];

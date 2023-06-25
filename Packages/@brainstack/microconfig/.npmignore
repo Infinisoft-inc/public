@@ -1,0 +1,10 @@
+# Files and directories to be excluded from npm package
+node_modules/
+coverage/
+*.log
+.DS_Store
+.vscode/
+.idea/
+*.bak
+*.swp
+*.swo
