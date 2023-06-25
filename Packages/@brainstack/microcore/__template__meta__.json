@@ -1,0 +1,17 @@
+[
+  {
+    "token": "Martin Ouimet",
+    "value": "Martin Ouimet",
+    "description": "Authors Name"
+  },
+  {
+    "token": "mouimet",
+    "value": "mouimet@infinisoft.dev",
+    "description": "Authors email"
+  },
+  {
+    "token": "microcore",
+    "value": "@brainstack/microstore",
+    "description": "Package name"
+  }
+]
