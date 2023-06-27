@@ -1,9 +1,13 @@
 {
   "name": "root",
   "private": true,
-  "workspaces": ["Packages/@brainstack/*", "Packages/@braintools/*"],
+  "workspaces": [
+    "Packages/@brainstack/*",
+    "Packages/@braintools/*"
+  ],
   "devDependencies": {
-    "lerna": "^6.6.1"
+    "lerna": "^6.6.1",
+    "ts-node": "^10.9.1"
   },
   "dependencies": {
     "execa": "^7.1.1",

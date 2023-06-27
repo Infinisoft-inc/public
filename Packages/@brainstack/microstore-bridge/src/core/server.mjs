@@ -3,25 +3,27 @@ import { WebSocket } from "ws";
 export const MicroBridgeServer = (store, _ws, options = { reconnectDelayInMs: 5000, loggingEnabled: false, logger: console }) => {
     let ws = _ws;
     const bridgeUuid = uuidv1(); // Generate a unique UUID for the bridge
+    
 
     const start = () => {
+        options.logger.info(`Brainstack Core Bridge Server Subscribed to /.*/`);
         store.on(/.*/, (e) => {
+            options.logger.info(`Microbridge Subscription /.*/ Called by event: `, e?.data);
             try {
-                if (!isBridgeMessage(e?.eventName, e, bridgeUuid)) {
+                if (!isBridgeMessage(e, bridgeUuid)) {
                     if (options.loggingEnabled) {
                         options.logger.log(`event: `, e);
                     }
                     const message = addBridgeUuid(e, bridgeUuid);
-                   // message.eventName = addMessageBridged(message.eventName);
                     _ws?.send?.(JSON.stringify(message));
                 }
             } catch (e) {
-                console.error(e);
+                options.logger.error(e);
             }
         });
 
         // Log MicroBridge server version
-        options.logger.log(`MicroBridge server`);
+        options.logger.log(`Brainstack Core Bridge Server Started`);
 
         ws.onmessage = (e) => {
             const { eventName = "unknown", payload = {} } = JSON.parse(e.data);
@@ -64,10 +66,7 @@ export const MicroBridgeServer = (store, _ws, options = { reconnectDelayInMs: 50
 };
 
 // Helper function to check if a message contains the bridge UUID
-const isBridgeMessage = (eventName, message, bridgeUuid) => {
-    const headers = message?.headers || [];
-    return headers.join("").includes(bridgeUuid);
-};
+const isBridgeMessage = (message, bridgeUuid) => (message?.headers ?? []).join("").includes(bridgeUuid);
 
 // Helper function to add the bridge UUID to a message
 const addBridgeUuid = (message, bridgeUuid) => {
@@ -75,9 +74,6 @@ const addBridgeUuid = (message, bridgeUuid) => {
     const updatedHeaders = [...headers, { uuid: bridgeUuid, timestamp: Date.now() }];
     return { ...message, headers: updatedHeaders };
 };
-
-// Helper function to identify message already bridged avoiding infinite loop
-// const addMessageBridged = (eventName) => `${eventName}.bridge`;
 
 // Generate a UUID
 const uuidv1 = () => {
