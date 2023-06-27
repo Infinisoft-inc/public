@@ -6,8 +6,7 @@
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "outDir": "dist"
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src"]
 }

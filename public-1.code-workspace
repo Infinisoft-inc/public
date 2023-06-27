@@ -1,0 +1,107 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "logger",
+			"path": "Packages/@brainstack/tasks/logger"
+		},
+		{
+			"name": "express-api",
+			"path": "Packages/@brainstack/tasks/express-api"
+		},
+		{
+			"name": "directory-traversal",
+			"path": "Packages/@brainstack/tasks/directory-traversal"
+		},
+		{
+			"name": "mock-api",
+			"path": "Packages/@brainstack/mock-api"
+		},
+		{
+			"name": "microstore-react",
+			"path": "Packages/@brainstack/microstore-react"
+		},
+		{
+			"name": "microstore-example",
+			"path": "Packages/@brainstack/microstore-react/examples/microstore-example"
+		},
+		{
+			"name": "microcontext-example",
+			"path": "Packages/@brainstack/microstore-react/examples/microcontext-example"
+		},
+		{
+			"name": "microstore-bridge-react",
+			"path": "Packages/@brainstack/microstore-bridge-react"
+		},
+		{
+			"name": "microstore-example",
+			"path": "Packages/@brainstack/microstore-bridge-react/examples/microstore-example"
+		},
+		{
+			"name": "microcontext-example",
+			"path": "Packages/@brainstack/microstore-bridge-react/examples/microcontext-example"
+		},
+		{
+			"name": "microstore-bridge",
+			"path": "Packages/@brainstack/microstore-bridge"
+		},
+		{
+			"name": "microstore",
+			"path": "Packages/@brainstack/microstore"
+		},
+		{
+			"name": "examples",
+			"path": "Packages/@brainstack/microstore/examples"
+		},
+		{
+			"name": "micrologger",
+			"path": "Packages/@brainstack/micrologger"
+		},
+		{
+			"name": "microcore",
+			"path": "Packages/@brainstack/microcore"
+		},
+		{
+			"name": "microconfig",
+			"path": "Packages/@brainstack/microconfig"
+		},
+		{
+			"name": "framework",
+			"path": "Packages/@brainstack/framework"
+		},
+		{
+			"name": "essentials",
+			"path": "Packages/@brainstack/essentials"
+		},
+		{
+			"name": "autojest",
+			"path": "Packages/@brainstack/autojest"
+		},
+		{
+			"name": "template",
+			"path": "Packages/@braintools/template"
+		},
+		{
+			"name": "monorepo-clI",
+			"path": "Packages/@braintools/monorepo-clI"
+		}
+	],
+	"settings": {
+		"jest.disabledWorkspaceFolders": [
+			"logger",
+			"express-api",
+			"directory-traversal",
+			"mock-api",
+			"microstore-example",
+			"microcontext-example",
+			"examples",
+			"framework",
+			"monorepo-clI",
+			"microstore",
+			"public-1",
+			"microcore"
+		]
+	}
+}
