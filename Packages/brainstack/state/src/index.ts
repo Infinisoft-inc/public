@@ -1,1 +1,1 @@
-export const p = () => 1
+export { createState, State } from "./implementation"
