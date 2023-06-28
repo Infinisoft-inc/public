@@ -3,6 +3,11 @@ import {  createLogger } from '@brainstack/log';
 import type { BridgeFactoryClient, BridgeFactoryServer } from './abstraction'
 import { WebSocket, Server } from "ws";
 
+/**
+ * Creates a bridge client with the provided options.
+ * @param options - The options for configuring the bridge client.
+ * @returns The created bridge client instance.
+ */
 export const createBridgeClient: BridgeFactoryClient = (
   { hub = createEventHub({
     source: 'unknown',
@@ -12,6 +17,12 @@ export const createBridgeClient: BridgeFactoryClient = (
   const bridgeUuid = uuidv1(); // Generate a unique UUID for the bridge
   let ws: WebSocket | undefined = ws_client;
 
+    /**
+   * Connects to the destination socket using the provided configuration.
+   * @param host - The host of the destination socket.
+   * @param port - The port of the destination socket.
+   * @returns The WebSocket instance representing the connection.
+   */
   const connect = ({ host = "127.0.0.1", port = 8080 }) => {
     ws = new WebSocket(`ws://${host}:${port}/ws`);
 
@@ -56,6 +67,9 @@ export const createBridgeClient: BridgeFactoryClient = (
     return ws;
   };
 
+  /**
+   * Closes the bridge client connection.
+   */
   const close = () => {
     if (ws && ws.readyState === ws.OPEN) {
       ws.close();
@@ -71,7 +85,11 @@ export const createBridgeClient: BridgeFactoryClient = (
   };
 };
 
-
+/**
+ * Creates a bridge server with the provided options.
+ * @param options - The options for configuring the bridge server.
+ * @returns The created bridge server instance.
+ */
 export const createBridgeServer: BridgeFactoryServer = (
     {
       hub = createEventHub({
@@ -83,7 +101,13 @@ export const createBridgeServer: BridgeFactoryServer = (
     }
   ) => {
     let wss: Server | undefined = ws_server;
-  
+ 
+     /**
+     * Starts listening on the specified socket configuration.
+     * @param host - The host for the server.
+     * @param port - The port for the server.
+     * @returns The WebSocket server instance.
+     */
     const listen = ({ host = "127.0.0.1", port = 8080 }) => {
       wss = new Server({ host, port });
   
@@ -109,7 +133,10 @@ export const createBridgeServer: BridgeFactoryServer = (
   
       return wss;
     };
-  
+
+    /**
+   * Closes the bridge server.
+   */
     const close = () => {
       if (wss) {
         wss.close();
@@ -126,8 +153,12 @@ export const createBridgeServer: BridgeFactoryServer = (
   };
   
 
-
-// Helper function to check if a message contains the bridge UUID
+/**
+ * Helper function to check if a message contains the bridge UUID.
+ * @param message - The message object.
+ * @param bridgeUuid - The bridge UUID to check.
+ * @returns A boolean indicating if the message contains the bridge UUID.
+ */
 const isBridgeMessage = (message: any, bridgeUuid: string) =>
     (message?.headers ?? []).join("").includes(bridgeUuid);
 
@@ -138,7 +169,10 @@ const addBridgeUuid = (message: any, bridgeUuid: string) => {
     return { ...message, headers: updatedHeaders };
 };
 
-// Generate a UUID
+/**
+ * Generate a UUID.
+ * @returns A UUID string.
+ */
 const uuidv1 = () => {
     // Implement your own UUID generation logic here
     // This is just a simple example using a random number

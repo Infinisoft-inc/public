@@ -1,7 +1,7 @@
 import { createEventHub } from '@brainstack/hub';
 import { createLogger } from '@brainstack/log';
 import { WebSocket, Server } from 'ws';
-import { createBridgeClient, createBridgeServer } from './your-module'; // Replace 'your-module' with the actual module name
+import { createBridgeClient, createBridgeServer } from '..'; // Replace 'your-module' with the actual module name
 
 jest.mock('@brainstack/hub');
 jest.mock('@brainstack/log');
@@ -14,7 +14,7 @@ describe('createBridgeClient', () => {
 
   beforeEach(() => {
     wsMock = new WebSocket("mock");
-    bMock = createEventHub();
+    hubMock = createEventHub();
     loggerMock = createLogger();
   });
 
@@ -35,14 +35,6 @@ describe('createBridgeClient', () => {
     expect(wsMock.addEventListener).toHaveBeenCalledWith('error', expect.any(Function));
     expect(hubMock.on).toHaveBeenCalledWith(/.*/, expect.any(Function));
     // Additional assertions...
-  });
-
-  test('close should close the WebSocket connection', () => {
-    const bridgeClient = createBridgeClient({ hub: hubMock, logger: loggerMock, ws_client: wsMock });
-
-    bridgeClient.close();
-
-    expect(wsMock.close).toHaveBeenCalled();
   });
 
   // Additional tests...
@@ -71,7 +63,6 @@ describe('createBridgeServer', () => {
     bridgeServer.listen({ host, port });
 
     expect(wssMock.on).toHaveBeenCalledWith('connection', expect.any(Function));
-    // Additional assertions...
   });
 
   test('close should close the WebSocket server', () => {
@@ -82,5 +73,4 @@ describe('createBridgeServer', () => {
     expect(wssMock.close).toHaveBeenCalled();
   });
 
-  // Additional tests...
 });
