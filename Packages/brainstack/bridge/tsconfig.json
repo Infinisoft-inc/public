@@ -8,6 +8,8 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
+    "declaration": true,
+    "declarationDir": "../typings/bridge",
     "paths": {
       "common/*": [
         "../typings/common/*"

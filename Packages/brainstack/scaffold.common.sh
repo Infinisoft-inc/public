@@ -13,13 +13,17 @@ mkdir -p ./typings
 
 # Copy or generate your common typings files into the typings folder
 
-# Update TypeScript configurations in each project
+# Add reference path directive to TypeScript files in each project
 for project in "${projects[@]}"; do
-  # Define the path to the TypeScript configuration file
-  tsconfig="./$project/tsconfig.json"
+  # Define the path to the project folder
+  project_path="./$project"
 
-  # Add typings path to the TypeScript configuration
-  jq '.compilerOptions.paths += { "common/*": ["../typings/common/*"] }' "$tsconfig" > tmpfile && mv tmpfile "$tsconfig"
+  # Find all TypeScript files recursively in the project folder excluding node_modules and dist directories
+  ts_files=$(find "$project_path" -type f -name "*.ts" ! -path "*/node_modules/*" ! -path "*/dist/*")
 
-  echo "Updated tsconfig.json in $project"
+  # Add the reference path directive to each TypeScript file
+  for ts_file in $ts_files; do
+    echo "/// <reference path=\"../typings/common.d.ts\" />" | cat - "$ts_file" > tmpfile && mv tmpfile "$ts_file"
+    echo "Added reference path directive to $ts_file"
+  done
 done

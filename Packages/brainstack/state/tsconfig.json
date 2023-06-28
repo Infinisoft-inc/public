@@ -8,6 +8,8 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
+    "declaration": true,
+    "declarationDir": "../typings/state",
     "paths": {
       "common/*": [
         "../typings/common/*"

@@ -5,6 +5,8 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "moduleResolution": "node",
+    "declaration": true,
+    "declarationDir": "../typings/log",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist",

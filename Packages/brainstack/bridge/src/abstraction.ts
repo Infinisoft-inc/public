@@ -1,13 +1,10 @@
+/// <reference path="../../typings/index.d.ts" />
 import { WebSocket } from "ws";
-
-export interface LoggerIntegration {
-  log(...message: any): void;
-  error(...message: any): void;
-}
+import { Logger } from "../../typings";
 
 export interface MicroBridgeServerOptions {
   reconnectDelayInMs?: number;
-  logger: LoggerIntegration;
+  logger: Logger;
   hub: any;
   ws: WebSocket;
 }
