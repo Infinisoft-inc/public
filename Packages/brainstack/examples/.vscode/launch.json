@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+  
+    {
+      "name": "Debug Project",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "-r",
+        "ts-node/register",
+        "${workspaceFolder}/src/bridge/index.ts"
+      ],
+      "sourceMaps": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}

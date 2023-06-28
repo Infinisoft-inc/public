@@ -28,10 +28,10 @@ export const createBridgeClient: BridgeFactoryClient = (
 
     logger.log(`🧠 Brainstack Bridge Client Connecting to ws://${host}:${port}/ws...`);
     hub.on(/.*/, (e: any) => {
-      logger.log(`📞 Brainstack Bridge Client Subscription /.*/ Called by event: `, e?.data);
+      logger.log(`📞 Brainstack Bridge Client Subscription /.*/ Called by event: `, e?.name ?? "unknown");
       try {
         if (!isBridgeMessage(e, bridgeUuid)) {
-          logger.log(`🎉event: `, e);
+          logger.log(`🎉Forwardin Event to Server: `, e);
           const message = addBridgeUuid(e, bridgeUuid);
           ws?.send?.(JSON.stringify(message));
         }
@@ -41,10 +41,10 @@ export const createBridgeClient: BridgeFactoryClient = (
     });
 
     ws.onmessage = (e: any) => {
-      const { eventName = "unknown", payload = {} } = JSON.parse(e.data);
-      logger.log(`💬Message Received: `, eventName, e.data);
+      const { event = "unknown", ...payload} = JSON.parse(e.data);
+      logger.log(`💬Message Received: `, event, e.data);
       if (!isBridgeMessage(e, bridgeUuid)) {
-        hub.emit(eventName, payload);
+        hub.emit(event, payload);
       }
     };
 
@@ -90,17 +90,10 @@ export const createBridgeClient: BridgeFactoryClient = (
  * @param options - The options for configuring the bridge server.
  * @returns The created bridge server instance.
  */
-export const createBridgeServer: BridgeFactoryServer = (
-  {
-    hub = createEventHub({
-      source: 'unknown',
-      logger: createLogger(3)
-    }),
-    logger = createLogger(3),
-    ws_server
-  } = {}
-) => {
-  let wss: Server | undefined = ws_server;
+export const createBridgeServer: BridgeFactoryServer = (options) => {
+  let wss: Server | undefined = options?.ws_server;
+  const logger = options?.logger ?? createLogger(5)
+  const hub = options?.hub ?? createEventHub()
 
   /**
   * Starts listening on the specified socket configuration.
@@ -118,9 +111,9 @@ export const createBridgeServer: BridgeFactoryServer = (
       logger.log(`🔗 Client connected to Brainstack Bridge Server`);
 
       ws.on("message", (message) => {
-        const { eventName = "unknown", payload = {} } = JSON.parse(message.toString());
-        logger.log(`💬 Message Received: `, eventName, message.toString());
-        hub.emit(eventName, payload);
+        const { event = "unknown", ...payload } = JSON.parse(message.toString());
+        logger.log(`💬 Message Received: `, event, payload);
+        hub.emit(event, payload);
       });
 
       ws.on("close", () => {
@@ -149,7 +142,7 @@ export const createBridgeServer: BridgeFactoryServer = (
     close,
     hub,
     logger,
-    ws_server
+    ws_server:wss
   };
 };
 

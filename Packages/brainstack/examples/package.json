@@ -10,7 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@brainstack/bridge": "^1.0.0",
-    "@brainstack/hub": "^1.0.3"
+    "@brainstack/bridge": "^1.0.3",
+    "@brainstack/hub": "^1.0.5"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1"
   }
 }

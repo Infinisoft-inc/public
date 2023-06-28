@@ -36,31 +36,31 @@ export interface LoggerIntegration {
      * Logs a general message.
      * @param message - The message to log.
      */
-    log(...message: any): void;
+    log(...message: any[]): void;
   
     /**
      * Logs an informational message.
      * @param message - The message to log.
      */
-    info(...message: any): void;
+    info(...message: any[]): void;
   
     /**
      * Logs a warning message.
      * @param message - The message to log.
      */
-    warn(...message: any): void;
+    warn(...message: any[]): void;
   
     /**
      * Logs an error message.
      * @param message - The message to log.
      */
-    error(...message: any): void;
+    error(...message: any[]): void;
   
     /**
      * Logs a verbose message.
      * @param message - The message to log.
      */
-    verbose(...message: any): void;
+    verbose(...message: any[]): void;
   }
   
   /**
@@ -100,30 +100,30 @@ export interface LoggerIntegration {
      * Logs a message.
      * @param message - The message to log.
      */
-    log(...message: any): void;
+    log(...message: any[]): void;
   
     /**
      * Logs an informational message.
      * @param message - The message to log.
      */
-    info(...message: any): void;
+    info(...message: any[]): void;
   
     /**
      * Logs a warning message.
      * @param message - The message to log.
      */
-    warn(...message: any): void;
+    warn(...message: any[]): void;
   
     /**
      * Logs an error message.
      * @param message - The message to log.
      */
-    error(...message: any): void;
+    error(...message: any[]): void;
   
     /**
      * Logs a verbose message.
      * @param message - The message to log.
      */
-    verbose(...message: any): void;
+    verbose(...message: any[]): void;
   }
   
