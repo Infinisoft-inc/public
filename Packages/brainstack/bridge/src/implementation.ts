@@ -1,8 +1,8 @@
-import  type {MicroBridgeServer} from './abstraction'
+import  type {BridgeFactory} from './abstraction'
 import { WebSocket } from "ws";
 
 
-export const createMicroBridgeServer: MicroBridgeServer = (
+export const createBridge: BridgeFactory = (
     { hub, logger, ws }
 ) => {
     const bridgeUuid = uuidv1(); // Generate a unique UUID for the bridge
@@ -59,6 +59,9 @@ export const createMicroBridgeServer: MicroBridgeServer = (
     return {
         stop,
         start,
+        hub,
+        logger,
+        ws
     };
 };
 

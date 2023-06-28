@@ -1,4 +1,5 @@
-import { createEventHub, Options } from '../implementation';
+import { createEventHub } from '../implementation';
+import {  Options } from '../abstraction';
 
 // Mock Logger
 const logger: any = {

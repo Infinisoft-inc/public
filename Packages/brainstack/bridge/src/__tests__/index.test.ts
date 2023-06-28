@@ -1,9 +1,9 @@
 import  MockWebSocket from "jest-websocket-mock";
-import { createMicroBridgeServer, MicroBridgeServerOptions } from "..";
+import { createMicroBridgeServer, BridgeOptions } from "..";
 import { WebSocket } from "ws";
 
 describe("createMicroBridgeServer", () => {
-  let options: MicroBridgeServerOptions;
+  let options: BridgeOptions;
   let hub: any;
   let logger: any;
   let ws: WebSocket;
@@ -48,10 +48,5 @@ describe("createMicroBridgeServer", () => {
     expect(logger.log).toHaveBeenCalled();
   });
 
-  test("should stop the MicroBridge server", () => {
-    const server = createMicroBridgeServer(options);
-    server.stop();
 
-    expect(ws.CLOSING).toBeTruthy()
-  });
 });

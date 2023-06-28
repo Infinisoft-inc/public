@@ -1,21 +1,23 @@
 /// <reference path="../../typings/index.d.ts" />
 import { WebSocket } from "ws";
-import { Logger } from "../../typings";
+import { Logger, EventHub } from "../../typings";
 
-export interface MicroBridgeServerOptions {
-  reconnectDelayInMs?: number;
+export interface BridgeOptions {
   logger: Logger;
-  hub: any;
+  hub: EventHub;
   ws: WebSocket;
 }
 
-export interface MicroBridgeServerInstance {
+export interface Bridge {
   stop: () => void;
   start: () => void;
+  logger: Logger;
+  hub: EventHub;
+  ws: WebSocket;
 }
 
-export interface MicroBridgeServer {
+export interface BridgeFactory {
   (
-      options: MicroBridgeServerOptions,
-  ): MicroBridgeServerInstance;
+      options: BridgeOptions,
+  ): Bridge;
 }

@@ -1,25 +1,12 @@
+import { EventHub, Options, EventHubFactory } from './abstraction';
 import { uuidv1 } from './utils';
-
-/**
- * Options for creating an event hub.
- */
-export interface Options {
-  /**
-   * The source of the event hub.
-   */
-  source: string;
-  /**
-   * The logger object for the event hub.
-   */
-  logger: Console;
-}
 
 /**
  * Creates an event hub with the provided options.
  * @param options - The options for the event hub.
  * @returns The created event hub.
  */
-export const createEventHub = (options: Options = { source: "unknown", logger: console }) => {
+export const createEventHub: EventHubFactory = (options) => {
   const events = new Map<string, Map<string, Function>>();
   const regexHandlers = new Map<RegExp, Map<string, Function>>();
   const uuid = uuidv1();

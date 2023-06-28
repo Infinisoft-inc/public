@@ -1,2 +1,2 @@
 export * from './abstraction'
-export {createMicroBridgeServer} from './implementation'
+export {createBridge as createMicroBridgeServer} from './implementation'
