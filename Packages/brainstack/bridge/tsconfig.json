@@ -6,8 +6,15 @@
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "strict": true,
-    "forceConsistentCasingInFileNames": true, 
-    "outDir": "dist"
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
+    "paths": {
+      "common/*": [
+        "../typings/common/*"
+      ]
+    }
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }
