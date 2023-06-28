@@ -15,7 +15,7 @@ import { consoleIntegration } from "./consoleIntegration";
  * @param {LoggerIntegration[]} [integrations] - Optional array of logger integrations.
  * @returns {Logger} The created logger instance.
  */
-export const createLogger = (level: number = 3, integrations: LoggerIntegration[] = []): Logger => {
+export const createLogger = (level: number = 3, integrations: LoggerIntegration[] = [consoleIntegration]): Logger => {
   const logger: Logger = {
     /**
      * Changes the log level of the logger.

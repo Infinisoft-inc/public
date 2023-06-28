@@ -1,6 +1,6 @@
 import { createEventHub } from '@brainstack/hub';
-import {  createLogger } from '@brainstack/log';
-import type { BridgeFactoryClient, BridgeFactoryServer } from './abstraction'
+import { createLogger } from '@brainstack/log';
+import type { BridgeFactoryClient, BridgeFactoryServer, SocketConfig } from './abstraction'
 import { WebSocket, Server } from "ws";
 
 /**
@@ -12,17 +12,17 @@ export const createBridgeClient: BridgeFactoryClient = (
   { hub = createEventHub({
     source: 'unknown',
     logger: createLogger(3)
-  }), logger = createLogger(3), ws_client }
+  }), logger = createLogger(3), ws_client } = {}
 ) => {
   const bridgeUuid = uuidv1(); // Generate a unique UUID for the bridge
   let ws: WebSocket | undefined = ws_client;
 
-    /**
-   * Connects to the destination socket using the provided configuration.
-   * @param host - The host of the destination socket.
-   * @param port - The port of the destination socket.
-   * @returns The WebSocket instance representing the connection.
-   */
+  /**
+ * Connects to the destination socket using the provided configuration.
+ * @param host - The host of the destination socket.
+ * @param port - The port of the destination socket.
+ * @returns The WebSocket instance representing the connection.
+ */
   const connect = ({ host = "127.0.0.1", port = 8080 }) => {
     ws = new WebSocket(`ws://${host}:${port}/ws`);
 
@@ -91,67 +91,68 @@ export const createBridgeClient: BridgeFactoryClient = (
  * @returns The created bridge server instance.
  */
 export const createBridgeServer: BridgeFactoryServer = (
-    {
-      hub = createEventHub({
-        source: 'unknown',
-        logger: createLogger(3)
-      }),
-      logger = createLogger(3),
-      ws_server
-    }
-  ) => {
-    let wss: Server | undefined = ws_server;
- 
-     /**
-     * Starts listening on the specified socket configuration.
-     * @param host - The host for the server.
-     * @param port - The port for the server.
-     * @returns The WebSocket server instance.
-     */
-    const listen = ({ host = "127.0.0.1", port = 8080 }) => {
-      wss = new Server({ host, port });
-  
-      logger.log(`🚀 Brainstack Bridge Server Launched`);
-  
-      wss.on("connection", (ws) => {
-        logger.log(`🔗 Client connected to Brainstack Bridge Server`);
-  
-        ws.on("message", (message) => {
-          const { eventName = "unknown", payload = {} } = JSON.parse(message.toString());
-          logger.log(`💬 Message Received: `, eventName, message.toString());
-          hub.emit(eventName, payload);
-        });
-  
-        ws.on("close", () => {
-          logger.log(`⚠️ Client disconnected from Brainstack Bridge Server`);
-        });
-  
-        ws.on("error", () => {
-          logger.error(`❌ Error occurred in connection with Brainstack Bridge Server`);
-        });
-      });
-  
-      return wss;
-    };
+  {
+    hub = createEventHub({
+      source: 'unknown',
+      logger: createLogger(3)
+    }),
+    logger = createLogger(3),
+    ws_server
+  } = {}
+) => {
+  let wss: Server | undefined = ws_server;
 
-    /**
-   * Closes the bridge server.
-   */
-    const close = () => {
-      if (wss) {
-        wss.close();
-      }
-    };
-  
-    return {
-      listen,
-      close,
-      hub,
-      logger,
-      ws_server
-    };
+  /**
+  * Starts listening on the specified socket configuration.
+  * @param host - The host for the server.
+  * @param port - The port for the server.
+  * @returns The WebSocket server instance.
+  */
+  const listen = (args: SocketConfig | undefined) => {
+    const { host, port } = args ?? { host: "127.0.0.1", port: 8080 }
+    wss = new Server({ host, port });
+
+    logger.log(`🚀 Brainstack Bridge Server Launched`);
+
+    wss.on("connection", (ws) => {
+      logger.log(`🔗 Client connected to Brainstack Bridge Server`);
+
+      ws.on("message", (message) => {
+        const { eventName = "unknown", payload = {} } = JSON.parse(message.toString());
+        logger.log(`💬 Message Received: `, eventName, message.toString());
+        hub.emit(eventName, payload);
+      });
+
+      ws.on("close", () => {
+        logger.log(`⚠️ Client disconnected from Brainstack Bridge Server`);
+      });
+
+      ws.on("error", () => {
+        logger.error(`❌ Error occurred in connection with Brainstack Bridge Server`);
+      });
+    });
+
+    return wss;
   };
-  
+
+  /**
+ * Closes the bridge server.
+ */
+  const close = () => {
+    if (wss) {
+      wss.close();
+    }
+  };
+
+  return {
+    listen,
+    close,
+    hub,
+    logger,
+    ws_server
+  };
+};
+
 
 /**
  * Helper function to check if a message contains the bridge UUID.
@@ -160,13 +161,13 @@ export const createBridgeServer: BridgeFactoryServer = (
  * @returns A boolean indicating if the message contains the bridge UUID.
  */
 const isBridgeMessage = (message: any, bridgeUuid: string) =>
-    (message?.headers ?? []).join("").includes(bridgeUuid);
+  (message?.headers ?? []).join("").includes(bridgeUuid);
 
 // Helper function to add the bridge UUID to a message
 const addBridgeUuid = (message: any, bridgeUuid: string) => {
-    const headers = message?.headers || [];
-    const updatedHeaders = [...headers, { uuid: bridgeUuid, timestamp: Date.now() }];
-    return { ...message, headers: updatedHeaders };
+  const headers = message?.headers || [];
+  const updatedHeaders = [...headers, { uuid: bridgeUuid, timestamp: Date.now() }];
+  return { ...message, headers: updatedHeaders };
 };
 
 /**
@@ -174,7 +175,7 @@ const addBridgeUuid = (message: any, bridgeUuid: string) => {
  * @returns A UUID string.
  */
 const uuidv1 = () => {
-    // Implement your own UUID generation logic here
-    // This is just a simple example using a random number
-    return Math.random().toString();
+  // Implement your own UUID generation logic here
+  // This is just a simple example using a random number
+  return Math.random().toString();
 };

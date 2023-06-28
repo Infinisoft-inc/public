@@ -76,7 +76,7 @@ export interface BridgeFactoryClient {
    * @param options - The options for configuring the bridge client.
    * @returns The created bridge client instance.
    */
-  (options: BridgeOptionsClient): BridgeClient;
+  (options?: BridgeOptionsClient): BridgeClient;
 }
 
 /**
@@ -88,7 +88,7 @@ export interface BridgeServer {
    * @param config - The socket configuration for the server.
    * @returns The WebSocket server instance.
    */
-  listen: (config: SocketConfig) => Server;
+  listen: (config?: SocketConfig) => Server | undefined;
 
   /**
    * Closes the bridge server.
@@ -108,7 +108,7 @@ export interface BridgeServer {
   /**
    * The WebSocket server instance.
    */
-  ws_server?: Server;
+  ws_server: Server | undefined;
 }
 
 /**
@@ -140,5 +140,5 @@ export interface BridgeFactoryServer {
    * @param options - The options for configuring the bridge server.
    * @returns The created bridge server instance.
    */
-  (options: BridgeOptionsServer): BridgeServer;
+  (options?: BridgeOptionsServer): BridgeServer;
 }
