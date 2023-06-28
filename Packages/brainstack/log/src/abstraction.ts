@@ -2,6 +2,35 @@
  * Represents a logger integration.
  * An integration provides methods for logging messages at different levels.
  */
+
+export enum LogLevel {
+  /**
+   * Log level for critical errors that may cause the application to stop functioning.
+   */
+  ERROR = 1,
+
+  /**
+   * Log level for warning messages that indicate potential issues or unexpected behavior.
+   */
+  WARNING = 2,
+
+  /**
+   * Log level for general log messages providing information about the application's execution flow.
+   */
+  LOG = 3,
+
+  /**
+   * Log level for informational messages that provide additional details about the application's state.
+   */
+  INFO = 4,
+
+  /**
+   * Log level for detailed messages that can be useful for debugging and troubleshooting.
+   */
+  VERBOSE = 5,
+}
+
+
 export interface LoggerIntegration {
     /**
      * Logs a general message.

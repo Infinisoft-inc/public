@@ -10,7 +10,7 @@ export interface EventHub {
 }
 
 export interface Options {
-  source: string;
-  logger: Logger;
+  source?: string;
+  logger?: Logger;
 }
 export type EventHubFactory = (options: Options) => EventHub

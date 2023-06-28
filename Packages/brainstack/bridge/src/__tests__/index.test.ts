@@ -1,52 +1,86 @@
-import  MockWebSocket from "jest-websocket-mock";
-import { createMicroBridgeServer, BridgeOptions } from "..";
-import { WebSocket } from "ws";
+import { createEventHub } from '@brainstack/hub';
+import { createLogger } from '@brainstack/log';
+import { WebSocket, Server } from 'ws';
+import { createBridgeClient, createBridgeServer } from './your-module'; // Replace 'your-module' with the actual module name
 
-describe("createMicroBridgeServer", () => {
-  let options: BridgeOptions;
-  let hub: any;
-  let logger: any;
-  let ws: WebSocket;
+jest.mock('@brainstack/hub');
+jest.mock('@brainstack/log');
+jest.mock('ws');
+
+describe('createBridgeClient', () => {
+  let wsMock: WebSocket;
+  let hubMock: any;
+  let loggerMock: any;
 
   beforeEach(() => {
-    hub = {
-      on: jest.fn(),
-      emit: jest.fn(),
-    };
-
-    logger = {
-      log: jest.fn(),
-      error: jest.fn(),
-    };
-
-    ws = new MockWebSocket("ws://localhost") as any;
-    options = {
-      hub,
-      logger,
-      ws,
-    };
+    wsMock = new WebSocket("mock");
+    bMock = createEventHub();
+    loggerMock = createLogger();
   });
 
   afterEach(() => {
-    ws.close()
     jest.clearAllMocks();
   });
 
-  test("should start the MicroBridge server and handle events", () => {
-    const server = createMicroBridgeServer(options);
-    server.start();
+  test('connect should establish a WebSocket connection and set up event handlers', () => {
+    const bridgeClient = createBridgeClient({ hub: hubMock, logger: loggerMock, ws_client: wsMock });
+    const host = '127.0.0.1';
+    const port = 8080;
 
-    // Mock an incoming message event
-    const eventData = {
-      data: JSON.stringify({ event: "testEvent", payload: { foo: "bar" } }),
-    };
+    bridgeClient.connect({ host, port });
 
-    hub.emit("test", eventData)
-
-    expect(hub.on).toHaveBeenCalled();
-    expect(hub.emit).toHaveBeenCalled();
-    expect(logger.log).toHaveBeenCalled();
+    expect(wsMock.addEventListener).toHaveBeenCalledWith('message', expect.any(Function));
+    expect(wsMock.addEventListener).toHaveBeenCalledWith('open', expect.any(Function));
+    expect(wsMock.addEventListener).toHaveBeenCalledWith('close', expect.any(Function));
+    expect(wsMock.addEventListener).toHaveBeenCalledWith('error', expect.any(Function));
+    expect(hubMock.on).toHaveBeenCalledWith(/.*/, expect.any(Function));
+    // Additional assertions...
   });
 
+  test('close should close the WebSocket connection', () => {
+    const bridgeClient = createBridgeClient({ hub: hubMock, logger: loggerMock, ws_client: wsMock });
 
+    bridgeClient.close();
+
+    expect(wsMock.close).toHaveBeenCalled();
+  });
+
+  // Additional tests...
+});
+
+describe('createBridgeServer', () => {
+  let wssMock: Server;
+  let hubMock: any;
+  let loggerMock: any;
+
+  beforeEach(() => {
+    wssMock = new Server();
+    hubMock = createEventHub();
+    loggerMock = createLogger();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('listen should create a WebSocket server and set up event handlers', () => {
+    const bridgeServer = createBridgeServer({ hub: hubMock, logger: loggerMock, ws_server: wssMock });
+    const host = '127.0.0.1';
+    const port = 8080;
+
+    bridgeServer.listen({ host, port });
+
+    expect(wssMock.on).toHaveBeenCalledWith('connection', expect.any(Function));
+    // Additional assertions...
+  });
+
+  test('close should close the WebSocket server', () => {
+    const bridgeServer = createBridgeServer({ hub: hubMock, logger: loggerMock, ws_server: wssMock });
+
+    bridgeServer.close();
+
+    expect(wssMock.close).toHaveBeenCalled();
+  });
+
+  // Additional tests...
 });

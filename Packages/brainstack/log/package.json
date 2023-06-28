@@ -1,12 +1,19 @@
 {
-  "name": "log",
-  "version": "1.0.0",
+  "name": "@brainstack/log",
+  "version": "1.0.2",
+  "description": "Your package description",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [],
+  "author": "Your Name",
+  "license": "MIT",
   "scripts": {
     "test": "set NODE_OPTIONS=--experimental-vm-modules && jest --coverage",
     "test:dev": "jest --watchAll",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "types": "tsc --declaration --outDir ../typings/log --emitDeclarationOnly"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",

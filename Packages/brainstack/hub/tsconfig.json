@@ -5,11 +5,12 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "moduleResolution": "node",
+    "declaration": true,
+    "declarationDir": "dist",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
-    "declaration": true,
-    "declarationDir": "../typings/hub",
+    "skipLibCheck":true,
     "paths": {
       "common/*": [
         "../typings/common/*"
@@ -18,5 +19,8 @@
   },
   "include": [
     "src"
+  ],
+  "exclude":[
+    "node_modules"
   ]
 }

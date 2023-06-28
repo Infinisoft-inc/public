@@ -1,23 +1,46 @@
-/// <reference path="../../typings/index.d.ts" />
-import { WebSocket } from "ws";
-import { Logger, EventHub } from "../../typings";
+import { WebSocket, Server } from "ws";
+import { EventHub } from "@brainstack/hub";
+import { Logger } from "@brainstack/log";
 
-export interface BridgeOptions {
+export interface SocketConfig { host: string, port: number }
+
+export interface BridgeClient {
+  connect: (destination: SocketConfig) => WebSocket;
+  close: () => void,
   logger: Logger;
   hub: EventHub;
-  ws: WebSocket;
+  ws_client?: WebSocket;
+}
+export interface BridgeOptionsClient {
+  logger?: Logger;
+  hub?: EventHub;
+  ws_client?: WebSocket;
+  ws_server?: Server;
 }
 
-export interface Bridge {
-  stop: () => void;
-  start: () => void;
-  logger: Logger;
-  hub: EventHub;
-  ws: WebSocket;
-}
-
-export interface BridgeFactory {
+export interface BridgeFactoryClient {
   (
-      options: BridgeOptions,
-  ): Bridge;
+    options: BridgeOptionsClient
+  ): BridgeClient;
+}
+
+
+export interface BridgeServer {
+  listen: (config: SocketConfig) => Server;
+  close: () => void,
+  logger: Logger;
+  hub: EventHub;
+  ws_server?: Server;
+}
+
+export interface BridgeOptionsServer {
+  logger?: Logger;
+  hub?: EventHub;
+  ws_server?: Server;
+}
+
+export interface BridgeFactoryServer {
+  (
+    options: BridgeOptionsServer
+  ): BridgeServer;
 }

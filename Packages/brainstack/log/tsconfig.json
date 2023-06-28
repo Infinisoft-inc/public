@@ -6,10 +6,11 @@
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "declaration": true,
-    "declarationDir": "../typings/log",
+    "declarationDir": "dist",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
+    "skipLibCheck":true,
     "paths": {
       "common/*": [
         "../typings/common/*"
@@ -18,5 +19,10 @@
   },
   "include": [
     "src"
+  ],
+  "exclude":[
+    "node_modules",
+    "__tests__",
+    "dist"
   ]
 }

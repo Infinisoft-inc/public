@@ -1,4 +1,5 @@
-import { EventHub, Options, EventHubFactory } from './abstraction';
+import {  EventHubFactory } from './abstraction';
+import {createLogger} from '@brainstack/log'
 import { uuidv1 } from './utils';
 
 /**
@@ -6,7 +7,7 @@ import { uuidv1 } from './utils';
  * @param options - The options for the event hub.
  * @returns The created event hub.
  */
-export const createEventHub: EventHubFactory = (options) => {
+export const createEventHub: EventHubFactory = (options={source:"unknown", logger: createLogger(3)}) => {
   const events = new Map<string, Map<string, Function>>();
   const regexHandlers = new Map<RegExp, Map<string, Function>>();
   const uuid = uuidv1();
