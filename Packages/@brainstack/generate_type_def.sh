@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the project directories
-project_dirs=("bridge" "hub" "log" "state")
+project_dirs=("hub" "state" "bridge" "config" "core" "log")
 
 # Create the output file for declarations
 output_file="../typings/common.d.ts"

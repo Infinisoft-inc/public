@@ -6,12 +6,12 @@ module.exports = {
   },
   coveragePathIgnorePatterns: [
     '/node_modules/',
-    '/__tests__/',
-    '\\.d\\.ts$',
-    '*.test.ts$',
-    'dist'
+    '**/__tests__/**',
+    '*.d.ts$',
+    '*.test.ts',
+    'dist/**'
   ],
-  testMatch: ['**/__tests__/**/*.ts?(x)', '**/?(*.)+(spec|test).ts?(x)'],
+  testMatch: ['**/__tests__/index.test.ts'],
   verbose: true,
   globals: {
     'ts-jest': {

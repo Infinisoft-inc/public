@@ -10,9 +10,10 @@ import { WebSocket, Server } from "ws";
  */
 export const createBridgeClient: BridgeFactoryClient = (
   { hub = createEventHub({
-    source: 'unknown',
-    logger: createLogger(3)
-  }), logger = createLogger(3), ws_client } = {}
+    source: 'unknown', logger: createLogger(3)
+  }),
+    logger = createLogger(3),
+    ws_client } = {}
 ) => {
   const bridgeUuid = uuidv1(); // Generate a unique UUID for the bridge
   let ws: WebSocket | undefined = ws_client;
@@ -41,7 +42,7 @@ export const createBridgeClient: BridgeFactoryClient = (
     });
 
     ws.onmessage = (e: any) => {
-      const { event = "unknown", ...payload} = JSON.parse(e.data);
+      const { event = "unknown", ...payload } = JSON.parse(e.data);
       logger.log(`💬Message Received: `, event, e.data);
       if (!isBridgeMessage(e, bridgeUuid)) {
         hub.emit(event, payload);
@@ -142,7 +143,7 @@ export const createBridgeServer: BridgeFactoryServer = (options) => {
     close,
     hub,
     logger,
-    ws_server:wss
+    ws_server: wss
   };
 };
 

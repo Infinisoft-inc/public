@@ -1,6 +1,5 @@
 
-/// <reference path="../../typings/index.d.ts" />
-import { Logger } from "../../typings";
+import { Logger } from "@brainstack/log";
 
 
 export interface EventHub {

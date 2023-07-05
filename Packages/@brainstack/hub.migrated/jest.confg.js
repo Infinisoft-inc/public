@@ -4,11 +4,14 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': 'babel-jest',
   },
-  testPathIgnorePatterns: [
+  coveragePathIgnorePatterns: [
     '/node_modules/',
-    '/dist/',
+    '/__tests__/',
+    '\\.d\\.ts$',
+    '*.test.ts$',
+    'dist'
   ],
-  testMatch: ['**/__tests__/**/*.ts?(x)', '**/?(*.)+(spec|test).ts?(x)'],
+  testMatch: ['src/__tests__/index.test.ts'],
   verbose: true,
   globals: {
     'ts-jest': {

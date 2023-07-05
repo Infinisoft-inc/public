@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
+    "declaration": true,
+    "declarationDir": "../typings/hub",
+    "paths": {
+      "common/*": [
+        "../typings/common/*"
+      ]
+    }
+  },
+  "include": [
+    "src"
+  ]
+}

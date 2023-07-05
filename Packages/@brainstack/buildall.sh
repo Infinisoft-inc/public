@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # List of directories to traverse
-directories=("hub" "state" "bridge")
+directories=("hub" "state" "bridge" "config" "core" "log")
 
 # Function to execute actions within each directory
 execute_actions() {
@@ -32,7 +32,7 @@ execute_actions() {
     npm publish --access=public
 
     # Tell a joke
-    echo "Why don't scientists trust atoms? Because they make up everything!"
+    #echo "Why don't scientists trust atoms? Because they make up everything!"
     
     cd ..
   done

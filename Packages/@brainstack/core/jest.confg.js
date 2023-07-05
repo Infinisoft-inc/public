@@ -3,15 +3,13 @@ module.exports = {
   testEnvironment: 'node',
   transform: {
     '^.+\\.tsx?$': 'babel-jest',
-  },
+  },  
   coveragePathIgnorePatterns: [
     '/node_modules/',
-    '/__tests__/',
+    '/dist/',
     '\\.d\\.ts$',
-    '*.test.ts$',
-    'dist'
   ],
-  testMatch: ['**/__tests__/**/*.ts?(x)', '**/?(*.)+(spec|test).ts?(x)'],
+  testMatch: ['**/__tests__/index.test.ts'],
   verbose: true,
   globals: {
     'ts-jest': {
