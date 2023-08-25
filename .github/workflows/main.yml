@@ -26,6 +26,7 @@ jobs:
 
       - name: Bump Versions
         uses: remorses/bump-version@v8
+        working-directory: Packages/@brainstack/agent
 
       - name: Build package
         working-directory: Packages/@brainstack/agent
