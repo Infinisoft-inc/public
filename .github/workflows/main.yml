@@ -1,7 +1,9 @@
 name: Trigger Nested Workflow
 
 on:
-  workflow_run:
+  push:
+    branches:
+      - main
     workflows: ["Packages/@brainstack/agent/.github/workflows/main.yml"]
     types:
       - completed
