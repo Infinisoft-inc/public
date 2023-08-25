@@ -1,0 +1,20 @@
+name: Packages CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger_nested_workflows:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Brainstack Agent
+        uses: actions/workflow_run@v2
+        with:
+          workflow: Packages/@brainstack/agent/.github/workflows/main.yml
+          repository: ${{ github.repository }}
