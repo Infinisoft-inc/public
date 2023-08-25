@@ -20,18 +20,14 @@ jobs:
         with:
           node-version: 14
 
-      - name: Configure Git
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-
       - name: Install dependencies
         working-directory: Packages/@brainstack/agent
         run: npm install
 
-      - name: Bump version
-        working-directory: Packages/@brainstack/agent
-        run: npx standard-version --release-as patch
+      - name: Bump Versions
+        # You may pin to the exact commit or the version.
+        # uses: remorses/bump-version@bcb347631544a8b9b146bf5de4548376c1f71661
+        uses: remorses/bump-version@v8
 
       - name: Build package
         working-directory: Packages/@brainstack/agent
