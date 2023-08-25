@@ -1,11 +1,11 @@
-name: Main Workflow
+name: Brainstack Agent
 
 on:
   push:
     branches:
       - main
-    # paths:
-    #   - 'Packages/@brainstack/agent/**'
+    paths:
+      - 'Packages/@brainstack/agent/**'
 
 jobs:
   build:
@@ -23,10 +23,6 @@ jobs:
       - name: Install dependencies
         working-directory: Packages/@brainstack/agent
         run: npm install
-
-      - name: Bump Versions
-        uses: remorses/bump-version@v8
-        working-directory: Packages/@brainstack/agent
 
       - name: Build package
         working-directory: Packages/@brainstack/agent
