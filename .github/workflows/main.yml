@@ -17,4 +17,4 @@ jobs:
         uses: actions/workflow_run@v2
         with:
           workflow: Packages/@brainstack/agent/.github/workflows/main.yml
-          repository: ${{ github.repository }}
+          repository: https://github.com/Infinisoft-inc/public.git
