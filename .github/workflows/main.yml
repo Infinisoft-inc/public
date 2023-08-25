@@ -24,10 +24,6 @@ jobs:
         working-directory: Packages/@brainstack/agent
         run: npm install
 
-      - name: Bump Versions
-        uses: remorses/bump-version@v8
-        working-directory: Packages/@brainstack/agent
-
       - name: Build package
         working-directory: Packages/@brainstack/agent
         run: npm run build
@@ -36,9 +32,9 @@ jobs:
       #   working-directory: Packages/@brainstack/agent
       #   run: npm test
 
-      - name: Publish to npm
-        if: github.ref == 'refs/heads/main'
-        working-directory: Packages/@brainstack/agent
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Publish to npm
+      #   if: github.ref == 'refs/heads/main'
+      #   working-directory: Packages/@brainstack/agent
+      #   run: npm publish
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
