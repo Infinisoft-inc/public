@@ -1,17 +1,44 @@
-name: Trigger Nested Workflow
+name: Main Workflow
 
 on:
   push:
     branches:
       - main
-    workflows: ["Packages/@brainstack/agent/.github/workflows/main.yml"]
-    types:
-      - completed
+    paths:
+      - 'Packages/@brainstack/agent/**'
 
 jobs:
-  trigger_nested_workflow:
+  build:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Trigger Nested Workflow
-        run: echo "Nested workflow triggered!"
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        working-directory: Packages/@brainstack/agent
+        run: npm install
+
+      - name: Bump version
+        working-directory: Packages/@brainstack/agent
+        run: npx standard-version --release-as patch
+
+      - name: Build package
+        working-directory: Packages/@brainstack/agent
+        run: npm run build
+
+      # - name: Run tests
+      #   working-directory: Packages/@brainstack/agent
+      #   run: npm test
+
+      - name: Publish to npm
+        if: github.ref == 'refs/heads/main'
+        working-directory: Packages/@brainstack/agent
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
