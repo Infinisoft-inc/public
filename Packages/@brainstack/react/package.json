@@ -1,0 +1,46 @@
+{
+  "name": "@brainstack/react",
+  "version": "1.0.4",
+  "description": "Brainstack React Library Template",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [],
+  "author": "Your Name",
+  "license": "MIT",
+  "scripts": {
+    "test": "set NODE_OPTIONS=--experimental-vm-modules && jest --coverage ./__tests__/index.test.tsx",
+    "test:dev": "jest --watchAll",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "start": "node dist/index.js",
+    "types": "tsc --declaration --outDir ../typings/react --emitDeclarationOnly"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "@babel/preset-react": "^7.22.5",
+    "@babel/preset-typescript": "^7.22.5",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.7.10",
+    "@types/react": "^18.2.14",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.4.2"
+  },
+  "peerDwhat s the buidependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "@brainstack/bridge-client": "^1.0.6",
+    "@brainstack/core": "^1.0.11",
+    "@brainstack/hub": "^1.1.4",
+    "@brainstack/log": "^1.1.6",
+    "@brainstack/state": "^1.1.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

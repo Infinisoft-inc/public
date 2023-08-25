@@ -1,0 +1,25 @@
+steps:
+  - task: Npm@1
+    displayName: 'Install package dependencies'
+    inputs:
+      command: 'install'
+      workingDir: '$(Build.Repository.LocalPath)/packages/@brainstack/hub'
+
+  - task: Npm@1
+    displayName: 'Build package'
+    inputs:
+      command: 'run build'
+      workingDir: '$(Build.Repository.LocalPath)/packages/@brainstack/hub'
+
+  - task: Npm@1
+    displayName: 'Bump package version'
+    inputs:
+      command: 'version'
+      versionCommand: 'patch'
+      workingDir: '$(Build.Repository.LocalPath)/packages/@brainstack/hub'
+
+  - task: Npm@1
+    displayName: 'Publish package'
+    inputs:
+      command: 'publish'
+      workingDir: '$(Build.Repository.LocalPath)/packages/@brainstack/hub'

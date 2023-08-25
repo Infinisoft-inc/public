@@ -1,0 +1,36 @@
+{
+  "name": "@brainstack/bridge-client",
+  "version": "1.0.6",
+  "description": "Brainstack Bridge Client",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [],
+  "author": "Your Name",
+  "license": "MIT",
+  "scripts": {
+    "test": "set NODE_OPTIONS=--experimental-vm-modules && jest --coverage index.test.ts",
+    "test:dev": "jest --watchAll",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "start": "node dist/index.js",
+    "types": "tsc --declaration --outDir ../typings/bridge-client --emitDeclarationOnly"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "@babel/preset-typescript": "^7.22.5",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.7.10",
+    "@types/ws": "^8.5.5",
+    "jest": "^29.5.0",
+    "mock-socket": "^9.2.1",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "@brainstack/hub": "^1.1.4",
+    "@brainstack/log": "^1.1.6",
+    "ws": "^8.13.0"
+  }
+}

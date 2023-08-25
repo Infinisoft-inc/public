@@ -14,8 +14,8 @@
       }
     </style>
   </head>
-  <body>
-    <my-canvas data='{"id": 1, "name": "Parent Object", "children": []}'></my-canvas>
+  <body style="width: 100vw;height:100vh">
+    <my-canvas data='{"id":1,"name":"Parent Object","children":[{"id":2,"name":"Child 1","children":[{"id":4,"name":"Child 1.1","children":[]},{"id":5,"name":"Child 1.2","children":[]}]},{"id":3,"name":"Child 2","children":[]}]}'></my-canvas>
     <script>
       class MyCanvas extends HTMLElement {
         static get observedAttributes() {

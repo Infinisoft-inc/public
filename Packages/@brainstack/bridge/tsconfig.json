@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationDir": "dist",
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
+    "skipLibCheck":true,
+    "paths": {
+      "common/*": [
+        "../typings/common/*"
+      ]
+    }
+  },
+  "include": [
+    "src"
+  ],
+  "exclude":[
+    "node_modules"
+  ]
+}
