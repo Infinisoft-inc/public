@@ -35,6 +35,6 @@ jobs:
       - name: Publish to npm
         if: github.ref == 'refs/heads/main'
         working-directory: Packages/@brainstack/agent
-        run: npm publish
+        run: npm publish --access public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
