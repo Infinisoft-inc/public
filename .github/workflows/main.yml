@@ -1,19 +1,15 @@
-name: Packages CI/CD
+name: Trigger Nested Workflow
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Packages/@brainstack/agent/.github/workflows/main.yml"]
+    types:
+      - completed
 
 jobs:
-  trigger_nested_workflows:
+  trigger_nested_workflow:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Brainstack Agent
-        uses: actions/workflow_run@v2
-        with:
-          workflow: Packages/@brainstack/agent/.github/workflows/main.yml
+      - name: Trigger Nested Workflow
+        run: echo "Nested workflow triggered!"
