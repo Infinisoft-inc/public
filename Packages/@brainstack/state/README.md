@@ -51,10 +51,11 @@ A interface that represents the state management module for managing application
 # Contributing
 Contributions are welcome! If you would like to contribute to this module, please follow these guidelines:
 
-Fork the repository
-Create a new branch for your changes
-Make your changes and commit them with descriptive commit messages
-Push your changes to your fork
-Submit a pull request
+Fork the repository  
+Create a new branch for your changes  
+Make your changes and commit them with descriptive commit messages  
+Push your changes to your fork  
+Submit a pull request  
+
 # License
 This module is released under the MIT License.

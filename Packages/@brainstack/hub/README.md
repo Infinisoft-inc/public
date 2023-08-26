@@ -68,4 +68,3 @@ eventHub.emit('eventName', { /* payload data */ });
 ## Footer
 For more details and advanced usage, please refer to the package documentation.
 
-[Include any additional information or acknowledgments here]
