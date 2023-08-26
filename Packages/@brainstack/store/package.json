@@ -1,11 +1,23 @@
 {
-  "name": "@brainstack/core",
-  "version": "1.1.2",
-  "description": "Brainstack Core Packages",
+  "name": "@brainstack/store",
+  "version": "1.0.0",
+  "description": "An Micro Pub Sub Event Driven State Management",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "keywords": [],
-  "author": "Your Name",
+  "keywords": [
+    "brainstack",
+    "state management",
+    "micro state",
+    "state manager",
+    "reactive state",
+    "lightweight state",
+    "state handling",
+    "state control",
+    "state synchronization",
+    "state updates",
+    "state manipulation"
+  ],
+  "author": "Infini SoftWorld <info@infinisoft.dev>",
   "license": "MIT",
   "scripts": {
     "test": "set NODE_OPTIONS=--experimental-vm-modules && jest --coverage index.test.ts",
@@ -13,7 +25,7 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "start": "node dist/index.js",
-    "types": "tsc --declaration --outDir ../typings/core --emitDeclarationOnly"
+    "types": "tsc --declaration --outDir ../typings/store --emitDeclarationOnly"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",
@@ -21,19 +33,13 @@
     "@babel/preset-typescript": "^7.22.5",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.7.10",
-    "@types/ws": "^8.5.5",
     "jest": "^29.5.0",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@brainstack/config": "^1.0.4",
-    "@brainstack/crud": "^1.0.0",
     "@brainstack/hub": "^1.1.5",
-    "@brainstack/inject": "^1.2.1",
-    "@brainstack/log": "^1.1.9",
-    "@brainstack/state": "^1.1.5",
-    "@brainstack/store": "^1.0.0"
+    "@brainstack/state": "^1.1.5"
   }
 }

@@ -22,6 +22,8 @@ The `@brainstack/core` package is a bundle that includes the following micro pac
 
 - **[@brainstack/state](https://www.npmjs.com/package/@brainstack/state)**: A micro state management library that empowers you to handle application state effortlessly, making it ideal for managing complex UI components or global application data.
 
+- **[@brainstack/store](https://www.npmjs.com/package/@brainstack/store)**: A package that combines `@brainstack/hub` and `@brainstack/state` unlocking state management with event handling, providing a convenient solution for managing application state and responding to state changes using event-driven programming.
+
 - **[@brainstack/config](https://www.npmjs.com/package/@brainstack/config)**: A micro config manager package that lets you manage configuration settings efficiently and flexibly, ensuring smooth application setup and behavior.
 
 - **[@brainstack/agent](https://www.npmjs.com/package/@brainstack/agent)**: A package tailored for building model agents that help you encapsulate complex logic and behavior into reusable components.
