@@ -1,11 +1,23 @@
 {
   "name": "@brainstack/state",
-  "version": "1.1.2",
-  "description": "Your package description",
+  "version": "1.1.5",
+  "description": "A Micro State Management",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "keywords": [],
-  "author": "Your Name",
+  "keywords": [
+    "brainstack",
+    "state management",
+    "micro state",
+    "state manager",
+    "reactive state",
+    "lightweight state",
+    "state handling",
+    "state control",
+    "state synchronization",
+    "state updates",
+    "state manipulation"
+  ],
+  "author": "Infini SoftWorld <info@infinisoft.dev>",
   "license": "MIT",
   "scripts": {
     "test": "set NODE_OPTIONS=--experimental-vm-modules && jest --coverage index.test.ts",

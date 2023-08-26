@@ -6,7 +6,7 @@ To install this module, run the following command:
 ```bash
 npm install @brainstack/state
 ```
-Usage
+# Usage 
 To use this module, import the createState function and the State interface from the module:
 ```typescript
 import { createState, State } from '@brainstack/state';
@@ -44,9 +44,10 @@ A interface that represents the state management module for managing application
 
 **Properties**
 
-getState(selector?: (state: T) => any): any - Retrieves the current state of the application.
-selector (optional) - An optional selector function to retrieve a specific value from the state.
-mutate(mutator: (currentState: T) => T): T - Mutates the state of the application.
+`getState(selector?: (state: T) => any)`: any - Retrieves the current state of the application.  
+`selector` (optional) - An optional selector function to retrieve a specific value from the state.  
+`mutate(mutator: (currentState: T) => T)`: T - Mutates the state of the application.  
+
 # Contributing
 Contributions are welcome! If you would like to contribute to this module, please follow these guidelines:
 
