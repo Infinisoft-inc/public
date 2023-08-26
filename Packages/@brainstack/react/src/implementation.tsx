@@ -1,26 +1,12 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { createEventHub, createLogger, createState } from '@brainstack/core';
-import { BrainStackProviderProps } from './abstraction';
-
-type TBrainstackOptions = {
-  eventHubOptions?: Parameters<typeof createEventHub>;
-  stateOptions?: Parameters<typeof createState>;
-  loggerOptions?: Parameters<typeof createLogger>;
-};
-
-// type TBrainstackFactory = (options: TBrainstackOptions) => {};
+import React, { createContext, useContext, useEffect, useMemo } from 'react';
+import { createLogger, createStore } from '@brainstack/core';
+import { BrainStackProviderProps, TBrainstackOptions } from './abstraction';
 
 const createUseOn =
-  (hub: ReturnType<typeof createEventHub>) =>
+  (store: ReturnType<typeof createStore>) =>
   (event: string, handler: Function) => {
     useEffect(() => {
-      const removeHandler = hub.on(event, handler);
+      const removeHandler = store.on(event, handler);
       return () => removeHandler();
     }, []);
   };
@@ -28,44 +14,33 @@ const createUseOn =
 const createBrainStackProvider =
   (core: any, BrainStackContext: any): React.FC<BrainStackProviderProps> =>
   ({ children }) => {
-    const [data, setData] = useState(core);
-
-    // Sync external store with data
-    React.useSyncExternalStore(
-      () =>
-        core.hub.on(/.*/, (e: any) => {
-          core.log.info(`useSyncExternalStore Event Triggered `, e);
-        }),
-      () => setData
-    );
+    React.useSyncExternalStore(core.store.subscribe, core.store.getState);
 
     return (
-      <BrainStackContext.Provider value={{ ...data }}>
+      <BrainStackContext.Provider value={{ ...core }}>
         {children}
       </BrainStackContext.Provider>
     );
   };
 
 const BrainStackContext = createContext(null);
-export const useBrainStack = () => useContext(BrainStackContext);
 
+export const useBrainStack = () => useContext(BrainStackContext);
 export const useCreateBrainstack = (options: TBrainstackOptions) => {
   const { eventHubOptions = [], stateOptions, loggerOptions = [] } = options;
-  const hub = useMemo(
-    () => createEventHub(...eventHubOptions),
-    [eventHubOptions]
+  const store = useMemo(
+    () => createStore({ initializer: stateOptions, eventHubOptions }),
+    [stateOptions, eventHubOptions]
   );
-  const state = useMemo(() => createState(stateOptions), [stateOptions]);
   const log = useMemo(() => createLogger(...loggerOptions), [loggerOptions]);
-  const useOn = createUseOn(hub);
+  const useOn = createUseOn(store);
   const core = useMemo(
     () => ({
-      hub,
-      state,
+      store,
       log,
       useOn,
     }),
-    [hub, state, log, useOn]
+    [store, log, useOn]
   );
 
   const BrainStackProvider = createBrainStackProvider(core, BrainStackContext);

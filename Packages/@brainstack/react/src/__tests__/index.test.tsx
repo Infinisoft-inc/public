@@ -2,8 +2,7 @@ import React from 'react';
 import { unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { renderHook, render } from '@testing-library/react';
-import { createEventHub, createLogger, createState } from '@brainstack/core';
-import { useBrainStack, useCreateBrainstack } from '..'; // Update with actual path
+import { useBrainStack, useCreateBrainstack } from '..';
 
 // Mock external dependencies
 jest.mock('@brainstack/core', () => ({
@@ -13,6 +12,13 @@ jest.mock('@brainstack/core', () => ({
   })),
   createLogger: jest.fn(),
   createState: jest.fn(),
+  createStore: jest.fn(() => ({
+    subscribe: jest.fn(),
+    emit: jest.fn(),
+    on: jest.fn(),
+    getState: jest.fn(),
+    mutate: jest.fn(),
+  })),
 }));
 
 // Mock React's useEffect
@@ -20,10 +26,13 @@ jest.spyOn(React, 'useEffect').mockImplementation((effect) => effect());
 
 // Mock React's useContext
 jest.spyOn(React, 'useContext').mockImplementation(() => ({
-  hub: {
+  store: {
+    subscribe: jest.fn(),
+    emit: jest.fn(),
     on: jest.fn(),
+    getState: jest.fn(),
+    mutate: jest.fn(),
   },
-  state: {},
   log: {},
   useOn: jest.fn(),
 }));
@@ -71,8 +80,7 @@ describe('useCreateBrainstack', () => {
 
       return (
         <div>
-          <p>State: {brainStackContext.result.current?.state}</p>
-          <p>Hub: {brainStackContext.result.current?.hub}</p>
+          <p>Store: {brainStackContext.result.current?.store}</p>
           <p>Log: {brainStackContext.result.current?.log}</p>
         </div>
       );
@@ -84,8 +92,7 @@ describe('useCreateBrainstack', () => {
       </result.current.BrainStackProvider>
     );
 
-    expect(getByText('State:')).toBeDefined()
-    expect(getByText('Hub:')).toBeDefined();
+    expect(getByText('Store:')).toBeDefined();
     expect(getByText('Log:')).toBeDefined();
   });
 });
