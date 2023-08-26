@@ -29,8 +29,8 @@ yarn add @brainstack/react
 Here's an example of how to use these functions:
 
 ```jsx
-import React, { useState } from 'react';
-import { useCreateBrainstack, useBrainStack } from '@brainstack/react';
+import React from "react";
+import { useCreateBrainstack, useBrainStack } from "@brainstack/react";
 
 const App = () => {
   // Create BrainStack instance with options
@@ -48,28 +48,27 @@ const App = () => {
 };
 
 const BrainStackApp = () => {
-  const { state, hub, log, useOn } = useBrainStack();
+  const { store, log, useOn } = useBrainStack();
 
   // Register a handler for the "INCREMENT" event
-  useOn('INCREMENT', () => {
-    console.log('INCREMENT event received!');
-    state.mutate((s) => ({ count: s.count + 1 }));
-    setA((a) => a + 1);
+  useOn("INCREMENT", () => {
+    console.log("INCREMENT event received!");
+    store.mutate((s) => ({ count: s.count + 1 }));
   });
 
-  const [a, setA] = useState(1);
 
-  log.error(`Hello ${state?.getState((s) => s?.count)}`);
+  log.error(`Hello ${store.getState((s) => s?.count)}`);
   return (
     <div>
       <h1>BrainStack App</h1>
-      <p>Current state: {state?.getState((s) => s?.count)}</p>
-      <button onClick={() => hub.emit('INCREMENT')}>increment</button>
+      <p>Current state: {store?.getState((s) => s?.count)}</p>
+      <button onClick={() => store.emit("INCREMENT")}>increment</button>
     </div>
   );
 };
 
 export default App;
+
 ```
 
 ## API
@@ -85,8 +84,7 @@ export default App;
 The BrainStackContext object, provided by the `BrainStackProvider`, contains the following properties:
 
 - **useOn(event: string, handler: Function)**: Register a handler to be called when an event is emitted by the BrainStack client.
-- **state**: The current state of the BrainStack client.
-- **hub**: The event hub of the BrainStack client.
+- **store**: Hub and state.
 - **log**: The logger of the BrainStack client.
 
 ## Use Cases
