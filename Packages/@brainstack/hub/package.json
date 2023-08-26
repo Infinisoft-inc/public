@@ -1,11 +1,22 @@
 {
   "name": "@brainstack/hub",
   "version": "1.1.4",
-  "description": "Your package description",
+  "description": "A Micro Pub/Sub Package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "keywords": [],
-  "author": "Your Name",
+  "keywords": [
+    "pub/sub",
+    "event bus",
+    "message hub",
+    "messaging",
+    "publish/subscribe",
+    "message broker",
+    "message queue",
+    "real-time communication",
+    "microservices",
+    "distributed systems"
+  ],
+  "author": "Infini SoftWorld <info@infinisoft.dev>",
   "license": "MIT",
   "scripts": {
     "test": "set NODE_OPTIONS=--experimental-vm-modules && jest --coverage index.test.ts",
@@ -27,7 +38,6 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@brainstack/log": "^1.1.4",
-    "ws": "^8.13.0"
+    "@brainstack/log": "^1.1.6"
   }
 }

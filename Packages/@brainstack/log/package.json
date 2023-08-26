@@ -1,11 +1,22 @@
 {
   "name": "@brainstack/log",
-  "version": "1.1.6",
-  "description": "Your package description",
+  "version": "1.1.7",
+  "description": "A Micro Logger PAckage",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "keywords": [],
-  "author": "Your Name",
+  "keywords": [
+    "logging",
+    "logger",
+    "log management",
+    "microservices",
+    "debugging",
+    "error tracking",
+    "application monitoring",
+    "log analysis",
+    "log aggregation",
+    "log visualization"
+  ],
+  "author": "Infini SoftWorld <info@infinisoft.dev>",
   "license": "MIT",
   "scripts": {
     "test": "set NODE_OPTIONS=--experimental-vm-modules && jest --coverage index.test.ts",
