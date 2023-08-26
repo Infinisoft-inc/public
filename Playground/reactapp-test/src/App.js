@@ -1,5 +1,6 @@
 import React from "react";
 import { useCreateBrainstack, useBrainStack } from "@brainstack/react";
+import Layout from "./devtools/layout";
 
 const App = () => {
   // Create BrainStack instance with options
@@ -11,7 +12,8 @@ const App = () => {
 
   return (
     <BrainStackProvider>
-      <BrainStackApp />
+      {/* <BrainStackApp /> */}
+      <Layout />
     </BrainStackProvider>
   );
 };
