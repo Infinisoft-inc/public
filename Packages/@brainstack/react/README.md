@@ -29,14 +29,14 @@ yarn add @brainstack/react
 Here's an example of how to use these functions:
 
 ```jsx
-import React from 'react';
-import { useCreateBrainstack  } from '@brainstack/react';
+import React, { useState } from 'react';
+import { useCreateBrainstack, useBrainStack } from '@brainstack/react';
 
 const App = () => {
   // Create BrainStack instance with options
-  const { BrainStackProvider, useBrainStack } = useCreateBrainstack({
+  const { BrainStackProvider } = useCreateBrainstack({
     eventHubOptions: [],
-    stateOptions: {},
+    stateOptions: { count: 1 },
     loggerOptions: [],
   });
 
@@ -53,13 +53,18 @@ const BrainStackApp = () => {
   // Register a handler for the "INCREMENT" event
   useOn('INCREMENT', () => {
     console.log('INCREMENT event received!');
+    state.mutate((s) => ({ count: s.count + 1 }));
+    setA((a) => a + 1);
   });
 
+  const [a, setA] = useState(1);
+
+  log.error(`Hello ${state?.getState((s) => s?.count)}`);
   return (
     <div>
       <h1>BrainStack App</h1>
-      <p>Current state: {state}</p>
-      {/* Your UI components */}
+      <p>Current state: {state?.getState((s) => s?.count)}</p>
+      <button onClick={() => hub.emit('INCREMENT')}>increment</button>
     </div>
   );
 };
@@ -105,4 +110,3 @@ Submit a pull request
 # License
 
 This module is released under the MIT License.
-
