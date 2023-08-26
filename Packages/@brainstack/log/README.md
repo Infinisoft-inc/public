@@ -87,7 +87,3 @@ Contributions to `@brainstack/log` are welcome! If you find any issues or have s
 ## License
 
 This package is licensed under the [MIT License](LICENSE).
-
-```
-
-Please note that this generated `README.md` provides a basic structure and placeholders for the package information. You may need to update it with more detailed explanations, examples, and additional sections as per your specific requirements.

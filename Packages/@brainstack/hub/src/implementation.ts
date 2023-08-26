@@ -1,5 +1,5 @@
-import {  EventHubFactory } from './abstraction';
-import {createLogger} from '@brainstack/log'
+import { EventHubFactory } from './abstraction';
+import { createLogger } from '@brainstack/log';
 import { uuidv1 } from './utils';
 
 /**
@@ -7,7 +7,9 @@ import { uuidv1 } from './utils';
  * @param options - The options for the event hub.
  * @returns The created event hub.
  */
-export const createEventHub: EventHubFactory = (options={source:"unknown", logger: createLogger(3)}) => {
+export const createEventHub: EventHubFactory = (
+  options = { source: 'unknown', logger: createLogger(3) }
+) => {
   const events = new Map<string, Map<string, Function>>();
   const regexHandlers = new Map<RegExp, Map<string, Function>>();
   const uuid = uuidv1();
@@ -22,7 +24,7 @@ export const createEventHub: EventHubFactory = (options={source:"unknown", logge
     const handlerId = uuidv1();
     let handlers: Map<string, Function>;
 
-    if (typeof event === "string") {
+    if (typeof event === 'string') {
       handlers = events.get(event) ?? new Map();
       handlers.set(handlerId, handler);
       events.set(event, handlers);
@@ -31,7 +33,7 @@ export const createEventHub: EventHubFactory = (options={source:"unknown", logge
       handlers.set(handlerId, handler);
       regexHandlers.set(event, handlers);
     } else {
-      throw new Error("Invalid event name");
+      throw new Error('Invalid event name');
     }
 
     return () => {
