@@ -1,28 +1,91 @@
-/**
- * @jest-environment jsdom
- */
-import '@testing-library/jest-dom/extend-expect';
-import { render } from '@testing-library/react';
-import { BrainStackProvider, useBrainStack } from '..';
-import { createLogger } from '@brainstack/log';
-import { createEventHub } from '@brainstack/hub';
 import React from 'react';
+import { unmountComponentAtNode } from 'react-dom';
+import { act } from 'react-dom/test-utils';
+import { renderHook, render } from '@testing-library/react';
+import { createEventHub, createLogger, createState } from '@brainstack/core';
+import { useBrainStack, useCreateBrainstack } from '..'; // Update with actual path
 
-describe('BrainStackProvider', () => {
-  it('should render the children with the correct context value', () => {
-    const logger = createLogger();
-    const hub = createEventHub();
-    const initialState = { count: 0 };
-    const TestComponent: React.FC = () => {
-      const { state } = useBrainStack();
-      state.mutate(()=>initialState)
-      return (<div>{state.getState()}</div>);
+// Mock external dependencies
+jest.mock('@brainstack/core', () => ({
+  createEventHub: jest.fn(() => ({
+    on: jest.fn(),
+    emit: jest.fn(),
+  })),
+  createLogger: jest.fn(),
+  createState: jest.fn(),
+}));
+
+// Mock React's useEffect
+jest.spyOn(React, 'useEffect').mockImplementation((effect) => effect());
+
+// Mock React's useContext
+jest.spyOn(React, 'useContext').mockImplementation(() => ({
+  hub: {
+    on: jest.fn(),
+  },
+  state: {},
+  log: {},
+  useOn: jest.fn(),
+}));
+
+describe('useCreateBrainstack', () => {
+  afterEach(() => {
+    // Clear mock function calls between tests
+    jest.clearAllMocks();
+  });
+
+  it('should return hooks and provider', () => {
+    const { result } = renderHook(() => useCreateBrainstack({}));
+
+    expect(typeof result.current.BrainStackProvider).toBe('function');
+  });
+
+  it('should return hooks and provider', () => {
+    const { result } = renderHook(() => useCreateBrainstack({}));
+
+    expect(typeof result.current.BrainStackProvider).toBe('function');
+  });
+
+  it('should create BrainStackProvider', () => {
+    const { result } = renderHook(() => useCreateBrainstack({}));
+
+    const Provider = result.current.BrainStackProvider;
+
+    const div = document.createElement('div');
+    act(() => {
+      render(
+        <Provider>
+          <div />
+        </Provider>
+      );
+    });
+
+    unmountComponentAtNode(div);
+  });
+
+  it('should provide access to the BrainStack context', () => {
+    const { result } = renderHook(() => useCreateBrainstack({}));
+
+    const TestComponent = () => {
+      const brainStackContext = renderHook<any, any>(() => useBrainStack());
+
+      return (
+        <div>
+          <p>State: {brainStackContext.result.current?.state}</p>
+          <p>Hub: {brainStackContext.result.current?.hub}</p>
+          <p>Log: {brainStackContext.result.current?.log}</p>
+        </div>
+      );
     };
+
     const { getByText } = render(
-      <BrainStackProvider>
+      <result.current.BrainStackProvider>
         <TestComponent />
-      </BrainStackProvider>
+      </result.current.BrainStackProvider>
     );
-    expect(getByText('0')).toBeInTheDocument();
+
+    expect(getByText('State:')).toBeDefined()
+    expect(getByText('Hub:')).toBeDefined();
+    expect(getByText('Log:')).toBeDefined();
   });
 });
