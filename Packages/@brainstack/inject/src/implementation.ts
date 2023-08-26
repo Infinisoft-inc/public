@@ -1,9 +1,9 @@
 import { Dependency } from './abstraction';
 
-export const inject = () => {
-  const container: Record<string, Dependency> = {};
+export const inject = <T>() => {
+  const container: Record<string, Dependency<T>> = {};
 
-  const register = (dependency: Dependency): (() => void) => {
+  const register = (dependency: Dependency<T>): (() => void) => {
     const id = dependency.id;
     if (id in container) {
       throw new Error(
@@ -20,11 +20,11 @@ export const inject = () => {
     return unregister;
   };
 
-  const get = (id: string): Dependency | undefined => {
+  const get = (id: string): Dependency<T> | undefined => {
     return container[id];
   };
 
-  const search = (term: string): Dependency[] => {
+  const search = (term: string): Dependency<T>[] => {
     return Object.values(container).filter(
       (dep) => dep.name.includes(term) || dep.description.includes(term)
     );

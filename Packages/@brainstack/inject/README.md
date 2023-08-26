@@ -1,6 +1,6 @@
 # @brainstack/inject
 
-A lightweight dependency injection library for JavaScript and TypeScript.
+A lightweight dependency injection library for JavaScript and TypeScript, designed to facilitate dependency management and injection in your projects.
 
 ## Installation
 
@@ -33,7 +33,9 @@ const dependency: Dependency = {
   id: 'testDependency',
   name: 'Test Dependency',
   description: 'A test dependency',
-  run: () => {},
+  instance: {
+    /* your instantiated object */
+  },
 };
 
 const unregister = container.register(dependency);
@@ -62,7 +64,9 @@ const dependency: Dependency = {
   id: 'testDependency',
   name: 'Test Dependency',
   description: 'A test dependency',
-  run: () => {},
+  instance: {
+    /* your instantiated object */
+  },
 };
 
 const unregister = container.register(dependency);
@@ -84,7 +88,7 @@ Returns: Dependency container object with methods.
 
 Registers a new dependency in the container.
 
-- `dependency`: An object containing the dependency details (id, name, description, run).
+- `dependency`: An object containing the dependency details (id, name, description, instance).
 
 Returns: A function to unregister the dependency.
 
@@ -104,10 +108,16 @@ Searches for dependencies by name or description containing the search term.
 
 Returns: An array of matching dependencies.
 
-## Configuration
+# Contributing
 
-Before using the library, make sure you have the required API keys or endpoints for the selected integration.
+Contributions are welcome! If you would like to contribute to this module, please follow these guidelines:
 
-## License
+Fork the repository  
+Create a new branch for your changes  
+Make your changes and commit them with descriptive commit messages  
+Push your changes to your fork  
+Submit a pull request
 
-This project is licensed under the MIT License. You can find more details in the [LICENSE](LICENSE) file.
+# License
+
+This module is released under the MIT License.

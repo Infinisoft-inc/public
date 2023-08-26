@@ -1,6 +1,6 @@
-export interface Dependency {
-    id: string;
-    name: string;
-    description: string;
-    run: () => void;
-  }
+export interface Dependency<T> {
+  id: string;
+  name: string;
+  description: string;
+  instance: T;
+}

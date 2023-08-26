@@ -4,15 +4,15 @@ describe('inject', () => {
   let container: ReturnType<typeof inject>;
 
   beforeEach(() => {
-    container = inject();
+    container = inject<any>(); // You can replace 'any' with the actual type of the instantiated object
   });
 
   it('should register a dependency', () => {
-    const dependency: Dependency = {
+    const dependency: Dependency<any> = {
       id: 'testDependency',
       name: 'Test Dependency',
       description: 'A test dependency',
-      run: () => {},
+      instance: {}, // Provide the actual instance here
     };
 
     const unregister = container.register(dependency);
@@ -25,11 +25,11 @@ describe('inject', () => {
   });
 
   it('should throw an error when registering a duplicate dependency', () => {
-    const dependency: Dependency = {
+    const dependency: Dependency<any> = {
       id: 'testDependency',
       name: 'Test Dependency',
       description: 'A test dependency',
-      run: () => {},
+      instance: {}, // Provide the actual instance here
     };
 
     container.register(dependency);
@@ -42,11 +42,11 @@ describe('inject', () => {
   });
 
   it('should get a dependency by ID', () => {
-    const dependency: Dependency = {
+    const dependency: Dependency<any> = {
       id: 'testDependency',
       name: 'Test Dependency',
       description: 'A test dependency',
-      run: () => {},
+      instance: {}, // Provide the actual instance here
     };
 
     container.register(dependency);
@@ -63,18 +63,18 @@ describe('inject', () => {
   });
 
   it('should search for dependencies by term', () => {
-    const dependency1: Dependency = {
+    const dependency1: Dependency<any> = {
       id: 'dependency1',
       name: 'Test Dependency 1',
       description: 'A test dependency',
-      run: () => {},
+      instance: {}, // Provide the actual instance here
     };
 
-    const dependency2: Dependency = {
+    const dependency2: Dependency<any> = {
       id: 'dependency2',
       name: 'Another Dependency',
       description: 'Another test dependency',
-      run: () => {},
+      instance: {}, // Provide the actual instance here
     };
 
     container.register(dependency1);
