@@ -12,7 +12,7 @@
   "scripts": {
     "pkg:build":"lerna run build",
     "pkg:test":"lerna run test",
-    "pkg:update":"lerna exec -- npm update",
-    "pkg:publish":"lerna publish minor"
+    "pkg:publish":"lerna publish minor",
+    "pkg:update":"lerna exec -- npm update"
   }
 }
