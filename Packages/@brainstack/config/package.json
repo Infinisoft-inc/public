@@ -1,10 +1,17 @@
 {
   "name": "@brainstack/config",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A Micro Config Manager Package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "keywords": ["brainstack", "config", "configuration", "manager", "micro", "settings"],
+  "keywords": [
+    "brainstack",
+    "config",
+    "configuration",
+    "manager",
+    "micro",
+    "settings"
+  ],
   "author": "Infini SoftWorld <info@infinisoft.dev>",
   "license": "MIT",
   "scripts": {

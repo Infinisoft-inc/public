@@ -1,10 +1,15 @@
 {
   "name": "@brainstack/crud",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Micro CRUD Package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "keywords": ["brainstack", "crud", "micro", "package"],
+  "keywords": [
+    "brainstack",
+    "crud",
+    "micro",
+    "package"
+  ],
   "author": "Infini SoftWorld <info@infinisoft.dev>",
   "license": "MIT",
   "scripts": {
