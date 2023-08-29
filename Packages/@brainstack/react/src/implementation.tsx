@@ -1,6 +1,14 @@
 import React, { createContext, useContext, useEffect, useMemo } from 'react';
-import { createLogger, createStore, createAuthProvider } from '@brainstack/core';
-import { BrainStackProviderProps, TBrainStackContext, TBrainstackOptions } from './abstraction';
+import {
+  createLogger,
+  createStore,
+  createAuthProvider,
+} from '@brainstack/core';
+import {
+  BrainStackProviderProps,
+  TBrainStackContext,
+  TBrainstackOptions,
+} from './abstraction';
 
 const createUseOn =
   (store: ReturnType<typeof createStore>) =>
@@ -27,20 +35,28 @@ const BrainStackContext = createContext<TBrainStackContext | null>(null);
 
 export const useBrainStack = () => useContext(BrainStackContext);
 export const useCreateBrainstack = (options: TBrainstackOptions) => {
-  const { eventHubOptions = [], stateOptions, loggerOptions = [], authOptions } = options;
+  const {
+    eventHubOptions = [],
+    stateOptions,
+    loggerOptions = [],
+    authIntegration,
+  } = options;
   const store = useMemo(
     () => createStore({ initializer: stateOptions, eventHubOptions }),
     [stateOptions, eventHubOptions]
   );
   const log = useMemo(() => createLogger(...loggerOptions), [loggerOptions]);
-  const auth = useMemo(() => authOptions ? createAuthProvider(...authOptions!) : null, [authOptions]);
+  const auth = useMemo(
+    () => (authIntegration ? createAuthProvider(authIntegration) : null),
+    [authIntegration]
+  );
   const useOn = createUseOn(store);
   const core = useMemo(
     () => ({
       store,
       log,
       useOn,
-      auth
+      auth,
     }),
     [store, log, useOn, auth]
   );
