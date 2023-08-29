@@ -41,11 +41,7 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@brainstack/core": "^1.2.0",
-    "@brainstack/hub": "^1.1.6",
-    "@brainstack/log": "^1.1.10",
-    "@brainstack/state": "^1.1.6",
-    "@brainstack/store": "^1.0.1"
+    "@brainstack/core": "^1.2.0"
   },
   "jest": {
     "testEnvironment": "jsdom"
