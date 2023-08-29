@@ -7,6 +7,14 @@
   "keywords": [],
   "author": "Infini SoftWorld <info@infinisoft.dev>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Infinisoft-inc/public.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Infinisoft-inc/public/issues"
+  },
+  "homepage": "https://github.com/Infinisoft-inc/public#readme",
   "scripts": {
     "test": "set NODE_OPTIONS=--experimental-vm-modules && jest --coverage index.test.ts",
     "test:dev": "jest --watchAll",

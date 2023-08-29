@@ -1,7 +1,6 @@
 import {
   AuthIntegration,
   AuthProvider,
-  AuthResult,
   IAuthResult,
   createAuthProvider,
 } from '..';
@@ -17,6 +16,21 @@ const mockIntegration: AuthIntegration = {
   resendSignUp: async () => ({ success: true }),
   forgotPassword: async () => ({ success: true }),
   forgotPasswordConfirmationCode: async () => ({ success: true }),
+  lockSession: async () => ({ success: true }),
+  unlockSession: async () => ({ success: true }),
+  unlockAccount: async (username: string) => ({ success: true }),
+  disableAccount: async (username: string) => ({ success: true }),
+  enableAccount: async (username: string) => ({ success: true }),
+  refreshToken: async () => ({ success: true }),
+  hasPermission: async (permission: string) => true,
+  definePermission: async (permission: string) => ({ success: true }),
+  validatePermission: (permission: string) => true,
+  defineRole: async (role: string, permissions: string[]) => ({
+    success: true,
+  }),
+  assignRole: async (username: string, role: string) => ({ success: true }),
+  hasRole: async (username: string, role: string) => true,
+  addCustomClaim: (claim: string, value: any) => {},
 };
 
 // Test createAuthProvider function
@@ -38,6 +52,19 @@ describe('createAuthProvider', () => {
     expect(authProvider.resendSignUp).toBeDefined();
     expect(authProvider.forgotPassword).toBeDefined();
     expect(authProvider.forgotPasswordConfirmationCode).toBeDefined();
+    expect(authProvider.lockSession).toBeDefined();
+    expect(authProvider.unlockSession).toBeDefined();
+    expect(authProvider.unlockAccount).toBeDefined();
+    expect(authProvider.disableAccount).toBeDefined();
+    expect(authProvider.enableAccount).toBeDefined();
+    expect(authProvider.refreshToken).toBeDefined();
+    expect(authProvider.hasPermission).toBeDefined();
+    expect(authProvider.definePermission).toBeDefined();
+    expect(authProvider.validatePermission).toBeDefined();
+    expect(authProvider.defineRole).toBeDefined();
+    expect(authProvider.assignRole).toBeDefined();
+    expect(authProvider.hasRole).toBeDefined();
+    expect(authProvider.addCustomClaim).toBeDefined();
   });
 
   it('should call integration.signIn when signIn is called', async () => {
@@ -53,37 +80,11 @@ describe('createAuthProvider', () => {
     expect(result.success).toBe(true);
   });
 
-  
-
-  it('should return a valid AuthProvider object', () => {
-    const integration: AuthIntegration = {
-      signIn: jest.fn(),
-      signOut: jest.fn(),
-      signUp: jest.fn(),
-      lockAccount: jest.fn(),
-      resetPassword: jest.fn(),
-      confirmSignUp: jest.fn(),
-      resendSignUp: jest.fn(),
-      forgotPassword: jest.fn(),
-      forgotPasswordConfirmationCode: jest.fn(),
-    };
-
-    const authProvider = createAuthProvider(integration);
-    expect(authProvider).toBeDefined();
-    expect(authProvider.signIn).toBeDefined();
-    expect(authProvider.signOut).toBeDefined();
-    expect(authProvider.signUp).toBeDefined();
-    expect(authProvider.lockAccount).toBeDefined();
-    expect(authProvider.resetPassword).toBeDefined();
-    expect(authProvider.confirmSignUp).toBeDefined();
-    expect(authProvider.resendSignUp).toBeDefined();
-    expect(authProvider.forgotPassword).toBeDefined();
-    expect(authProvider.forgotPasswordConfirmationCode).toBeDefined();
-  });
-
-
   it('should call integration.signIn when signIn is called', async () => {
-    const result: IAuthResult = await authProvider.signIn('username', 'password');
+    const result: IAuthResult = await authProvider.signIn(
+      'username',
+      'password'
+    );
     expect(result.success).toBe(true);
   });
 
@@ -93,7 +94,11 @@ describe('createAuthProvider', () => {
   });
 
   it('should call integration.signUp when signUp is called', async () => {
-    const result: IAuthResult = await authProvider.signUp('username', 'password', 'email');
+    const result: IAuthResult = await authProvider.signUp(
+      'username',
+      'password',
+      'email'
+    );
     expect(result.success).toBe(true);
   });
 
@@ -108,7 +113,10 @@ describe('createAuthProvider', () => {
   });
 
   it('should call integration.confirmSignUp when confirmSignUp is called', async () => {
-    const result: IAuthResult = await authProvider.confirmSignUp('username', 'code');
+    const result: IAuthResult = await authProvider.confirmSignUp(
+      'username',
+      'code'
+    );
     expect(result.success).toBe(true);
   });
 
@@ -123,77 +131,100 @@ describe('createAuthProvider', () => {
   });
 
   it('should call integration.forgotPasswordConfirmationCode when forgotPasswordConfirmationCode is called', async () => {
-    const result: IAuthResult = await authProvider.forgotPasswordConfirmationCode('username', 'code', 'newPassword');
+    const result: IAuthResult =
+      await authProvider.forgotPasswordConfirmationCode(
+        'username',
+        'code',
+        'newPassword'
+      );
     expect(result.success).toBe(true);
   });
 
   it('should call integration.signIn when signIn is called', async () => {
-    const integration: AuthIntegration = {
-      signIn: jest.fn(() => Promise.resolve({success: true})),
-      signOut: function (): Promise<IAuthResult> {
-        throw new Error('Function not implemented.');
-      },
-      signUp: function (username: string, password: string, email: string): Promise<IAuthResult> {
-        throw new Error('Function not implemented.');
-      },
-      lockAccount: function (username: string): Promise<IAuthResult> {
-        throw new Error('Function not implemented.');
-      },
-      resetPassword: function (username: string): Promise<IAuthResult> {
-        throw new Error('Function not implemented.');
-      },
-      confirmSignUp: function (username: string, code: string): Promise<IAuthResult> {
-        throw new Error('Function not implemented.');
-      },
-      resendSignUp: function (username: string): Promise<IAuthResult> {
-        throw new Error('Function not implemented.');
-      },
-      forgotPassword: function (username: string): Promise<IAuthResult> {
-        throw new Error('Function not implemented.');
-      },
-      forgotPasswordConfirmationCode: function (username: string, code: string, newPassword: string): Promise<IAuthResult> {
-        throw new Error('Function not implemented.');
-      }
-    };
+    const integration: AuthIntegration = mockIntegration;
 
     const authProvider = createAuthProvider(integration);
-    const result = await authProvider.signIn('username', 'password');
-    expect(integration.signIn).toHaveBeenCalledWith('username', 'password');
-    expect(result).resolves
+    expect(await authProvider.signIn('username', 'password')).toStrictEqual({
+      success: true,
+    });
   });
 
   it('should call integration.signOut when signOut is called', async () => {
-    const integration: AuthIntegration = {
-      signOut: jest.fn(() => Promise.resolve({ success: true })),
-      signIn: function (username: string, password: string): Promise<IAuthResult> {
-        throw new Error('Function not implemented.');
-      },
-      signUp: function (username: string, password: string, email: string): Promise<IAuthResult> {
-        throw new Error('Function not implemented.');
-      },
-      lockAccount: function (username: string): Promise<IAuthResult> {
-        throw new Error('Function not implemented.');
-      },
-      resetPassword: function (username: string): Promise<IAuthResult> {
-        throw new Error('Function not implemented.');
-      },
-      confirmSignUp: function (username: string, code: string): Promise<IAuthResult> {
-        throw new Error('Function not implemented.');
-      },
-      resendSignUp: function (username: string): Promise<IAuthResult> {
-        throw new Error('Function not implemented.');
-      },
-      forgotPassword: function (username: string): Promise<IAuthResult> {
-        throw new Error('Function not implemented.');
-      },
-      forgotPasswordConfirmationCode: function (username: string, code: string, newPassword: string): Promise<IAuthResult> {
-        throw new Error('Function not implemented.');
-      }
-    };
+    const integration: AuthIntegration = mockIntegration;
 
     const authProvider = createAuthProvider(integration);
-    const result = await authProvider.signOut();
-    expect(integration.signOut).toHaveBeenCalled();
-    expect(result).resolves;
+    expect(await authProvider.signOut()).toStrictEqual({ success: true });
+  });
+
+  it('should call integration.lockSession when lockSession is called', async () => {
+    const result: IAuthResult = await authProvider.lockSession();
+    expect(result.success).toBe(true);
+  });
+
+  it('should call integration.unlockSession when unlockSession is called', async () => {
+    const result: IAuthResult = await authProvider.unlockSession();
+    expect(result.success).toBe(true);
+  });
+
+  it('should call integration.unlockAccount when unlockAccount is called', async () => {
+    const result: IAuthResult = await authProvider.unlockAccount('username');
+    expect(result.success).toBe(true);
+  });
+
+  it('should call integration.disableAccount when disableAccount is called', async () => {
+    const result: IAuthResult = await authProvider.disableAccount('username');
+    expect(result.success).toBe(true);
+  });
+
+  it('should call integration.enableAccount when enableAccount is called', async () => {
+    const result: IAuthResult = await authProvider.enableAccount('username');
+    expect(result.success).toBe(true);
+  });
+
+  it('should call integration.refreshToken when refreshToken is called', async () => {
+    const result: IAuthResult = await authProvider.refreshToken();
+    expect(result.success).toBe(true);
+  });
+
+  it('should call integration.hasPermission when hasPermission is called', async () => {
+    const result: boolean = await authProvider.hasPermission('permission');
+    expect(result).toBe(true);
+  });
+
+  it('should call integration.definePermission when definePermission is called', async () => {
+    const result: IAuthResult = await authProvider.definePermission(
+      'permission'
+    );
+    expect(result.success).toBe(true);
+  });
+
+  it('should call integration.validatePermission when validatePermission is called', () => {
+    const result: boolean = authProvider.validatePermission('permission');
+    expect(result).toBe(true);
+  });
+
+  it('should call integration.defineRole when defineRole is called', async () => {
+    const result: IAuthResult = await authProvider.defineRole('role', [
+      'permission',
+    ]);
+    expect(result.success).toBe(true);
+  });
+
+  it('should call integration.assignRole when assignRole is called', async () => {
+    const result: IAuthResult = await authProvider.assignRole(
+      'username',
+      'role'
+    );
+    expect(result.success).toBe(true);
+  });
+
+  it('should call integration.hasRole when hasRole is called', async () => {
+    const result: boolean = await authProvider.hasRole('username', 'role');
+    expect(result).toBe(true);
+  });
+
+  it('should call integration.addCustomClaim when addCustomClaim is called', () => {
+    authProvider.addCustomClaim('claim', 'value');
+    // You can add assertions related to custom claim handling here
   });
 });

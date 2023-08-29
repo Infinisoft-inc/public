@@ -115,6 +115,123 @@ const forgotPasswordConfirmationResult = await authProvider.forgotPasswordConfir
 // Handle the result...
 ```
 
+#### Lock Session
+
+Lock the user's session to enhance security.
+
+```javascript
+const lockSessionResult = await authProvider.lockSession();
+// Handle the result...
+```
+
+#### Unlock Session
+
+Unlock the user's locked session.
+
+```javascript
+const unlockSessionResult = await authProvider.unlockSession();
+// Handle the result...
+```
+
+#### Unlock Account
+
+Unlock a locked user account.
+
+```javascript
+const unlockAccountResult = await authProvider.unlockAccount(username);
+// Handle the result...
+```
+
+#### Disable Account
+
+Disable a user's account.
+
+```javascript
+const disableAccountResult = await authProvider.disableAccount(username);
+// Handle the result...
+```
+
+#### Enable Account
+
+Enable a disabled user account.
+
+```javascript
+const enableAccountResult = await authProvider.enableAccount(username);
+// Handle the result...
+```
+
+#### Refresh Token
+
+Refresh the authentication token to extend the session.
+
+```javascript
+const refreshTokenResult = await authProvider.refreshToken();
+// Handle the result...
+```
+
+#### Check Permission
+
+Check if the authenticated user has a specific permission.
+
+```javascript
+const hasPermissionResult = await authProvider.hasPermission('permission');
+// Handle the result...
+```
+
+#### Define Permission
+
+Define a new permission for use in the system.
+
+```javascript
+const definePermissionResult = await authProvider.definePermission('newPermission');
+// Handle the result...
+```
+
+#### Validate Permission
+
+Validate if a given permission is correctly defined.
+
+```javascript
+const isValidPermission = authProvider.validatePermission('permission');
+// Handle the result...
+```
+
+#### Define Role
+
+Define a new role and associate it with a list of permissions.
+
+```javascript
+const defineRoleResult = await authProvider.defineRole('newRole', ['permission1', 'permission2']);
+// Handle the result...
+```
+
+#### Assign Role
+
+Assign a role to a specific user.
+
+```javascript
+const assignRoleResult = await authProvider.assignRole('username', 'role');
+// Handle the result...
+```
+
+#### Check Role
+
+Check if a user has a specific role.
+
+```javascript
+const hasRoleResult = await authProvider.hasRole('username', 'role');
+// Handle the result...
+```
+
+#### Add Custom Claim
+
+Add custom claims to authentication tokens for application-specific needs.
+
+```javascript
+authProvider.addCustomClaim('claimName', 'claimValue');
+// Custom claim added...
+```
+
 ## Example
 
 Imagine you're building a multi-platform application with different authentication providers. Here's how you could use the Auth SDK to streamline your authentication process:

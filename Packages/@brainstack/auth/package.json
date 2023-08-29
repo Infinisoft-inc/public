@@ -1,12 +1,20 @@
 {
   "name": "@brainstack/auth",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "The Brainstack Auth SDK is a powerful tool for managing user authentication in various applications. It provides a unified interface to interact with authentication methods, abstracting the underlying complexities and offering a streamlined API.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": ["authentication", "user authentication", "auth SDK", "security"],
   "author": "Infini SoftWorld <info@infinisoft.dev>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Infinisoft-inc/public.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Infinisoft-inc/public/issues"
+  },
+  "homepage": "https://github.com/Infinisoft-inc/public#readme",
   "scripts": {
     "test": "set NODE_OPTIONS=--experimental-vm-modules && jest --coverage index.test.ts",
     "test:dev": "jest --watchAll",
