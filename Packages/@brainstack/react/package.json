@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/react",
-  "version": "1.1.5",
+  "version": "1.2.0",
   "description": "Brainstack React Package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -41,7 +41,7 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@brainstack/core": "^1.1.4",
+    "@brainstack/core": "^1.2.0",
     "@brainstack/hub": "^1.1.6",
     "@brainstack/log": "^1.1.10",
     "@brainstack/state": "^1.1.6",
