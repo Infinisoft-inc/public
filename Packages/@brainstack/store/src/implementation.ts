@@ -1,6 +1,6 @@
 import { createEventHub } from '@brainstack/hub';
 import { createState } from '@brainstack/state';
-import { TCreateStoreOptions } from '.';
+import { TStoreFactory } from '.';
 
 /**
  * Creates a microstore instance with integrated state management and event handling.
@@ -11,7 +11,7 @@ import { TCreateStoreOptions } from '.';
  *
  * @returns {Object & State & EventHub} A microstore instance with state management and event handling.
  */
-export const createStore = (options?: TCreateStoreOptions) => {
+export const createStore:TStoreFactory = (options) => {
 
   /** @type {State} */
   const state = createState(options?.initializer);

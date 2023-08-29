@@ -1,6 +1,7 @@
 {
   "name": "@brainstack/bridge-client",
   "version": "1.0.6",
+  "private":true,
   "description": "Brainstack Bridge Client",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

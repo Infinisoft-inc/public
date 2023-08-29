@@ -1,5 +1,4 @@
 {
-  "packages": ["Packages/@brainstack/*", "Packages/@braintools/*"],
-  "version": "independent",
-  "useWorkspaces":true
+  "packages": ["Packages/@brainstack/*", "Packages/@braintools.old/*"],
+  "version": "independent"
 }

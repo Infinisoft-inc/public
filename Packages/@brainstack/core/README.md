@@ -26,7 +26,7 @@ The `@brainstack/core` package is a bundle that includes the following micro pac
 
 - **[@brainstack/config](https://www.npmjs.com/package/@brainstack/config)**: A micro config manager package that lets you manage configuration settings efficiently and flexibly, ensuring smooth application setup and behavior.
 
-- **[@brainstack/agent](https://www.npmjs.com/package/@brainstack/agent)**: A package tailored for building model agents that help you encapsulate complex logic and behavior into reusable components.
+- **[@brainstack/auth](https://www.npmjs.com/package/@brainstack/auth)**: The Brainstack Auth SDK is a powerful tool for managing user authentication in various applications. It provides a unified interface to interact with authentication methods, abstracting the underlying complexities and offering a streamlined API.
 
 - **[@brainstack/crud](https://www.npmjs.com/package/@brainstack/crud)**: A micro CRUD package that provides a convenient way to perform Create, Read, Update, and Delete operations on data sources, making data manipulation straightforward.
 

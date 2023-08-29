@@ -1,6 +1,7 @@
 {
   "name": "@brainstack/bridge-server",
   "version": "1.0.0",
+  "private":true,
   "description": "Brainstack Bridge Server",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
