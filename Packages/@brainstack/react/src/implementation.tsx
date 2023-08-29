@@ -33,7 +33,7 @@ export const useCreateBrainstack = (options: TBrainstackOptions) => {
     [stateOptions, eventHubOptions]
   );
   const log = useMemo(() => createLogger(...loggerOptions), [loggerOptions]);
-  const auth = useMemo(() => createAuthProvider(...authOptions!), [authOptions]);
+  const auth = useMemo(() => authOptions ? createAuthProvider(...authOptions!) : null, [authOptions]);
   const useOn = createUseOn(store);
   const core = useMemo(
     () => ({
