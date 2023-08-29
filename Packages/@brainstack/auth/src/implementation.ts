@@ -1,18 +1,30 @@
-import { AuthProvider, IAuthResult, AuthIntegration } from '.'; // Replace with the actual path
+import { AuthProvider, IAuthResult, AuthIntegration, TSecurityContext } from '.'; // Replace with the actual path
 
 export const createAuthProvider = (
   integration: AuthIntegration
 ): AuthProvider => {
+  const context: TSecurityContext = {
+    isAuthenticated: false,
+  };
+
   return {
     signIn: async (
       username: string,
       password: string
     ): Promise<IAuthResult> => {
-      return integration.signIn(username, password);
+        const result = await integration.signIn(username, password);
+        await integration.updateSecurityContext(context)
+        context.isAuthenticated = result.success;
+        return result;
     },
     signOut: async (): Promise<IAuthResult> => {
-      return integration.signOut();
+      const result = await integration.signOut();
+      await integration.updateSecurityContext(context)
+      context.isAuthenticated = !result.success;
+      return result;
     },
+    context,
+    isAuthenticated: context.isAuthenticated,
     signUp: async (
       username: string,
       password: string,

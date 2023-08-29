@@ -10,6 +10,13 @@ const mockIntegration: AuthIntegration = {
   signIn: async () => ({ success: true }),
   signOut: async () => ({ success: true }),
   signUp: async () => ({ success: true }),
+  updateSecurityContext: async (context) => {
+    context.isAuthenticated = true;
+    context.username = 'username';
+    context.accessToken = 'accessToken';
+    context.idToken = 'idToken';
+    context.refreshToken = 'refreshToken';
+  },
   lockAccount: async () => ({ success: true }),
   resetPassword: async () => ({ success: true }),
   confirmSignUp: async () => ({ success: true }),
@@ -73,6 +80,20 @@ describe('createAuthProvider', () => {
       'password'
     );
     expect(result.success).toBe(true);
+  });
+
+  it('should update context when signin', async () => {
+    const result: IAuthResult = await authProvider.signIn(
+      'username',
+      'password'
+    );
+
+    expect(result.success).toBe(true);
+    expect(authProvider.context.isAuthenticated).toBe(true);
+    expect(authProvider.context.username).toBe("username");
+    expect(authProvider.context.accessToken).toBe("accessToken");
+    expect(authProvider.context.idToken).toBe("idToken");
+    expect(authProvider.context.refreshToken).toBe("refreshToken");
   });
 
   it('should call integration.signOut when signOut is called', async () => {

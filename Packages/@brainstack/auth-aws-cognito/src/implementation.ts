@@ -1,4 +1,8 @@
-import { AuthIntegration, IAuthResult } from '@brainstack/auth';
+import {
+  AuthIntegration,
+  IAuthResult,
+  TSecurityContext,
+} from '@brainstack/auth';
 import { Auth } from 'aws-amplify';
 
 export const createAuthCognitoIntegration = (config: any): AuthIntegration => {
@@ -8,6 +12,7 @@ export const createAuthCognitoIntegration = (config: any): AuthIntegration => {
     signIn: async (username: string, password: string) => {
       try {
         const result = await Auth.signIn(username, password);
+
         return { success: true };
       } catch (err: any) {
         return { success: false, message: err?.message ?? '' };
@@ -20,6 +25,18 @@ export const createAuthCognitoIntegration = (config: any): AuthIntegration => {
       } catch (err: any) {
         return { success: false, message: err?.message ?? '' };
       }
+    },
+    updateSecurityContext: async (context: TSecurityContext) => {
+      const session = await Auth.currentSession();
+      context.accessToken = session.getAccessToken().getJwtToken();
+      context.idToken = session.getIdToken().getJwtToken();
+      context.refreshToken = session.getRefreshToken().getToken();
+
+      const userCredentials = await Auth.currentUserCredentials();
+      context.isAuthenticated = userCredentials.authenticated;
+
+      const user = await Auth.currentAuthenticatedUser();
+      context.username = user.username;
     },
     signUp: async (username: string, password: string, email: string) => {
       try {

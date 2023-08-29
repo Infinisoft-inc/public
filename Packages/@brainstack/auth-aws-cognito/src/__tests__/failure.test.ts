@@ -8,6 +8,25 @@ jest.mock('aws-amplify', () => ({
     signIn: jest.fn(() =>
       Promise.reject({ success: false, message: 'invalid credentials' })
     ),
+    currentSession: jest.fn(() =>
+      Promise.resolve({
+        getAccessToken: jest.fn(() => ({
+          getJwtToken: () => null,
+        })),
+        getIdToken: jest.fn(() => ({
+          getJwtToken: () => null,
+        })),
+        getRefreshToken: jest.fn(() => ({
+          getToken: () => null,
+        })),
+      })
+    ),
+    currentUserCredentials: jest.fn(() => ({
+      authenticated: false,
+    })),
+    currentAuthenticatedUser: jest.fn(() => ({
+      username: null,
+    })),
   },
 }));
 
@@ -36,6 +55,11 @@ describe('@brainstack/auth-aws-cognito Integration', () => {
       // Assert
       expect(result.success).toBe(false);
       expect(result.message).toBe('invalid credentials');
+      expect(authProvider.context.isAuthenticated).toBe(false);
+      expect(authProvider.context.accessToken).toBe(null);
+      expect(authProvider.context.idToken).toBe(null);
+      expect(authProvider.context.refreshToken).toBe(null);
+      expect(authProvider.context.username).toBe(null);
     });
   });
 });

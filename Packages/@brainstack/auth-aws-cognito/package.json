@@ -45,7 +45,7 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@brainstack/auth": "^1.0.3",
+    "@brainstack/auth": "^1.0.4",
     "aws-amplify": "^5.3.10"
   },
   "jest": {

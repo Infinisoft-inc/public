@@ -3,9 +3,19 @@ export interface IAuthResult {
   message?: string;
 }
 
+export type TSecurityContext = {
+  isAuthenticated: boolean;
+  username?: string
+  idToken?:string
+  accessToken?:string
+  refreshToken?:string
+};
+
 export interface AuthProvider {
   signIn: (username: string, password: string) => Promise<IAuthResult>;
   signOut: () => Promise<IAuthResult>;
+  context: TSecurityContext,
+  isAuthenticated: boolean;
   signUp: (
     username: string,
     password: string,
@@ -54,6 +64,7 @@ export interface AuthIntegration {
     password: string,
     email: string
   ) => Promise<IAuthResult>;
+  updateSecurityContext: (context: TSecurityContext) => Promise<void>;
   lockSession: () => Promise<IAuthResult>;
   unlockSession: () => Promise<IAuthResult>;
 

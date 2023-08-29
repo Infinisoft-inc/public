@@ -6,6 +6,25 @@ jest.mock('aws-amplify', () => ({
   Auth: {
     configure: jest.fn(),
     signIn: jest.fn(() => Promise.resolve(true)),
+    currentSession: jest.fn(() =>
+      Promise.resolve({
+        getAccessToken: jest.fn(() => ({
+          getJwtToken: () => 'accessToken',
+        })),
+        getIdToken: jest.fn(() => ({
+          getJwtToken: () => 'idToken',
+        })),
+        getRefreshToken: jest.fn(() => ({
+          getToken: () => 'refreshToken',
+        })),
+      })
+    ),
+    currentUserCredentials: jest.fn(() => ({
+      authenticated: true,
+    })),
+    currentAuthenticatedUser: jest.fn(() => ({
+      username: 'username',
+    })),
   },
 }));
 
@@ -29,6 +48,11 @@ describe('@brainstack/auth-aws-cognito Integration', () => {
 
       // Assert
       expect(result.success).toBe(true);
+      expect(authProvider.context.isAuthenticated).toBe(true);
+      expect(authProvider.context.accessToken).toBe("accessToken");
+      expect(authProvider.context.idToken).toBe("idToken");
+      expect(authProvider.context.refreshToken).toBe("refreshToken");
+      expect(authProvider.context.username).toBe("username");
     });
   });
 });
