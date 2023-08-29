@@ -8,5 +8,11 @@
   "dependencies": {
     "execa": "^7.1.1",
     "inquirer": "^9.1.5"
+  },
+  "scripts": {
+    "pkg:build":"lerna run build",
+    "pkg:test":"lerna run test",
+    "pkg:update":"lerna exec -- npm update",
+    "pkg:publish":"lerna publish minor"
   }
 }
