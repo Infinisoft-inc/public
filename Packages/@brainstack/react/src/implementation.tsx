@@ -85,10 +85,10 @@ export const createBrainstack = (options: TBrainstackOptions) => {
       core.store.mutate((prevState) => deepFieldMutator(newValue)(prevState));
     };
   };
-  const get = (fieldPath: string): any => {
+  const getValue = (fieldPath: string): any => {
     const fields = fieldPath.split('.');
-    let value = core.store.getState()
-  
+    let value = core.store.getState();
+
     for (const field of fields) {
       if (value && typeof value === 'object') {
         value = value[field];
@@ -96,7 +96,7 @@ export const createBrainstack = (options: TBrainstackOptions) => {
         return undefined;
       }
     }
-  
+
     return value;
   };
 
@@ -106,6 +106,6 @@ export const createBrainstack = (options: TBrainstackOptions) => {
     core,
     createDeepFieldMutator,
     createEventHandlerMutator,
-    get
+    getValue,
   };
 };
