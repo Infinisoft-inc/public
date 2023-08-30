@@ -1,3 +1,3 @@
-export  { mockIntegration } from './__tests__/index.test'
+export  { mockIntegration } from './__tests__/mockIntegration'
 export * from './abstraction'
 export * from './implementation'
