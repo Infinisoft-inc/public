@@ -29,22 +29,22 @@ yarn add @brainstack/react
 Here's an example of how to use these functions:
 
 ```jsx
-import React from "react";
-import { createBrainstack } from "@brainstack/react";
+import React from 'react';
+import { createBrainstack } from '@brainstack/react';
+
+// Create BrainStack instance with options
+const options = {
+  eventHubOptions: [],
+  stateOptions: { count: 1 },
+  loggerOptions: [],
+  authIntegration: {
+    // ... authentication integration settings ...
+  },
+};
+
+const { BrainStackProvider, useBrainStack } = createBrainstack(options);
 
 const App = () => {
-  // Create BrainStack instance with options
-  const options = {
-    eventHubOptions: [],
-    stateOptions: { count: 1 },
-    loggerOptions: [],
-    authIntegration: {
-      // ... authentication integration settings ...
-    },
-  };
-
-  const { BrainStackProvider, useBrainStack } = createBrainstack(options);
-
   return (
     <BrainStackProvider>
       <BrainStackApp />
@@ -56,8 +56,8 @@ const BrainStackApp = () => {
   const { store, log, useOn } = useBrainStack();
 
   // Register a handler for the "INCREMENT" event
-  useOn("INCREMENT", () => {
-    console.log("INCREMENT event received!");
+  useOn('INCREMENT', () => {
+    console.log('INCREMENT event received!');
     store.mutate((s) => ({ count: s.count + 1 }));
   });
 
@@ -66,7 +66,7 @@ const BrainStackApp = () => {
     <div>
       <h1>BrainStack App</h1>
       <p>Current state: {store?.getState((s) => s?.count)}</p>
-      <button onClick={() => store.emit("INCREMENT")}>increment</button>
+      <button onClick={() => store.emit('INCREMENT')}>increment</button>
     </div>
   );
 };
