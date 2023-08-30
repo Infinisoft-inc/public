@@ -1,5 +1,4 @@
 import {
-  createAuthProvider,
   createEventHub,
   Logger,
   createLogger,
@@ -25,5 +24,5 @@ export type TBrainstackOptions = {
   eventHubOptions?: Parameters<typeof createEventHub>;
   stateOptions?: Parameters<typeof createState>;
   loggerOptions?: Parameters<typeof createLogger>;
-  authIntegration?: AuthIntegration;
+  authIntegration: AuthIntegration;
 };

@@ -31,37 +31,63 @@ const createBrainStackProvider =
     );
   };
 
-const BrainStackContext = createContext<TBrainStackContext | null>(null);
+// const BrainStackContext = createContext<TBrainStackContext | null>(null);
 
-export const useBrainStack = () => useContext(BrainStackContext);
-export const useCreateBrainstack = (options: TBrainstackOptions) => {
+// export const useBrainStack = () => useContext(BrainStackContext);
+
+export const createBrainstack = (options: TBrainstackOptions) => {
   const {
     eventHubOptions = [],
     stateOptions,
     loggerOptions = [],
     authIntegration,
   } = options;
-  const store = useMemo(
-    () => createStore({ initializer: stateOptions, eventHubOptions }),
-    [stateOptions, eventHubOptions]
-  );
-  const log = useMemo(() => createLogger(...loggerOptions), [loggerOptions]);
-  const auth = useMemo(
-    () => (authIntegration ? createAuthProvider(authIntegration) : null),
-    [authIntegration]
-  );
+  const store = createStore({ initializer: stateOptions, eventHubOptions });
+  const log = createLogger(...loggerOptions);
+  const auth = createAuthProvider(authIntegration)
   const useOn = createUseOn(store);
-  const core = useMemo(
-    () => ({
-      store,
-      log,
-      useOn,
-      auth,
-    }),
-    [store, log, useOn, auth]
-  );
-
+  const core = {
+    store,
+    log,
+    useOn,
+    auth,
+  };
+  const BrainStackContext = createContext<TBrainStackContext>(core);
+  const useBrainStack = () => useContext(BrainStackContext);
   const BrainStackProvider = createBrainStackProvider(core, BrainStackContext);
 
-  return { BrainStackProvider };
+  return { useBrainStack, BrainStackProvider };
 };
+
+// export const useCreateBrainstack = (options: TBrainstackOptions) => {
+//   const {
+//     eventHubOptions = [],
+//     stateOptions,
+//     loggerOptions = [],
+//     authIntegration,
+//   } = options;
+
+//   // const store = useMemo(
+//   //   () => createStore({ initializer: stateOptions, eventHubOptions }),
+//   //   [stateOptions, eventHubOptions]
+//   // );
+//   // const log = useMemo(() => createLogger(...loggerOptions), [loggerOptions]);
+//   // const auth = useMemo(
+//   //   () => (authIntegration ? createAuthProvider(authIntegration) : null),
+//   //   [authIntegration]
+//   // );
+//   // const useOn = createUseOn(store);
+//   // const core = useMemo(
+//   //   () => ({
+//   //     store,
+//   //     log,
+//   //     useOn,
+//   //     auth,
+//   //   }),
+//   //   [store, log, useOn, auth]
+//   // );
+
+//   const BrainStackProvider = createBrainStackProvider(core, BrainStackContext);
+
+//   return { BrainStackProvider };
+// };
