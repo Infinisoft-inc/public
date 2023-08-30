@@ -91,9 +91,9 @@ export const createBrainstack = (options: TBrainstackOptions) => {
 
     for (const field of fields) {
       if (value && typeof value === 'object') {
-        value = value?.[field] ?? null;
+        value = value?.[field] ?? ''; // To avoid confusing react for uncontrolled component. When changing value gives an error that it's switching to controlled.
       } else {
-        return null
+        return ''; // To avoid confusing react for uncontrolled component. When changing value gives an error that it's switching to controlled.
       }
     }
 
