@@ -9,6 +9,7 @@ import {
   TBrainStackContext,
   TBrainstackOptions,
 } from './abstraction';
+import { DeepFieldMutator, createDeepFieldMutator } from './mutator';
 
 const createUseOn =
   (store: ReturnType<typeof createStore>) =>
@@ -73,6 +74,38 @@ export const createBrainstack = (options: TBrainstackOptions) => {
   const BrainStackContext = createContext<TBrainStackContext>(core);
   const useBrainStack = () => useContext(BrainStackContext);
   const BrainStackProvider = createBrainStackProvider(core, BrainStackContext);
+  const createEventHandlerMutator = <T,>(
+    fieldPath: string
+  ): React.ChangeEventHandler<HTMLInputElement> => {
+    const deepFieldMutator: DeepFieldMutator<T> =
+      createDeepFieldMutator<T>(fieldPath);
 
-  return { useBrainStack, BrainStackProvider, core };
+    return (e) => {
+      const newValue = e.target.value;
+      core.store.mutate((prevState) => deepFieldMutator(newValue)(prevState));
+    };
+  };
+  const get = (fieldPath: string): any => {
+    const fields = fieldPath.split('.');
+    let value = core.store.getState()
+  
+    for (const field of fields) {
+      if (value && typeof value === 'object') {
+        value = value[field];
+      } else {
+        return undefined;
+      }
+    }
+  
+    return value;
+  };
+
+  return {
+    useBrainStack,
+    BrainStackProvider,
+    core,
+    createDeepFieldMutator,
+    createEventHandlerMutator,
+    get
+  };
 };
