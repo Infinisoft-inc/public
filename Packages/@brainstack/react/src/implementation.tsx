@@ -91,9 +91,9 @@ export const createBrainstack = (options: TBrainstackOptions) => {
 
     for (const field of fields) {
       if (value && typeof value === 'object') {
-        value = value[field];
+        value = value?.[field] ?? null;
       } else {
-        return undefined;
+        return null
       }
     }
 
