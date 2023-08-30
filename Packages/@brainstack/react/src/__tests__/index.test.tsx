@@ -55,7 +55,7 @@ describe('useCreateBrainstack', () => {
   it('should return hooks and provider', () => {
     const { result } = renderHook(() => useBrainStack());
 
-    expect(typeof result.current.auth.signIn).toBe('function');
+    expect(typeof result.current?.auth?.signIn).toBe('function');
   });
 
   // it('should return hooks and provider', () => {

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import {
   createLogger,
   createStore,
@@ -31,9 +31,25 @@ const createBrainStackProvider =
     );
   };
 
-// const BrainStackContext = createContext<TBrainStackContext | null>(null);
-
-// export const useBrainStack = () => useContext(BrainStackContext);
+/**
+ * Create a Brainstack instance with the specified options.
+ *
+ * @param {TBrainstackOptions} options - Options for configuring the Brainstack instance.
+ * @returns {{ useBrainStack: function, BrainStackProvider: React.FC }} Object containing the useBrainStack hook and BrainStackProvider component.
+ *
+ * @example
+ * // Creating a Brainstack instance with custom options
+ * const options = {
+ *   eventHubOptions: [], // Custom options for event hub
+ *   stateOptions: {},    // Custom options for state initialization
+ *   loggerOptions: [],   // Custom options for logger
+ *   authIntegration: {   // Custom options for authentication integration
+ *     // ... authentication integration settings ...
+ *   },
+ * };
+ * const brainstack = createBrainstack(options);
+ * const { useBrainStack, BrainStackProvider } = brainstack;
+ */
 
 export const createBrainstack = (options: TBrainstackOptions) => {
   const {
@@ -44,7 +60,9 @@ export const createBrainstack = (options: TBrainstackOptions) => {
   } = options;
   const store = createStore({ initializer: stateOptions, eventHubOptions });
   const log = createLogger(...loggerOptions);
-  const auth = createAuthProvider(authIntegration)
+  const auth = authIntegration
+    ? createAuthProvider(authIntegration)
+    : undefined;
   const useOn = createUseOn(store);
   const core = {
     store,
@@ -58,36 +76,3 @@ export const createBrainstack = (options: TBrainstackOptions) => {
 
   return { useBrainStack, BrainStackProvider };
 };
-
-// export const useCreateBrainstack = (options: TBrainstackOptions) => {
-//   const {
-//     eventHubOptions = [],
-//     stateOptions,
-//     loggerOptions = [],
-//     authIntegration,
-//   } = options;
-
-//   // const store = useMemo(
-//   //   () => createStore({ initializer: stateOptions, eventHubOptions }),
-//   //   [stateOptions, eventHubOptions]
-//   // );
-//   // const log = useMemo(() => createLogger(...loggerOptions), [loggerOptions]);
-//   // const auth = useMemo(
-//   //   () => (authIntegration ? createAuthProvider(authIntegration) : null),
-//   //   [authIntegration]
-//   // );
-//   // const useOn = createUseOn(store);
-//   // const core = useMemo(
-//   //   () => ({
-//   //     store,
-//   //     log,
-//   //     useOn,
-//   //     auth,
-//   //   }),
-//   //   [store, log, useOn, auth]
-//   // );
-
-//   const BrainStackProvider = createBrainStackProvider(core, BrainStackContext);
-
-//   return { BrainStackProvider };
-// };

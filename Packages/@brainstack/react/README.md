@@ -20,25 +20,30 @@ yarn add @brainstack/react
 
 `@brainstack/react` offers a seamless integration with BrainStack using the following steps:
 
-1. **Create BrainStack Instance**: Utilize the `useCreateBrainstack` hook to create a BrainStack instance with customizable options.
+1. **Create BrainStack Instances**: Utilize the `createBrainstack` function to create a BrainStack instance with customizable options. This function returns the `BrainStackProvider` and the `useBrainStack()` hook.
 
 2. **Wrap with `BrainStackProvider`**: Wrap your application or relevant components with the `BrainStackProvider` to provide the necessary context for the `useBrainStack()` hook.
 
-3. **Consume the Context**: Utilize the `useBrainStack()` hook within a component that is a child of the `BrainStackProvider` to access the BrainStack context and interact with its features.
+3. **Consume the Context**: Utilize the `useBrainStack()` hook within a component that is a child of the appropriate `BrainStackProvider` to access the BrainStack context and interact with its features.
 
 Here's an example of how to use these functions:
 
 ```jsx
 import React from "react";
-import { useCreateBrainstack, useBrainStack } from "@brainstack/react";
+import { createBrainstack } from "@brainstack/react";
 
 const App = () => {
   // Create BrainStack instance with options
-  const { BrainStackProvider } = useCreateBrainstack({
+  const options = {
     eventHubOptions: [],
     stateOptions: { count: 1 },
     loggerOptions: [],
-  });
+    authIntegration: {
+      // ... authentication integration settings ...
+    },
+  };
+
+  const { BrainStackProvider, useBrainStack } = createBrainstack(options);
 
   return (
     <BrainStackProvider>
@@ -56,7 +61,6 @@ const BrainStackApp = () => {
     store.mutate((s) => ({ count: s.count + 1 }));
   });
 
-
   log.error(`Hello ${store.getState((s) => s?.count)}`);
   return (
     <div>
@@ -68,20 +72,19 @@ const BrainStackApp = () => {
 };
 
 export default App;
-
 ```
 
 ## API
 
 `@brainstack/react` provides the following functions:
 
-- **useCreateBrainstack(options)**: Create a BrainStack instance with customizable options.
+- **createBrainstack(options)**: Create a BrainStack instance with customizable options. This function returns the `BrainStackProvider` and the `useBrainStack()` hook.
 - **BrainStackProvider**: Wrap components to provide the context for `useBrainStack()`.
 - **useBrainStack()**: Consume the BrainStackContext and access its properties.
 
 ### BrainStackContext Object
 
-The BrainStackContext object, provided by the `BrainStackProvider`, contains the following properties:
+The BrainStackContext object, provided by the appropriate `BrainStackProvider`, contains the following properties:
 
 - **useOn(event: string, handler: Function)**: Register a handler to be called when an event is emitted by the BrainStack client.
 - **store**: Hub and state.

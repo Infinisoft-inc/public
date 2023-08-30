@@ -13,7 +13,7 @@ export type TBrainStackContext = {
   useOn: (event: string, handler: Function) => void;
   store: TStore;
   log: Logger;
-  auth: AuthProvider
+  auth?: AuthProvider
 };
 
 export interface BrainStackProviderProps {
@@ -24,5 +24,5 @@ export type TBrainstackOptions = {
   eventHubOptions?: Parameters<typeof createEventHub>;
   stateOptions?: Parameters<typeof createState>;
   loggerOptions?: Parameters<typeof createLogger>;
-  authIntegration: AuthIntegration;
+  authIntegration?: AuthIntegration;
 };
