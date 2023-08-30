@@ -74,5 +74,5 @@ export const createBrainstack = (options: TBrainstackOptions) => {
   const useBrainStack = () => useContext(BrainStackContext);
   const BrainStackProvider = createBrainStackProvider(core, BrainStackContext);
 
-  return { useBrainStack, BrainStackProvider };
+  return { useBrainStack, BrainStackProvider, core };
 };
