@@ -6,7 +6,7 @@ import {
 } from '..';
 
 // Mock implementation of AuthIntegration
-const mockIntegration: AuthIntegration = {
+export const mockIntegration: AuthIntegration = {
   signIn: async () => ({ success: true }),
   signOut: async () => ({ success: true }),
   signUp: async () => ({ success: true }),
