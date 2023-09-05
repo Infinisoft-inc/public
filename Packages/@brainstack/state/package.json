@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/state",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "A Micro State Management",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
