@@ -18,7 +18,7 @@ export const createCRUD = <T>(integration: CRUDIntegration<T>): CRUD<T> => {
       await integration.delete(id);
     },
 
-    async list(options?: { page?: number; limit?: number }): Promise<T[]> {
+    async list(options?: { page?: number; limit?: number; }): Promise<T[]> {
       return integration.list(options);
     },
 
@@ -26,9 +26,19 @@ export const createCRUD = <T>(integration: CRUDIntegration<T>): CRUD<T> => {
       return integration.search(term);
     },
 
-    async filter(criterias: { [key: string]: any }): Promise<T[]> {
+    async filter(criterias: { [key: string]: any; }): Promise<T[]> {
       return integration.filter(criterias);
     },
+    async init(): Promise<void> {
+      return integration.init();
+    },
+    chdir: function (path: string): void {
+      return integration.chdir(path);
+    },
+    pwd: function (): string {
+      return integration.pwd();
+    },
+    cwd: integration.cwd
   };
 
   return crud;

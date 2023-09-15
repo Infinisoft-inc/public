@@ -2,6 +2,16 @@ import { createCRUD, CRUDIntegration } from '..';
 
 // Mock implementation of CRUDIntegration
 class MockCRUDIntegration<T> implements CRUDIntegration<T> {
+  constructor(_cwd: T){
+    this.cwd = _cwd;
+  }
+  cwd: T ;
+ 
+  chdir(path: string): void {}
+  pwd(): string {
+    return 'mock';
+  }
+  async init(): Promise<void> {}
   // Mock implementations for CRUDIntegration methods
   async create(item: T): Promise<T> {
     // Mock implementation
@@ -40,7 +50,7 @@ class MockCRUDIntegration<T> implements CRUDIntegration<T> {
 
 describe('createCRUD', () => {
   it('should create a CRUD object with integration methods', async () => {
-    const mockIntegration = new MockCRUDIntegration<any>();
+    const mockIntegration = new MockCRUDIntegration<any>("mocked cwd");
     const crud = createCRUD(mockIntegration);
 
     // Test create method

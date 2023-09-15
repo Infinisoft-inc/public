@@ -1,5 +1,6 @@
 import { OpenAI } from 'openai';
 import { IModel } from '../abstraction';
+import { Readable } from 'stream';
 
 export class IntegrationOpenAI implements IModel {
   private modelName: string;
@@ -11,6 +12,10 @@ export class IntegrationOpenAI implements IModel {
     this.model = new OpenAI({
       apiKey: _apiKey,
     });
+  }
+  
+  _askStream(input: string, system?: string | undefined): Promise<Readable> {
+    throw new Error('Method not implemented.');
   }
 
   async _ask(input: string, content: string = 'You are a helpful assistant.'): Promise<string | null> {

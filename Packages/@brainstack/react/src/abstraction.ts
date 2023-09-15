@@ -6,6 +6,8 @@ import {
   TStore,
   AuthProvider,
   AuthIntegration,
+  CRUDIntegration,
+  CRUD,
 } from '@brainstack/core';
 import { ReactNode } from 'react';
 
@@ -13,7 +15,8 @@ export type TBrainStackContext = {
   useOn: (event: string, handler: Function) => void;
   store: TStore;
   log: Logger;
-  auth?: AuthProvider
+  auth?: AuthProvider;
+  fs?: CRUD<unknown>;
 };
 
 export interface BrainStackProviderProps {
@@ -25,4 +28,5 @@ export type TBrainstackOptions = {
   stateOptions?: Parameters<typeof createState>;
   loggerOptions?: Parameters<typeof createLogger>;
   authIntegration?: AuthIntegration;
+  crudIntegration?: CRUDIntegration<unknown>;
 };

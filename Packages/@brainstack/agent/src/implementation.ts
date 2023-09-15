@@ -1,3 +1,4 @@
+import { Readable } from 'stream';
 import { IModel } from './abstraction';
 
 export class ModelService {
@@ -17,6 +18,19 @@ export class ModelService {
     } catch (error) {
       console.error('Error querying LLM:', error);
       return "Sorry, I couldn't get a response at the moment.";
+    }
+  }
+
+  async askStream(
+    question: string,
+    system: string = 'You are a helpful assistant.'
+  ): Promise<Readable> {
+    try {
+      const response = await this.modelIntegration._askStream(question, system);
+      return response;
+    } catch (error) {
+      console.error('Error querying LLM:', error);
+      throw new DOMException("Sorry, I couldn't get a response at the moment.")
     }
   }
 }

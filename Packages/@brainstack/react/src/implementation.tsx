@@ -3,6 +3,7 @@ import {
   createLogger,
   createStore,
   createAuthProvider,
+  createCRUD,
 } from '@brainstack/core';
 import {
   BrainStackProviderProps,
@@ -58,18 +59,21 @@ export const createBrainstack = (options: TBrainstackOptions) => {
     stateOptions,
     loggerOptions = [],
     authIntegration,
+    crudIntegration,
   } = options;
   const store = createStore({ initializer: stateOptions, eventHubOptions });
   const log = createLogger(...loggerOptions);
   const auth = authIntegration
     ? createAuthProvider(authIntegration)
     : undefined;
+  const fs = crudIntegration ? createCRUD(crudIntegration) : undefined;
   const useOn = createUseOn(store);
   const core = {
     store,
     log,
     useOn,
     auth,
+    fs,
   };
   const BrainStackContext = createContext<TBrainStackContext>(core);
   const useBrainStack = () => useContext(BrainStackContext);
