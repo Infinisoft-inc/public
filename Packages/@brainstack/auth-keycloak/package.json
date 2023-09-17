@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/auth-keycloak",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "A Minimalist Brainstack Auth Integration for Keycloak",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,7 +29,7 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "start": "node dist/index.js",
-    "types": "tsc --declaration --outDir ../typings/auth-aws-cognito --emitDeclarationOnly"
+    "types": "tsc --declaration --outDir ../typings/auth-keycloak --emitDeclarationOnly"
   },
   "devDependencies": {
     "@babel/core": "^7.22.11",
@@ -45,7 +45,8 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@brainstack/auth": "^1.0.19"
+    "@brainstack/auth": "^1.0.20",
+    "keycloak-js": "^22.0.3"
   },
   "jest": {
     "transform": {
