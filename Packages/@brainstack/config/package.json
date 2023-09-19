@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/config",
-  "version": "1.0.27",
+  "version": "1.0.28",
   "description": "A Micro Config Manager Package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
