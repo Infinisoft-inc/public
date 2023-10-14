@@ -51,7 +51,7 @@ export const createLogger = (level: number = 3, integrations: LoggerIntegration[
     log(message: any): void {
       if (logger.level >= LogLevel.LOG) {
         logger.integrations.forEach((integration) => {
-          integration.log(message);
+          integration.log(...message);
         });
       }
     },
@@ -63,7 +63,7 @@ export const createLogger = (level: number = 3, integrations: LoggerIntegration[
     info(message: any): void {
       if (logger.level >= LogLevel.INFO) {
         logger.integrations.forEach((integration) => {
-          integration.info(message);
+          integration.info(...message);
         });
       }
     },
@@ -75,7 +75,7 @@ export const createLogger = (level: number = 3, integrations: LoggerIntegration[
     warn(message: any): void {
       if (logger.level >= LogLevel.WARNING) {
         logger.integrations.forEach((integration) => {
-          integration.warn(message);
+          integration.warn(...message);
         });
       }
     },
@@ -87,7 +87,7 @@ export const createLogger = (level: number = 3, integrations: LoggerIntegration[
     error(message: any): void {
       if (logger.level >= LogLevel.ERROR) {
         logger.integrations.forEach((integration) => {
-          integration.error(message);
+          integration.error(...message);
         });
       }
     },
@@ -99,7 +99,7 @@ export const createLogger = (level: number = 3, integrations: LoggerIntegration[
     verbose(message: any): void {
       if (logger.level >= LogLevel.VERBOSE) {
         logger.integrations.forEach((integration) => {
-          integration.verbose(message);
+          integration.verbose(...message);
         });
       }
     },
