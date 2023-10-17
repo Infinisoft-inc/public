@@ -82,7 +82,7 @@ export const createStore:TStoreFactory = (options) => {
  * @throws {DOMException} Throws an error if the domain in the state is not an array.
  */
   const createCRUDArray = (domain: keyof State<any>):TCRUDArrayOperations => {
-    if (!Array.isArray(state[domain])){
+    if (!Array.isArray(state.getState(s=>s[domain]))){
       throw new DOMException("Not an array")
     }
 
@@ -91,18 +91,18 @@ export const createStore:TStoreFactory = (options) => {
         // Automatically generate an ID for the item
         const id = uuidv1();
         mutate((state: any) => {
-          return { ...state, [domain]: [...state[domain], { ...item, id }] };
+          return { ...state, [domain]: [...state.getState((s: { [x: string]: any; })=>s[domain]), { ...item, id }] };
         });
         return id; // Optionally return the generated ID
       },
       read: (item: { id: string }) => {
         hasId(item)
-        return Array(state[domain]).find((existingItem: any) => existingItem.id === item.id);
+        return Array(state.getState(s=>s[domain])).find((existingItem: any) => existingItem.id === item.id);
       },
       update: (updatedItem: any) => {
         hasId(updatedItem)
         mutate((state: any) => {
-          const updatedArray = state[domain].map((existingItem: any) => 
+          const updatedArray = state.getState((s: { [x: string]: any; })=>s[domain]).map((existingItem: any) => 
             existingItem.id === updatedItem.id ? { ...existingItem, ...updatedItem } : existingItem
           );
           return { ...state, [domain]: updatedArray };
@@ -111,16 +111,16 @@ export const createStore:TStoreFactory = (options) => {
       delete: (item: { id: string }) => {
         hasId(item)
         mutate((state: any) => {
-          const updatedArray = state[domain].filter((existingItem: any) => existingItem.id !== item.id);
+          const updatedArray = state.getState((s: { [x: string]: any; })=>s[domain]).filter((existingItem: any) => existingItem.id !== item.id);
           return { ...state, [domain]: updatedArray };
         });
       },
       list: () => {
-        return Array(state[domain]);
+        return Array(state.getState(s=>s[domain]));
       },
       search: (keyword: string) => {
         const lowercasedKeyword = keyword.toLowerCase();
-        const itemsArray = state[domain];
+        const itemsArray = state.getState(s=>s[domain]);
     
         return Array(itemsArray).filter((item: any) => 
             JSON.stringify(item).toLowerCase().includes(lowercasedKeyword)
@@ -157,7 +157,7 @@ export const createStore:TStoreFactory = (options) => {
  * @throws {Error} Throws an error if the domain in the state is not an object.
  */
   const createCRUDObject = (domain: keyof State<any>):TCRUDObjectOperations => {
-    if (typeof state[domain] !== 'object') {
+    if (typeof state.getState(s=>s[domain]) !== 'object') {
       throw new Error("Not an object");
     }
 
@@ -169,7 +169,7 @@ export const createStore:TStoreFactory = (options) => {
 
         mutate((state: any) => {
           const id = uuidv1();
-          return { ...state, [domain]: { ...state[domain], [id]: item } };
+          return { ...state, [domain]: { ...state.getState((s: { [x: string]: any; })=>s[domain]), [id]: item } };
         });
       },
       read: (item: any) => {
@@ -180,24 +180,24 @@ export const createStore:TStoreFactory = (options) => {
       update: (item: any) => {
         hasId(item)
         mutate((state: any) => {
-          const existingItem = state[domain][item.id] || {};
+          const existingItem = state.getState((s: { [x: string]: any; })=>s[domain])[item.id] || {};
           const updatedItem = { ...existingItem, ...item };
-          return { ...state, [domain]: { ...state[domain], [item.id]: updatedItem } };
+          return { ...state, [domain]: { ...state.getState((s: { [x: string]: any; })=>s[domain]), [item.id]: updatedItem } };
         });
       },
       delete: (item: { id: string }) => {
         hasId(item)
         mutate((state: any) => {
-          const { [item.id]: _, ...updatedDomain } = state[domain];
+          const { [item.id]: _, ...updatedDomain } = state.getState((s: { [x: string]: any; })=>s[domain]);
           return { ...state, [domain]: updatedDomain };
         });
       },
        list: () => {
-        return state[domain];
+        return state.getState(s=>s[domain]);
       },
       search: (keyword: string) => {
         const lowercasedKeyword = keyword.toLowerCase();
-        const items = state[domain];
+        const items = state.getState(s=>s[domain]);
     
         const filteredEntries = Object.entries(items).filter(([key, value]) => 
             JSON.stringify(value).toLowerCase().includes(lowercasedKeyword)
