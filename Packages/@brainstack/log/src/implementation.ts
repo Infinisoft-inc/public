@@ -48,7 +48,7 @@ export const createLogger = (level: number = 3, integrations: LoggerIntegration[
      * Logs a message using the logger.
      * @param message - The message to log.
      */
-    log(message: any): void {
+    log(...message: any): void {
       if (logger.level >= LogLevel.LOG) {
         logger.integrations.forEach((integration) => {
           integration.log(...message);
@@ -60,7 +60,7 @@ export const createLogger = (level: number = 3, integrations: LoggerIntegration[
      * Logs an informational message using the logger.
      * @param message - The message to log.
      */
-    info(message: any): void {
+    info(...message: any): void {
       if (logger.level >= LogLevel.INFO) {
         logger.integrations.forEach((integration) => {
           integration.info(...message);
@@ -72,7 +72,7 @@ export const createLogger = (level: number = 3, integrations: LoggerIntegration[
      * Logs a warning message using the logger.
      * @param message - The message to log.
      */
-    warn(message: any): void {
+    warn(...message: any): void {
       if (logger.level >= LogLevel.WARNING) {
         logger.integrations.forEach((integration) => {
           integration.warn(...message);
@@ -84,7 +84,7 @@ export const createLogger = (level: number = 3, integrations: LoggerIntegration[
      * Logs an error message using the logger.
      * @param message - The message to log.
      */
-    error(message: any): void {
+    error(...message: any): void {
       if (logger.level >= LogLevel.ERROR) {
         logger.integrations.forEach((integration) => {
           integration.error(...message);
@@ -96,7 +96,7 @@ export const createLogger = (level: number = 3, integrations: LoggerIntegration[
      * Logs a verbose message using the logger.
      * @param message - The message to log.
      */
-    verbose(message: any): void {
+    verbose(...message: any): void {
       if (logger.level >= LogLevel.VERBOSE) {
         logger.integrations.forEach((integration) => {
           integration.verbose(...message);
