@@ -167,10 +167,15 @@ export const createStore:TStoreFactory = (options) => {
           throw new Error("Item should be an object");
         }
 
+        const newItem = {
+          id:uuidv1(),
+          ...item
+        }
         mutate((_state: any) => {
-          const id = uuidv1();
-          return { ..._state, [domain]: { ..._state[domain], [id]: item } };
+          return { ..._state, [domain]: { ..._state[domain], [newItem.id]: newItem } };
         });
+
+        return newItem
       },
       read: (item: any) => {
         hasId(item)
