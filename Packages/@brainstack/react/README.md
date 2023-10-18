@@ -113,6 +113,16 @@ const nameMutator = createEventHandlerMutator('user.name');
 <input type="text" onChange={nameMutator} />
 ```
 
+#### createEventHandlerMutatorShallow(fieldPath: string)
+
+`createEventHandlerMutatorShallow` is a function that constructs an event handler to mutate fields in the state object. The `onChange` event must pass new value directly as argument. The function accepts a dot-separated `fieldPath` and returns a mutator function that sets the state for the specified field when invoked.
+
+```jsx
+const nameMutator = createEventHandlerMutatorShallow('user.name');
+// In a component:
+<Component type="text" onChange={nameMutator} />
+```
+
 #### createDeepFieldMutator\<T\>(fieldPath: string): DeepFieldMutator\<T\>
 
 `createDeepFieldMutator` is a function that generates a deep field mutator for a specific field in the

@@ -78,6 +78,15 @@ export const createBrainstack = (options: TBrainstackOptions) => {
   const BrainStackContext = createContext<TBrainStackContext>(core);
   const useBrainStack = () => useContext(BrainStackContext);
   const BrainStackProvider = createBrainStackProvider(core, BrainStackContext);
+  
+  /**
+ * Creates an event handler that updates a deeply nested field in the state
+ * upon change events from an input element.
+ * 
+ * @template T The type of the state.
+ * @param {string} fieldPath The path to the field in the state.
+ * @returns {React.ChangeEventHandler<HTMLInputElement>} A change event handler for input elements.
+ */
   const createEventHandlerMutator = <T,>(
     fieldPath: string
   ): React.ChangeEventHandler<HTMLInputElement> => {
@@ -89,6 +98,34 @@ export const createBrainstack = (options: TBrainstackOptions) => {
       core.store.mutate((prevState) => deepFieldMutator(newValue)(prevState));
     };
   };
+
+  /**
+ * Creates an event handler that updates a deeply nested field in the state.
+ * Unlike the above function, it does not expect an event object but rather a new value directly.
+ * 
+ * @template T The type of the state.
+ * @param {string} fieldPath The path to the field in the state.
+ * @returns {Function} A function that takes a new value and updates the state.
+ */
+  const createEventHandlerMutatorShallow = <T,>(
+    fieldPath: string
+  ) => {
+    const deepFieldMutator: DeepFieldMutator<T> =
+      createDeepFieldMutator<T>(fieldPath);
+
+    return (newValue:any) => {
+      core.store.mutate((prevState) => deepFieldMutator(newValue)(prevState));
+    };
+  };
+
+  /**
+ * Retrieves a deeply nested value from the state using a dot-separated field path.
+ * If the value is not present, it returns an empty string to ensure React components
+ * do not switch from uncontrolled to controlled mode.
+ * 
+ * @param {string} fieldPath - The dot-separated path to the desired field in the state.
+ * @returns {any} The value located at the specified field path or an empty string if not found.
+ */
   const getValue = (fieldPath: string): any => {
     const fields = fieldPath.split('.');
     let value = core.store.getState();
@@ -110,6 +147,7 @@ export const createBrainstack = (options: TBrainstackOptions) => {
     core,
     createDeepFieldMutator,
     createEventHandlerMutator,
+    createEventHandlerMutatorShallow,
     getValue,
   };
 };
