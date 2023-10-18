@@ -167,9 +167,9 @@ export const createStore:TStoreFactory = (options) => {
           throw new Error("Item should be an object");
         }
 
-        mutate((state: any) => {
+        mutate((_state: any) => {
           const id = uuidv1();
-          return { ...state, [domain]: { ...state.getState((s: { [x: string]: any; })=>s[domain]), [id]: item } };
+          return { ..._state, [domain]: { ..._state[domain], [id]: item } };
         });
       },
       read: (item: any) => {
@@ -179,17 +179,17 @@ export const createStore:TStoreFactory = (options) => {
       },
       update: (item: any) => {
         hasId(item)
-        mutate((state: any) => {
-          const existingItem = state.getState((s: { [x: string]: any; })=>s[domain])[item.id] || {};
+        mutate((_state: any) => {
+          const existingItem = _state[domain][item.id] || {};
           const updatedItem = { ...existingItem, ...item };
-          return { ...state, [domain]: { ...state.getState((s: { [x: string]: any; })=>s[domain]), [item.id]: updatedItem } };
+          return { ..._state, [domain]: { ..._state[domain], [item.id]: updatedItem } };
         });
       },
       delete: (item: { id: string }) => {
         hasId(item)
-        mutate((state: any) => {
-          const { [item.id]: _, ...updatedDomain } = state.getState((s: { [x: string]: any; })=>s[domain]);
-          return { ...state, [domain]: updatedDomain };
+        mutate((_state: any) => {
+          const { [item.id]: _, ...updatedDomain } = _state[domain];
+          return { ..._state, [domain]: updatedDomain };
         });
       },
        list: () => {
