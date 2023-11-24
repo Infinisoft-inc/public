@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/bridge-client",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Brainstack Bridge Client",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,7 +19,7 @@
     "@babel/core": "^7.22.5",
     "@babel/preset-env": "^7.22.5",
     "@babel/preset-typescript": "^7.22.5",
-    "@brainstack/bridge-server": "^1.0.3",
+    "@brainstack/bridge-server": "^1.0.4",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.7.10",
     "@types/ws": "^8.5.5",
@@ -30,8 +30,8 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@brainstack/hub": "^1.1.46",
-    "@brainstack/log": "^1.1.49",
+    "@brainstack/hub": "^1.1.47",
+    "@brainstack/log": "^1.1.50",
     "ws": "^8.13.0"
   }
 }
