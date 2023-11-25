@@ -14,7 +14,7 @@ const onListening = (
   hub: EventHub,
   options: { host: string; port: number }
 ): void => {
-  logger.info(`🚀 Bridge server started on ${options.host}:${options.port}`);
+  logger.info(`🚀 Bridge server started on `, options.host, options.port);
   hub.emit('start');
 };
 
@@ -27,7 +27,7 @@ const onListening = (
 const onConnection = (logger: Logger, hub: EventHub, ws: WebSocket): void => {
   const { url } = ws;
 
-  logger.info(`🔗 Client connected: ${url}`);
+  logger.info(`🔗 Client connected: `, url);
   hub.emit('connection', ws);
 
   ws.on('message', (message: any) => {

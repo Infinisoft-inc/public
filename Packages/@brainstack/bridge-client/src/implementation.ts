@@ -79,11 +79,11 @@ export const createBridgeClient: BridgeClientFactory = (options = {}) => {
       client.onmessage= (message: any) => {
         logger.log(`💬 Message Received: `, message);
     try{
-          const data = JSON.parse(message?.data || '{}');
+          const data = JSON.parse(message || '{}');
           const { event = 'unknown', ...payload } = data;
           hub.emit(event, payload);
         } catch (error: any) {
-          logger.error(`Error parsing message: ${error.message}`);
+          logger.error(`Error parsing message: `, error.message);
           hub.emit("message", message);
         }
       };
