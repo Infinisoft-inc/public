@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/bridge-server",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Brainstack Bridge Server",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,8 +28,8 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@brainstack/hub": "^1.1.55",
-    "@brainstack/log": "^1.1.58",
+    "@brainstack/hub": "^1.1.56",
+    "@brainstack/log": "^1.1.59",
     "ws": "^8.13.0"
   }
 }
