@@ -87,7 +87,7 @@ export default App;
 
 The BrainStackContext object, provided by the appropriate `BrainStackProvider`, contains the following properties:
 
-- **useOn(event: string, handler: Function)**: Register a handler to be called when an event is emitted by the BrainStack client.
+- **useOn(event: string, handler: Function, deps: any[])**: Register a handler to be called when an event is emitted by the BrainStack client.
 - **store**: Hub and state.
 - **log**: The logger of the BrainStack client.
 - **createEventHandlerMutator(fieldPath: string)**: Create a function to mutate deeply nested fields in the state.

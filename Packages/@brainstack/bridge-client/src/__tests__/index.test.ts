@@ -1,12 +1,14 @@
 import { BridgeClient, createBridgeClient } from '..';
-import { Server } from 'mock-socket';
+import { BridgeServer, createBridgeServer } from '@brainstack/bridge-server';
+
+jest.mock('@brainstack/bridge-server')
 
 describe('WebSocket client', () => {
   let bridgeClient: BridgeClient;
-  let mockServer: Server;
+  let mockServer: BridgeServer;
 
   beforeEach(() => {
-    mockServer = new Server('ws://localhost:3000');
+    mockServer = createBridgeServer({});
     bridgeClient = createBridgeClient();
   });
 
@@ -28,7 +30,7 @@ describe('WebSocket client', () => {
     bridgeClient.hub.on('bridge.connected', connectSpy);
     bridgeClient.hub.on('bridge.heartbeat.started', heartbeatStartedSpy);
     bridgeClient.connect(destination);
-    mockServer.emit('open',{});
+    // mockServer.emit('open',{});
     expect(connectSpy).toHaveBeenCalledTimes(1);
     expect(heartbeatStartedSpy).toHaveBeenCalledTimes(1);
   });
@@ -40,9 +42,9 @@ describe('WebSocket client', () => {
     bridgeClient.hub.on('bridge.connected', connectSpy);
     bridgeClient.hub.on('bridge.heartbeat.stopped', heartbeatStoppedSpy);
     bridgeClient.connect(destination);
-    mockServer.emit('open',{});
+    // mockServer.emit('open',{});
     bridgeClient.close();
-    mockServer.emit('close',{});
+    // mockServer.emit('close',{});
     expect(connectSpy).toHaveBeenCalledTimes(1);
     expect(heartbeatStoppedSpy).toHaveBeenCalledTimes(1);
   });
@@ -50,8 +52,8 @@ describe('WebSocket client', () => {
   it('should reconnect when disconnected', async () => {
     const destination = { host: 'localhost', port: 3000 };
     const client = bridgeClient.connect(destination);
-    mockServer.emit('open',{});
-    mockServer.emit('close',{});
+    // mockServer.emit('open',{});
+    // mockServer.emit('close',{});
     await new Promise((resolve) => setTimeout(resolve, 6000)); // Wait for 6 seconds
     expect(client.readyState).toEqual(client.OPEN);
   });

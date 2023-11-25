@@ -1,0 +1,17 @@
+{
+  "name": "ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@brainstack/bridge-client": "^1.0.6",
+    "@brainstack/bridge-server": "^1.0.0",
+    "ts-node": "^10.9.1"
+  }
+}

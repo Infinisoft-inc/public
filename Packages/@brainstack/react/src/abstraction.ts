@@ -12,7 +12,7 @@ import {
 import { ReactNode } from 'react';
 
 export type TBrainStackContext = {
-  useOn: (event: string, handler: Function) => void;
+  useOn: (event: string, handler: Function, deps: any[]) => void;
   store: TStore;
   log: Logger;
   auth?: AuthProvider;

@@ -14,11 +14,11 @@ import { DeepFieldMutator, createDeepFieldMutator } from './mutator';
 
 const createUseOn =
   (store: ReturnType<typeof createStore>) =>
-  (event: string, handler: Function) => {
+  (event: string, handler: Function, deps:any[]=[]) => {
     useEffect(() => {
       const removeHandler = store.on(event, handler);
       return () => removeHandler();
-    }, []);
+    }, deps);
   };
 
 const createBrainStackProvider =

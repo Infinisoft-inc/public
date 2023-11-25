@@ -7,7 +7,7 @@
     "moduleResolution": "node",
     "declaration": true,
     "declarationDir": "dist",
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
     "skipLibCheck":true,

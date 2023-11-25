@@ -1,5 +1,6 @@
 import { EventHub } from "@brainstack/hub";
 import { Logger } from "@brainstack/log";
+import { WebSocket } from "ws";
 
 /**
  * Configuration options for a socket connection.

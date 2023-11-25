@@ -1,6 +1,7 @@
-import { createEventHub } from "@brainstack/hub";
-import { createLogger } from "@brainstack/log";
-import { BridgeClientFactory, ConnectionConfig } from "./abstraction";
+import { createEventHub, EventHub } from '@brainstack/hub';
+import { createLogger, Logger } from '@brainstack/log';
+import { BridgeClientFactory, ConnectionConfig } from './abstraction';
+import { WebSocket } from 'ws';
 
 /**
  * Creates a new bridge client instance with the provided configuration options.
@@ -17,12 +18,13 @@ import { BridgeClientFactory, ConnectionConfig } from "./abstraction";
  * const bridgeClient = createBridgeClient();
  * bridgeClient.connect({ host: "localhost", port: 3000 });
  */
+
 export const createBridgeClient: BridgeClientFactory = (options = {}) => {
-  const logger = options.logger ?? createLogger();
-  const hub = options.hub ?? createEventHub();
-  let client: WebSocket;
-  let heartbeat: any;
-  let reconnectInterval: any;
+  const logger: Logger = options.logger ?? createLogger();
+  const hub: EventHub = options.hub ?? createEventHub();
+  let client: WebSocket | null = null;
+  let heartbeat: NodeJS.Timeout | null = null;
+  let reconnectInterval: NodeJS.Timeout | null = null;
 
   /**
    * Establishes a connection with the specified destination.
@@ -32,92 +34,90 @@ export const createBridgeClient: BridgeClientFactory = (options = {}) => {
    *
    * @throws {Error} Will throw an error if the bridge client is already connected.
    */
-  const connect = (destination: ConnectionConfig): WebSocket => {
+
+  const connect = (destination: ConnectionConfig) => {
     if (client) {
-      return client;
+      throw new Error('Client is already connected.');
     }
 
     const { host, port } = destination;
     const url = `ws://${host}:${port}/ws`;
 
-    /**
-     * Stops the heartbeat for the WebSocket client.
-     */
-    const stopHeartbeat = () => {
-      clearInterval(heartbeat);
+    const stopHeartbeat = (): void => {
+      if (heartbeat) clearInterval(heartbeat);
       logger.info(`Bridge Heartbeat Stopped.`);
-      hub.emit("bridge.heartbeat.stopped", client);
+      hub.emit('bridge.heartbeat.stopped', client);
     };
 
-    /**
-     * Starts the heartbeat for the WebSocket client.
-     */
-    const startHeartbeat = () => {
-      clearInterval(heartbeat);
+    const startHeartbeat = (): void => {
+      if (heartbeat) clearInterval(heartbeat);
       logger.info(`Bridge Heartbeat Started.`);
-      hub.emit("bridge.heartbeat.started", client);
+      hub.emit('bridge.heartbeat.started', client);
 
       heartbeat = setInterval(() => {
-        hub.emit("bridge.heartbeat.beat", client);
-        if (client.readyState === client.CLOSED) {
-          connectWebSocket(); // Try to reconnect
+        if (client?.readyState === WebSocket.CLOSED) {
+          connectWebSocket();
         }
-
-        if (client.readyState === client.OPEN) {
+        if (client?.readyState === WebSocket.OPEN) {
           stopHeartbeat();
         }
       }, 3000);
     };
 
-    /**
-     * Connects to the WebSocket.
-     */
     const connectWebSocket = () => {
       logger.info(`Connecting to ${url}`);
       client = new WebSocket(url);
 
       client.onopen = () => {
         logger.info(`Connected to ${url}`);
-        hub.emit("bridge.connected", client);
+        hub.emit('bridge.connected', client);
         stopHeartbeat();
       };
 
-      client.onmessage = (e) => {
-        const { event = "unknown", ...payload } = JSON.parse(e?.data ?? {});
-        logger.log(`Received event ${event} from ${url}: `, payload);
-        hub.emit(event, payload);
+
+
+      client.onmessage= (message: any) => {
+        logger.log(`💬 Message Received: `, message);
+    try{
+          const data = JSON.parse(message?.data || '{}');
+          const { event = 'unknown', ...payload } = data;
+          hub.emit(event, payload);
+        } catch (error: any) {
+          logger.error(`Error parsing message: ${error.message}`);
+          hub.emit("message", message);
+        }
       };
 
       client.onclose = () => {
         logger.info(`Connection closed to ${url}`);
-        hub.emit("bridge.disconnected");
+        hub.emit('bridge.disconnected');
         startHeartbeat();
       };
 
       client.onerror = (error) => {
         logger.error(`Error occurred on connection to ${url}:`, error);
-        hub.emit("bridge.error", error);
+        hub.emit('bridge.error', error);
         startHeartbeat();
       };
+
+      return client;
     };
 
-    connectWebSocket();
+    const socket = connectWebSocket();
+    reconnectInterval = setInterval(() => {
+      if (client?.readyState === WebSocket.CLOSED) {
+        connectWebSocket();
+      }
+    }, 5000);
 
-    // Try to reconnect every 5 seconds
-    reconnectInterval = setInterval(() => { if (client.readyState === client.CLOSED) { connectWebSocket(); } }, 5000);
-
-    return client;
+    return socket;
   };
 
-  /**    
-  Closes the WebSocket client connection. 
-  */
-  const close = () => {
-    clearInterval(reconnectInterval);
-    if (client) {
-      client.close();
-    }
+  const close = (): void => {
+    if (reconnectInterval) clearInterval(reconnectInterval);
+    client?.close();
+    client = null;
   };
+
   return { connect, close, logger, hub };
 };
-
