@@ -1,123 +1,119 @@
-import { createEventHub, EventHub } from '@brainstack/hub';
 import { createLogger, Logger } from '@brainstack/log';
-import { BridgeClientFactory, ConnectionConfig } from './abstraction';
+import { BridgeClientOptions, EventHandler, Payload } from './abstraction';
 import { WebSocket } from 'ws';
 
-/**
- * Creates a new bridge client instance with the provided configuration options.
- *
- * @param {BridgeClientOption} [options] - Optional configuration options for the bridge client.
- * @param {Logger} [options.logger] - Optional logger instance to use for logging.
- * @param {EventHub} [options.hub] - Optional event hub instance to use for communication.
- * @param {WebSocket} [options.ws_client] - Optional WebSocket instance to use for the client connection.
- * @returns {BridgeClient} An instance of the bridge client.
- *
- * @throws {Error} Will throw an error if the bridge client is already connected.
- *
- * @example
- * const bridgeClient = createBridgeClient();
- * bridgeClient.connect({ host: "localhost", port: 3000 });
- */
+class BridgeClient {
+  private url: string;
+  private ws?: WebSocket;
+  private reconnectInterval: number;
+  private maxReconnectAttempts: number;
+  private reconnectAttempts: number;
+  private eventHandlers: Map<string, EventHandler[]>;
+  public logger: Logger;
 
-export const createBridgeClient: BridgeClientFactory = (options = {}) => {
-  const logger: Logger = options.logger ?? createLogger();
-  const hub: EventHub = options.hub ?? createEventHub();
-  let client: WebSocket | null = null;
-  let heartbeat: NodeJS.Timeout | null = null;
-  let reconnectInterval: NodeJS.Timeout | null = null;
+  constructor(options: BridgeClientOptions) {
+    this.url = options.url;
+    this.reconnectInterval = options.reconnectInterval || 5000;
+    this.maxReconnectAttempts = options.maxReconnectAttempts || 10;
+    this.reconnectAttempts = 0;
+    this.eventHandlers = new Map();
+    this.logger = options.logger || createLogger();
 
-  /**
-   * Establishes a connection with the specified destination.
-   *
-   * @param {ConnectionConfig} destination The host and port to connect to.
-   * @returns {WebSocket} The WebSocket client instance.
-   *
-   * @throws {Error} Will throw an error if the bridge client is already connected.
-   */
+    this.logger.verbose('BridgeClient initialized with options:', options);
+  }
 
-  const connect = (destination: ConnectionConfig) => {
-    if (client) {
-      throw new Error('Client is already connected.');
-    }
+  public connect(): void {
+    this.logger.verbose('Initiating connection to WebSocket server at:', this.url);
+    this.ws = new WebSocket(this.url);
 
-    const { host, port } = destination;
-    const url = `ws://${host}:${port}/ws`;
+    this.ws.on('open', () => {
+      this.logger.verbose('WebSocket connection opened');
+      this.reconnectAttempts = 0;
+      this.emitHandlers('open', null);
+      this.logger.verbose('Reset reconnectAttempts to 0 and emitted open event');
+    });
 
-    const stopHeartbeat = (): void => {
-      if (heartbeat) clearInterval(heartbeat);
-      logger.info(`Bridge Heartbeat Stopped.`);
-      hub.emit('bridge.heartbeat.stopped', client);
-    };
+    this.ws.on('message', (message: string) => {
+      this.logger.verbose('Received message from WebSocket:', message);
+      this.processMessage(message);
+      this.logger.verbose('Processed the received message');
+    });
 
-    const startHeartbeat = (): void => {
-      if (heartbeat) clearInterval(heartbeat);
-      logger.info(`Bridge Heartbeat Started.`);
-      hub.emit('bridge.heartbeat.started', client);
+    this.ws.on('close', () => {
+      this.logger.verbose('WebSocket connection closed');
+      this.emitHandlers('close', null);
+      this.attemptReconnect();
+      this.logger.verbose('Emitted close event and attempting to reconnect if necessary');
+    });
 
-      heartbeat = setInterval(() => {
-        if (client?.readyState === WebSocket.CLOSED) {
-          connectWebSocket();
-        }
-        if (client?.readyState === WebSocket.OPEN) {
-          stopHeartbeat();
-        }
-      }, 3000);
-    };
+    this.ws.on('error', (error: Error) => {
+      this.logger.error('WebSocket encountered an error:', error);
+      this.emitHandlers('error', error);
+      this.logger.verbose('Emitted error event with error details');
+    });
+  }
 
-    const connectWebSocket = () => {
-      logger.info(`Connecting to ${url}`);
-      client = new WebSocket(url);
+  private processMessage(message: string): void {
+    this.logger.verbose('Attempting to parse received message');
+    let parsedMessage: Payload;
 
-      client.onopen = () => {
-        logger.info(`Connected to ${url}`);
-        hub.emit('bridge.connected', client);
-        stopHeartbeat();
-      };
+    try {
+      parsedMessage = JSON.parse(message);
+      this.logger.verbose('Parsed message successfully:', parsedMessage);
 
-
-
-      client.onmessage= (message: any) => {
-        logger.log(`💬 Message Received: `, message);
-    try{
-          const data = JSON.parse(message || '{}');
-          const { event = 'unknown', ...payload } = data;
-          hub.emit(event, payload);
-        } catch (error: any) {
-          logger.error(`Error parsing message: `, error.message);
-          hub.emit("message", message);
-        }
-      };
-
-      client.onclose = () => {
-        logger.info(`Connection closed to ${url}`);
-        hub.emit('bridge.disconnected');
-        startHeartbeat();
-      };
-
-      client.onerror = (error) => {
-        logger.error(`Error occurred on connection to ${url}:`, error);
-        hub.emit('bridge.error', error);
-        startHeartbeat();
-      };
-
-      return client;
-    };
-
-    const socket = connectWebSocket();
-    reconnectInterval = setInterval(() => {
-      if (client?.readyState === WebSocket.CLOSED) {
-        connectWebSocket();
+      if (parsedMessage && parsedMessage.event) {
+        this.logger.verbose('Processing message for event:', parsedMessage.event);
+        const handlers = this.eventHandlers.get(parsedMessage.event);
+        handlers?.forEach((handler) => {
+          this.logger.verbose('Executing handler for event:', parsedMessage.event);
+          handler(parsedMessage.data);
+        });
       }
-    }, 5000);
+    } catch (error) {
+      this.logger.error('Failed to parse message:', message, 'Error:', error);
+    }
+  }
 
-    return socket;
-  };
+  public on(event: string, handler: EventHandler): void {
+    this.logger.verbose(`Adding handler for event: ${event}`);
+    if (!this.eventHandlers.has(event)) {
+      this.eventHandlers.set(event, []);
+      this.logger.verbose(`Created new handler array for event: ${event}`);
+    }
+    this.eventHandlers.get(event)?.push(handler);
+    this.logger.verbose(`Handler added for event: ${event}`);
+  }
 
-  const close = (): void => {
-    if (reconnectInterval) clearInterval(reconnectInterval);
-    client?.close();
-    client = null;
-  };
+  public send(event: string, data: any): void {
+    this.logger.verbose(`Preparing to send message - Event: ${event}, Data:`, data);
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({ event, data }));
+      this.logger.verbose(`Message sent for event: ${event}`);
+    } else {
+      this.logger.verbose('WebSocket is not open. Message not sent:', { event, data });
+    }
+  }
 
-  return { connect, close, logger, hub };
-};
+  private emitHandlers(event: string, data: any): void {
+    this.logger.verbose(`Emitting handlers for event: ${event}`);
+    const handlers = this.eventHandlers.get(event);
+    handlers?.forEach((handler) => {
+      this.logger.verbose(`Executing handler for event: ${event}`);
+      handler(data);
+    });
+  }
+
+  private attemptReconnect(): void {
+    if (this.reconnectAttempts < this.maxReconnectAttempts) {
+      this.logger.verbose(`Attempting to reconnect. Attempt ${this.reconnectAttempts + 1}/${this.maxReconnectAttempts}`);
+      setTimeout(() => {
+        this.connect();
+      }, this.reconnectInterval);
+      this.reconnectAttempts++;
+    } else {
+      this.logger.verbose('Max reconnect attempts reached. Stopping reconnection attempts.');
+    }
+  }
+}
+
+export { BridgeClient };
