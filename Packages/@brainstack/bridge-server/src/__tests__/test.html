@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Test Client</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const ws = new WebSocket('ws://localhost:7777');
+
+            ws.onopen = function() {
+                console.log('Connected to the server');
+            };
+
+            ws.onmessage = function(event) {
+                console.log('Message from server:', event.data);
+                const log = document.getElementById('log');
+                log.innerHTML += event.data + '<br />';
+            };
+
+            ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+            };
+
+            ws.onclose = function() {
+                console.log('Disconnected from the server');
+            };
+        });
+    </script>
+</head>
+<body>
+    <h1>Websocket Client</h1>
+    <div id="log"></div>
+</body>
+</html>

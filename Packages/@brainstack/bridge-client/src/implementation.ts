@@ -1,6 +1,5 @@
 import { createLogger, Logger } from '@brainstack/log';
 import { BridgeClientOptions, EventHandler, Payload } from './abstraction';
-import { WebSocket } from 'ws';
 
 class BridgeClient {
   private url: string;
@@ -9,6 +8,8 @@ class BridgeClient {
   private maxReconnectAttempts: number;
   private reconnectAttempts: number;
   private eventHandlers: Map<string, EventHandler[]>;
+  private shouldAttemptReconnect: boolean;// Initialize the flag as true
+
   public logger: Logger;
 
   constructor(options: BridgeClientOptions) {
@@ -16,6 +17,7 @@ class BridgeClient {
     this.reconnectInterval = options.reconnectInterval || 5000;
     this.maxReconnectAttempts = options.maxReconnectAttempts || 10;
     this.reconnectAttempts = 0;
+    this.shouldAttemptReconnect = true; // Initialize the flag as true
     this.eventHandlers = new Map();
     this.logger = options.logger || createLogger(5);
 
@@ -26,48 +28,52 @@ class BridgeClient {
     this.logger.verbose('Attempting to connect to WebSocket server at:', this.url);
     this.ws = new WebSocket(this.url);
 
-    this.ws.on('open', () => {
+    this.ws.addEventListener('open', () => {
       this.reconnectAttempts = 0;
-      this.emitHandlers('open',null);
+      // this.emitHandlers('open',null);
       this.logger.verbose('WebSocket connection established. Reconnect attempts reset to 0.');
     });
 
-    this.ws.on('message', (payload: string) => {
-      this.logger.verbose('Received message from server. Payload:', payload);
-      this.processPayload(payload);
+    this.ws.addEventListener('message', (payload) => {
+      this.logger.verbose('Received message from server. Payload:', payload.data);
+      // this.processPayload(payload);
     });
 
-    this.ws.on('close', () => {
-      this.emitHandlers('close', null);
-      this.attemptReconnect();
-      this.logger.verbose('WebSocket connection closed. Attempting to reconnect...');
+    this.ws.addEventListener('close', () => {
+      if (this.shouldAttemptReconnect) {
+        // this.emitHandlers('close', null);
+        this.attemptReconnect();
+        this.logger.verbose('WebSocket connection closed. Attempting to reconnect...');
+      } else {
+        this.logger.verbose('WebSocket connection closed. Reconnect not attempted as shouldAttemptReconnect flag is false.');
+      }
     });
 
-    this.ws.on('error', (error: Error) => {
-      this.emitHandlers('error', error);
+    this.ws.addEventListener('error', (error) => {
+      // this.emitHandlers('error', error);
       this.logger.error('WebSocket encountered an error:', error);
     });
   }
 
-  private processPayload(payload: string): void {
-    this.logger.verbose('Processing received payload:', payload);
-    let parsedPayload: Payload;
+  // private processPayload(payload: string): void {
+  //   this.logger.verbose('Processing received payload:', payload);
+  //   let parsedPayload: Payload;
 
-    try {
-      parsedPayload = JSON.parse(payload);
-      this.logger.verbose('Parsed payload successfully. Event:', parsedPayload.event, 'Data:', parsedPayload.data);
+  //   try {
+  //     parsedPayload = JSON.parse(payload);
+  //     this.logger.verbose('Parsed payload successfully. Event:', parsedPayload.event, 'Data:', parsedPayload.data);
       
-      const handlers = this.eventHandlers.get(parsedPayload.event);
-      if(handlers) {
-        this.logger.verbose(`Found ${handlers.length} handlers for event: ${parsedPayload.event}`);
-        handlers.forEach(handler => handler(parsedPayload.data));
-      } else {
-        this.logger.warn(`No handlers found for event: ${parsedPayload.event}`);
-      }
-    } catch (error) {
-      this.logger.error('Failed to parse payload:', payload, 'Error:', error);
-    }
-  }
+  //     const handlers = this.eventHandlers.get(parsedPayload.event);
+  //     if(handlers) {
+  //       this.logger.verbose(`Found ${handlers.length} handlers for event: ${parsedPayload.event}`);
+  //       handlers.forEach(handler => handler(parsedPayload.data));
+  //     } else {
+  //       this.logger.warn(`No handlers found for event: ${parsedPayload.event}`);
+  //     }
+  //   } catch (error) {
+  //     this.logger.error('Failed to parse payload:', payload, 'Error:', error);
+  //   }
+  // }
 
   public on(event: string, handler: EventHandler): void {
     if (!this.eventHandlers.has(event)) {
@@ -106,6 +112,7 @@ class BridgeClient {
       this.logger.warn('Reached maximum number of reconnect attempts. Stopping reconnection process.');
     }
   }
+  
 }
 
 export { BridgeClient };
