@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/core",
-  "version": "1.2.60",
+  "version": "1.2.61",
   "description": "Brainstack Core Packages",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -33,14 +33,14 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@brainstack/auth": "^1.0.64",
-    "@brainstack/config": "^1.0.62",
-    "@brainstack/crud": "^1.0.58",
-    "@brainstack/hub": "^1.1.63",
-    "@brainstack/inject": "^1.2.59",
-    "@brainstack/log": "^1.1.66",
-    "@brainstack/state": "^1.1.63",
-    "@brainstack/store": "^1.0.58"
+    "@brainstack/auth": "^1.0.65",
+    "@brainstack/config": "^1.0.63",
+    "@brainstack/crud": "^1.0.59",
+    "@brainstack/hub": "^1.1.64",
+    "@brainstack/inject": "^1.2.60",
+    "@brainstack/log": "^1.1.67",
+    "@brainstack/state": "^1.1.64",
+    "@brainstack/store": "^1.0.59"
   },
   "gitHead": "25e01206915d23e57c6cc73cad73d829f49b63ba"
 }
