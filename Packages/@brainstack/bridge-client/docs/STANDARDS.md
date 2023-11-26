@@ -25,8 +25,6 @@ This README outlines the standard definitions and terms used in the WebSocket Co
 
 ## Data Flow
 
-![Data Flow](./brainstack-data.png)
-
 1. **Sending Data (Client to Server)**:
    - The client prepares the payload with the appropriate event name and data.
    - The payload is serialized (if not already) and sent over the WebSocket connection.
@@ -44,6 +42,20 @@ This README outlines the standard definitions and terms used in the WebSocket Co
 4. **Receiving and Handling Responses (Client)**:
    - The client receives the response payload.
    - The client processes the payload, invoking corresponding EventHandlers.
+
+
+### UML Sequence
+![Data Flow](./brainstack-data.png)
+
+This diagram illustrates the following process:
+
+1. **Front-End App to BridgeClient**: The front-end application sends a message through the BridgeClient, specifying the event and data.
+2. **BridgeClient to WebSocket (Client-side)**: The BridgeClient serializes the payload into a JSON string and sends it through the WebSocket client.
+3. **WebSocket Communication**: The message is transmitted over the WebSocket connection from the client to the server.
+4. **WebSocket (Server-side) to BridgeServer**: The server-side WebSocket receives the message and passes the payload (as a Buffer) to the BridgeServer for processing.
+5. **BridgeServer Processing**: The BridgeServer parses the payload, extracting the event and data, and invokes the appropriate event handler in the back-end application.
+6. **Response from Back-End App to Front-End App**: The back-end application processes the request and sends a response back through the same channel: BridgeServer -> WebSocket (Server) -> WebSocket (Client) -> BridgeClient -> Front-End App.
+7. **Handling the Response**: Each layer unpacks or parses the payload as needed and forwards the relevant data to the next component until it reaches the front-end application, where the final response is handled.
 
 ## Best Practices
 
