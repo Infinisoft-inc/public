@@ -15,7 +15,7 @@
   "author": "Infini SoftWorld <info@infinisoft.dev>",
   "license": "MIT",
   "scripts": {
-    "test": "set NODE_OPTIONS=--experimental-vm-modules && jest --coverage index.test.ts",
+    "test": "SET_OPTIONS=--experimental-vm-modules && jest --coverage index.test.ts",
     "test:dev": "jest --watchAll",
     "build": "tsc",
     "build:watch": "tsc --watch",
