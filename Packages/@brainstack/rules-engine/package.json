@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/rules-engine",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight rules engine to evaluate conditional logic.",
   "main": "src/index.ts",
   "types": "dist/index.d.ts",
@@ -10,7 +10,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mouimet-infinisoft/brainstack-rules-engine.git"  },
+    "url": "https://github.com/mouimet-infinisoft/brainstack-rules-engine.git"
+  },
   "keywords": [
     "rules-engine",
     "business-rules",
@@ -20,10 +21,9 @@
   "author": "Infisoft World <info@infinisoft.world>",
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^4.0.0",
+    "@types/jest": "^26.0.0",
     "jest": "^26.0.0",
     "ts-jest": "^26.0.0",
-    "@types/jest": "^26.0.0"
-  },
-  "dependencies": {}
+    "typescript": "^4.0.0"
+  }
 }
