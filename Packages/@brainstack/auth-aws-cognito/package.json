@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/auth-aws-cognito",
-  "version": "1.0.71",
+  "version": "1.0.72",
   "description": "A Minimalist Brainstack Auth Integration for AWS Cognito",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -45,7 +45,7 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@brainstack/auth": "^1.0.74",
+    "@brainstack/auth": "^1.0.75",
     "aws-amplify": "^5.3.10"
   },
   "jest": {
@@ -53,5 +53,5 @@
       "^.+\\.tsx?$": "babel-jest"
     }
   },
-  "gitHead": "d98c2cdbe9a8065e541adbee257febe58ec8727f"
+  "gitHead": "290aa4a960487c110c8f16e47931fe52a12e30c1"
 }

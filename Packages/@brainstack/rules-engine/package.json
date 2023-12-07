@@ -1,12 +1,15 @@
 {
   "name": "@brainstack/rules-engine",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A lightweight rules engine to evaluate conditional logic.",
   "main": "src/index.ts",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "jest"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",
@@ -25,5 +28,6 @@
     "jest": "^26.0.0",
     "ts-jest": "^26.0.0",
     "typescript": "^4.0.0"
-  }
+  },
+  "gitHead": "290aa4a960487c110c8f16e47931fe52a12e30c1"
 }
