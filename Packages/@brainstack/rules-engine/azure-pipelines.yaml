@@ -1,0 +1,43 @@
+trigger:
+  branches:
+    include:
+      - main
+
+jobs:
+- job: BuildAndPublish
+  displayName: 'Build and publish @brainstack/hub'
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+    - checkout: self
+
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '14'
+      displayName: 'Install Node.js'
+
+    - script: |
+        sudo npm install -g npm@latest
+      displayName: 'Install latest npm'
+
+    - script: |
+        cd packages/@brainstack/hub
+        npm install --latest
+      displayName: 'Install dependencies'
+
+    - script: |
+        cd packages/@brainstack/hub
+        npm run build
+      displayName: 'Build package'
+
+    - script: |
+        cd packages/@brainstack/hub
+        npm version patch
+      displayName: 'Bump package version'
+
+    - script: |
+        cd packages/@brainstack/hub
+        npm publish
+      displayName: 'Publish package'
+      env:
+        NODE_AUTH_TOKEN: $(npmToken)
