@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/bridge-client",
-  "version": "2.0.22",
+  "version": "2.0.23",
   "description": "Brainstack Bridge Client",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,8 +29,8 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@brainstack/hub": "^1.1.71",
-    "@brainstack/log": "^1.1.74"
+    "@brainstack/hub": "^1.1.72",
+    "@brainstack/log": "^1.1.75"
   },
-  "gitHead": "1c8969b6b13fd4e8a40ac9106530a528a16f1346"
+  "gitHead": "d98c2cdbe9a8065e541adbee257febe58ec8727f"
 }
