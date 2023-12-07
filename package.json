@@ -1,18 +1,21 @@
 {
   "name": "root",
   "private": true,
-  "workspaces": ["Packages/@brainstack/*"],
+  "workspaces": [
+    "Packages/@brainstack/*"
+  ],
   "devDependencies": {
     "lerna": "^6.6.1"
   },
   "dependencies": {
     "execa": "^7.1.1",
-    "inquirer": "^9.1.5"
+    "inquirer": "^9.1.5",
+    "login": "^0.8.0"
   },
   "scripts": {
-    "pkg:build":"lerna run build",
-    "pkg:test":"lerna run test",
-    "pkg:publish":"lerna publish patch --force-publish=*",
-    "pkg:update":"lerna exec -- npm update"
+    "pkg:build": "lerna run build",
+    "pkg:test": "lerna run test",
+    "pkg:publish": "lerna publish patch --force-publish=*",
+    "pkg:update": "lerna exec -- npm update"
   }
 }
