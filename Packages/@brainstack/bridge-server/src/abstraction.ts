@@ -11,5 +11,5 @@ export interface BridgeServerOptions {
   logger?: Logger;
 }
 
-type EventHandler = (payload: Buffer, socket: WebSocket) => void
+export type EventHandler = (payload: Buffer, socket: WebSocket) => void
 export type Handler = (data:any)=>void

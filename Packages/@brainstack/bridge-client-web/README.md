@@ -1,10 +1,4 @@
-# DEPRECATED
-
-> ## Replaced by **@brainstack/client-web** **@brainstack/client-node**
-> They share the same interface contract with different dependencies.  
-> It's a clear separation of concerns now.  
-
-## Bridge Client Module
+# Bridge Client Module
 Will connect to a bridge server and forward all local bridge event to it.
 
 ## Parameters
