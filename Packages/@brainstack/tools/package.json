@@ -1,7 +1,7 @@
 {
   "name": "@brainstack/tools",
   "description": "Brainstack Tools SDK",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [],
@@ -26,5 +26,5 @@
     "ts-node": "^10.9.1",
     "typescript": "^4.4.2"
   },
-  "gitHead": "453c95e0945bba7aa0cb4784bfa278122414a390"
+  "gitHead": "373f730dd1aa8b26b3759d13eb4aaa4875e9b2d2"
 }
