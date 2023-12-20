@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/bridge-server",
-  "version": "2.0.36",
+  "version": "2.0.37",
   "description": "Brainstack Bridge Server",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,10 +28,10 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@brainstack/hub": "^1.1.85",
-    "@brainstack/log": "^1.1.88",
+    "@brainstack/hub": "^1.1.86",
+    "@brainstack/log": "^1.1.89",
     "ioredis": "^5.3.2",
     "ws": "^8.14.2"
   },
-  "gitHead": "c735596fbc3e434e6911fe4300932ef93615b70f"
+  "gitHead": "6b22e2565f2c58122ccc92621fee1c605cc71743"
 }

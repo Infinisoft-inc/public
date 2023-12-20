@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/crud",
-  "version": "1.0.80",
+  "version": "1.0.81",
   "description": "A Micro CRUD Package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,5 +31,5 @@
     "ts-node": "^10.9.1",
     "typescript": "^4.4.2"
   },
-  "gitHead": "c735596fbc3e434e6911fe4300932ef93615b70f"
+  "gitHead": "6b22e2565f2c58122ccc92621fee1c605cc71743"
 }

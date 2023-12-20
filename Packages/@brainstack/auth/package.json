@@ -1,7 +1,7 @@
 {
   "name": "@brainstack/auth",
   "private": true,
-  "version": "1.0.86",
+  "version": "1.0.87",
   "description": "The Brainstack Auth SDK is a powerful tool for managing user authentication in various applications. It provides a unified interface to interact with authentication methods, abstracting the underlying complexities and offering a streamlined API.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
