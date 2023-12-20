@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/agent",
-  "version": "1.0.80",
+  "version": "1.0.81",
   "description": "Brainstack Model Agent Lib",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -40,5 +40,5 @@
     "axios": "^1.4.0",
     "openai": "^4.0.1"
   },
-  "gitHead": "49635d46ca419eeae7d7ca866cdaa694d13493e6"
+  "gitHead": "22b5ac69755259de8a0a3804dc06cc73b01a416e"
 }
