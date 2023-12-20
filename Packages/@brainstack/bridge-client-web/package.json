@@ -1,7 +1,7 @@
 {
   "name": "@brainstack/bridge-client-web",
   "private": true,
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Brainstack Bridge Client for WEB",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -30,8 +30,8 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@brainstack/hub": "^1.1.78",
-    "@brainstack/log": "^1.1.81"
+    "@brainstack/hub": "^1.1.79",
+    "@brainstack/log": "^1.1.82"
   },
   "gitHead": "290aa4a960487c110c8f16e47931fe52a12e30c1"
 }
