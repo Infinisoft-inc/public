@@ -1,4 +1,5 @@
-import { BridgeServer } from "../implementation2";
+import { createEventHub } from "@brainstack/hub";
+import { BridgeServer } from "../implementation";
 import { createLogger } from "@brainstack/log";
 
-new BridgeServer(createLogger(5))
+new BridgeServer(createEventHub(),createLogger(5))

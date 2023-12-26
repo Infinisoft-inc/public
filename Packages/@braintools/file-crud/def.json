@@ -1,0 +1,31 @@
+{
+    "tool": "FileCRUDTool",
+    "description": "A tool for performing Create, Read, Update, and Delete operations on files. It can handle various file types and perform basic file management tasks.",
+    "argument": "filePath, fileContent",
+    "examples": [
+        {
+            "intention": "Create a new file",
+            "expectation": "A new file should be created with the provided content.",
+            "outcome": "File 'example.txt' created with the specified content.",
+            "usage": "FileCRUDTool.createFile('path/to/example.txt', 'Sample content')"
+        },
+        {
+            "intention": "Read a file",
+            "expectation": "Contents of the specified file should be read and returned.",
+            "outcome": "Content of 'example.txt' is read and displayed.",
+            "usage": "FileCRUDTool.readFile('path/to/example.txt')"
+        },
+        {
+            "intention": "Update a file",
+            "expectation": "The specified file should be updated with new content.",
+            "outcome": "File 'example.txt' is updated with new content.",
+            "usage": "FileCRUDTool.updateFile('path/to/example.txt', 'Updated content')"
+        },
+        {
+            "intention": "Delete a file",
+            "expectation": "The specified file should be deleted from the filesystem.",
+            "outcome": "File 'example.txt' is successfully deleted.",
+            "usage": "FileCRUDTool.deleteFile('path/to/example.txt')"
+        }
+    ]
+}

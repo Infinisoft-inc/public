@@ -1,4 +1,4 @@
-import { BridgeServer } from './implementation2';
+import { BridgeServer } from './implementation';
 
-const svc = new BridgeServer();
+const svc = new BridgeServer(null);
 svc.start();
