@@ -6,11 +6,11 @@ settings:
 
 dependencies:
   '@brainstack/hub':
-    specifier: ^1.1.88
-    version: 1.1.88
+    specifier: ^1.1.90
+    version: 1.1.90
   '@brainstack/log':
-    specifier: ^1.1.91
-    version: 1.1.91
+    specifier: ^1.1.93
+    version: 1.1.93
 
 devDependencies:
   '@babel/core':
@@ -1286,21 +1286,21 @@ packages:
   /@brainstack/bridge-server@1.0.6:
     resolution: {integrity: sha512-G0SCa8SeIDg463guyB0/qtNjdKpKqLxx2JXg0j27ASwazXuhPKv2igYyLzsjQQRPD0xOzALBgQpy9gYZanZ5XQ==}
     dependencies:
-      '@brainstack/hub': 1.1.88
-      '@brainstack/log': 1.1.91
+      '@brainstack/hub': 1.1.90
+      '@brainstack/log': 1.1.93
       ws: 8.16.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
     dev: true
 
-  /@brainstack/hub@1.1.88:
-    resolution: {integrity: sha512-TXdSVU6TEjXXbYOOq+TuvGilVt0RjyaqZCBUgdPy91bJahZTZVb1+0CUnUPsWIN+PrJ3a3b4TilzvlqN17VLuw==}
+  /@brainstack/hub@1.1.90:
+    resolution: {integrity: sha512-UJbyNBQSwGoCZX5QtxKksd5lTjMwabTXgjFHijYoCxT6KgN248mBDw5397pvEfZB7nksFTC46DUIziS1XcDk+Q==}
     dependencies:
-      '@brainstack/log': 1.1.91
+      '@brainstack/log': 1.1.93
 
-  /@brainstack/log@1.1.91:
-    resolution: {integrity: sha512-kdNAa2cEirdD83JZD0ZkYtFT9OjQrNapzIoF+ck5rACcuEmIbOiILLCFQUuP/ZqO6W5QijOVOhH/kmrfF5FwMQ==}
+  /@brainstack/log@1.1.93:
+    resolution: {integrity: sha512-nnpqtJ5j4FSxwgETD/c+Us8kMUeALMI41fG8LH0GmsDdpsbMY1Tr78xSm85xw+mhfAgELoxUdYmg3AEbRrGWyw==}
 
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}

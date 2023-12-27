@@ -1,6 +1,5 @@
-import { EventHub } from '@brainstack/hub';
-import { createLogger, Logger } from '@brainstack/log';
 import WebSocket from 'ws';
+import { createLogger, Logger } from '@brainstack/log';
 
 const PORT = Number(process.env.PORT || 7777);
 const HOST = process.env.HOST || 'localhost';
@@ -8,26 +7,24 @@ const HOST = process.env.HOST || 'localhost';
 class BridgeServer {
   private port: number;
   private host: string;
-  private wss: WebSocket.Server;
+  public wss: WebSocket.Server;
   private uuidToSocket: Map<string, WebSocket>;
   private socketToUUID: Map<WebSocket, string>;
   public logger: Logger;
-  private hub: EventHub;
 
-  constructor(hub: EventHub, logger?: Logger) {
+  constructor(logger?: Logger) {
     this.port = PORT;
     this.host = HOST;
     this.logger = logger ?? createLogger();
     this.uuidToSocket = new Map();
     this.socketToUUID = new Map();
     this.wss = null;
-    this.hub = hub;
   }
 
-  private broadcastToClients(rawData: string): void {
+  public broadcast(sender: WebSocket, rawData: string): void {
     this.wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify(rawData), (err) => {
+      if (client !== sender && client.readyState === WebSocket.OPEN) {
+        client.send(rawData, (err) => {
           if (err) {
             this.logger.error('Error failed to broadcast to client:', err);
           }
@@ -36,21 +33,15 @@ class BridgeServer {
     });
   }
 
-  public start(): void {
-    this.setupListeners();
-    this.logger.info(
-      `WebSocket server started on ws://${this.host}:${this.port}`
-    );
+  public listen({ host = this.host, port = this.port }): void {
+    this._listen({ host, port });
+    this.logger.info(`WebSocket server started on ws://${host}:${port}`);
   }
 
-  private setupListeners(): void {
-    this.wss = new WebSocket.Server({ port: this.port, host: this.host });
+  private _listen({ host, port }): void {
+    this.wss = new WebSocket.Server({ port, host });
 
     this.wss.on('connection', (ws: WebSocket) => {
-      this.hub.on(
-        /^(macro|meso)\.dts\.rawdata\.outgoing$/,
-        this.broadcastToClients.bind(this)
-      );
       const uuid = this.generateUUID();
       this.uuidToSocket.set(uuid, ws);
       this.socketToUUID.set(ws, uuid);
@@ -60,11 +51,8 @@ class BridgeServer {
       );
 
       ws.on('message', (rawData) => {
-        this.logger.verbose(
-          'Received raw data from client:',
-          rawData.toString()
-        );
-        this.hub.emit('micro.websocket.rawdata.incoming', rawData);
+        this.logger.verbose('Broadcasting raw data', rawData.toString());
+        this.broadcast(ws, rawData.toString());
       });
 
       ws.on('close', () => {
