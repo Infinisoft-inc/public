@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/rules-engine",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "A lightweight rules engine to evaluate conditional logic.",
   "main": "src/index.ts",
   "types": "dist/index.d.ts",
