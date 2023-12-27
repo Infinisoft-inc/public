@@ -1,3 +1,4 @@
+import { EventHub } from "@brainstack/hub";
 import { Logger } from "@brainstack/log";
 
 export interface BridgeClientOptions {
@@ -5,6 +6,7 @@ export interface BridgeClientOptions {
   reconnectInterval?: number;  // in milliseconds
   maxReconnectAttempts?: number;
   logger?: Logger;
+  hub?: EventHub
 }
 
 export type Payload = { event: string; data: any; };
