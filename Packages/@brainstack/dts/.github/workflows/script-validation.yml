@@ -1,0 +1,39 @@
+name: TypeScript Script Validation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-scripts:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14' # Specify the Node.js version
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Validate build script
+      run: npm run build
+
+    - name: Validate start script
+      run: npm start
+
+    - name: Validate test script
+      run: npm test
+
+    - name: Validate lint script
+      run: npm run lint
+
+    - name: Validate format script
+      run: npm run format
+
+    # Add additional script validations as needed

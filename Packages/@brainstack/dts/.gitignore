@@ -1,0 +1,27 @@
+# Node modules
+node_modules/
+
+# Dist folder
+dist/
+
+# Environment files
+.env
+
+# Logs
+logs
+*.log
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# macOS files
+.DS_Store
+
+# Windows files
+Thumbs.db
