@@ -20,11 +20,9 @@ class BridgeServer {
     this.logger = logger ?? createLogger();
     this.uuidToSocket = new Map();
     this.socketToUUID = new Map();
-    this.wss = new WebSocket.Server({ port: this.port, host: this.host });
+    this.wss = null;
     this.hub = hub;
-
-    hub.on('system.rawdata.outgoing', this.broadcastToClients.bind(this));
-    this.start();
+    hub.on(  /^(macro|meso)\.dts\.rawdata\.outgoing$/, this.broadcastToClients.bind(this));
   }
 
   private broadcastToClients(rawData: string): void {
@@ -45,6 +43,8 @@ class BridgeServer {
   }
 
   private setupListeners(): void {
+    this.wss = new WebSocket.Server({ port: this.port, host: this.host });
+
     this.wss.on('connection', (ws: WebSocket) => {
       const uuid = this.generateUUID();
       this.uuidToSocket.set(uuid, ws);
@@ -54,7 +54,7 @@ class BridgeServer {
 
       ws.on('message', (rawData) => {
         this.logger.verbose('Received raw data from client:', rawData.toString());
-        this.hub.emit('system.rawdata.incoming', rawData);
+        this.hub.emit('micro.websocket.rawdata.incoming', rawData);
       });
 
       ws.on('close', () => {

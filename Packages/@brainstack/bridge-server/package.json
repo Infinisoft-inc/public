@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/bridge-server",
-  "version": "2.0.41",
+  "version": "2.0.44",
   "description": "Brainstack Bridge Server",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -33,5 +33,5 @@
     "ioredis": "^5.3.2",
     "ws": "^8.14.2"
   },
-  "gitHead": "52c649be2972bded84e73dbd0160ae3433f7f757"
+  "gitHead": "89c17231aa0ea0f4e662eb4a85e1696dcf5bcae3"
 }

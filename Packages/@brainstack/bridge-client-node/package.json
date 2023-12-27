@@ -1,12 +1,15 @@
 {
   "name": "@brainstack/bridge-client-node",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "Brainstack Bridge Client fro NodeJS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [],
   "author": "Infinisoft World",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "set NODE_OPTIONS=--experimental-vm-modules && jest --coverage index.test.ts",
     "test:dev": "jest --watchAll",
@@ -32,5 +35,5 @@
     "@brainstack/hub": "^1.1.90",
     "@brainstack/log": "^1.1.93"
   },
-  "gitHead": "290aa4a960487c110c8f16e47931fe52a12e30c1"
+  "gitHead": "89c17231aa0ea0f4e662eb4a85e1696dcf5bcae3"
 }

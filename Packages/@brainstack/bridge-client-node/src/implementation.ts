@@ -4,7 +4,6 @@ import { WebSocket } from 'ws';
 import { createEventHub, EventHub } from '@brainstack/hub';
 
 class BridgeClient {
-  private url: string;
   private ws?: WebSocket;
   private reconnectInterval: number;
   private maxReconnectAttempts: number;
@@ -14,18 +13,16 @@ class BridgeClient {
   private logger: Logger;
   private hub: EventHub;
 
-  constructor(options: BridgeClientOptions) {
-    this.url = options.url;
-    this.reconnectInterval = options.reconnectInterval || 5000;
-    this.maxReconnectAttempts = options.maxReconnectAttempts || 10;
+  constructor(options?: BridgeClientOptions) {
+    this.reconnectInterval = options?.reconnectInterval || 5000;
+    this.maxReconnectAttempts = options?.maxReconnectAttempts || 10;
     this.reconnectAttempts = 0;
     this.shouldAttemptReconnect = true;
-    this.logger = options.logger || createLogger(5);
+    this.logger = options?.logger || createLogger(5);
     this.hub =
-      options.hub || createEventHub({ source: '', logger: this.logger });
+      options?.hub || createEventHub({ source: '', logger: this.logger });
     this.logger.verbose(
       'BridgeClient initialized with URL:',
-      this.url,
       'Reconnect Interval:',
       this.reconnectInterval,
       'Max Reconnect Attempts:',
@@ -33,12 +30,12 @@ class BridgeClient {
     );
   }
 
-  public connect(): void {
+  public connect(url: string): void {
     this.logger.verbose(
       'Attempting to connect to WebSocket server at:',
-      this.url
+      url
     );
-    this.ws = new WebSocket(this.url);
+    this.ws = new WebSocket(url);
 
     this.hub.on(
       /^(macro|meso)\.dts\.rawdata\.outgoing$/,
@@ -63,9 +60,9 @@ class BridgeClient {
       );
     });
 
-    this.ws.addEventListener('close', () => {
+    this.ws.addEventListener('close', (e) => {
       if (this.shouldAttemptReconnect) {
-        this.attemptReconnect();
+        this.attemptReconnect(e.target.url);
         this.logger.verbose(
           'WebSocket connection closed. Attempting to reconnect...'
         );
@@ -76,14 +73,15 @@ class BridgeClient {
       }
     });
 
+
     this.ws.addEventListener('error', (error) => {
       this.logger.error('WebSocket encountered an error:', error);
     });
   }
 
-  private attemptReconnect(): void {
+  private attemptReconnect(url:string): void {
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
-      setTimeout(() => this.connect(), this.reconnectInterval);
+      setTimeout(() => this.connect(url), this.reconnectInterval);
       this.reconnectAttempts++;
       this.logger.verbose(
         `Reconnect attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts}. Trying again in ${this.reconnectInterval}ms.`
