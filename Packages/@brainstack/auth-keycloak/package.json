@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/auth-keycloak",
-  "version": "1.0.90",
+  "version": "1.0.91",
   "description": "A Minimalist Brainstack Auth Integration for Keycloak",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -48,7 +48,7 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@brainstack/auth": "^1.0.93",
+    "@brainstack/auth": "^1.0.94",
     "keycloak-js": "^22.0.3"
   },
   "jest": {

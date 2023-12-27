@@ -1,6 +1,6 @@
 {
   "name": "@brain-sdk/assistant",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
@@ -34,12 +34,12 @@
     "coverageDirectory": "coverage"
   },
   "dependencies": {
-    "@brainstack/bridge-client-node": "^1.0.23",
-    "@brainstack/bridge-server": "^2.0.53",
-    "@brainstack/dts": "^1.0.6",
-    "@brainstack/hub": "^1.1.92",
-    "@brainstack/log": "^1.1.95",
-    "@brainstack/state": "^1.1.92",
+    "@brainstack/bridge-client-node": "^1.0.24",
+    "@brainstack/bridge-server": "^2.0.54",
+    "@brainstack/dts": "^1.0.7",
+    "@brainstack/hub": "^1.1.93",
+    "@brainstack/log": "^1.1.96",
+    "@brainstack/state": "^1.1.93",
     "@types/node": "^20.10.5"
   }
 }
