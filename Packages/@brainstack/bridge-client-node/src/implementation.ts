@@ -1,5 +1,5 @@
 import { createLogger, Logger } from '@brainstack/log';
-import { WebSocket } from 'ws';
+import WebSocket from 'ws';
 import { createEventHub, EventHub } from '@brainstack/hub';
 import { BridgeClientOptions } from './abstraction';
 

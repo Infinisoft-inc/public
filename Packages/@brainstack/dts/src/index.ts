@@ -24,7 +24,7 @@ export class DataTransformationService {
       const serializedData = this.serializeMessage(data);
 
       if (serializedData) {
-        this.hub.emit('micro.dts.rawdata.outgoing', { serializedData})
+        this.hub.emit('meso.dts.rawdata.outgoing',  serializedData)
         this.log.verbose('Serialized and sent data:', serializedData);
       } else {
         this.log.error('Failed to serialize data:', data);
