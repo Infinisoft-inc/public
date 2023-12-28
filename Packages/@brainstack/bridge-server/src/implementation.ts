@@ -10,12 +10,12 @@ class BridgeServer {
   public wss: WebSocket.Server;
   private uuidToSocket: Map<string, WebSocket>;
   private socketToUUID: Map<WebSocket, string>;
-  public logger: Logger;
 
-  constructor(logger?: Logger) {
+  constructor(
+    private logger: Logger = createLogger(5)
+  ) {
     this.port = PORT;
     this.host = HOST;
-    this.logger = logger ?? createLogger();
     this.uuidToSocket = new Map();
     this.socketToUUID = new Map();
     this.wss = null;
@@ -52,7 +52,7 @@ class BridgeServer {
 
       ws.on('message', (rawData) => {
         this.logger.verbose('Broadcasting raw data', rawData.toString());
-        this.broadcast(ws, rawData.toString());
+        this.broadcast(ws, rawData.toString())
       });
 
       ws.on('close', () => {

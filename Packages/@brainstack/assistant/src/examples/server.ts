@@ -11,8 +11,8 @@ const run = () => {
   )
   martin.listen();
   
-  martin.hub.on(/\.*/, console.log);
-  martin.hub.emit('john', { name: 'john' });
+  // martin.hub.on(/\.*/, console.log);
+  // martin.hub.emit('john', { name: 'john' });
 
 }
 

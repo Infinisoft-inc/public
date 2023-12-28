@@ -1,5 +1,5 @@
 import { createEventHub } from '../implementation';
-import {  Options } from '../abstraction';
+import { Options } from '../abstraction';
 
 // Mock Logger
 const logger: any = {
@@ -25,25 +25,24 @@ describe('Event Hub', () => {
 
   it('should subscribe to and emit events', () => {
     const eventHub = createEventHub(options);
-
     const handler1 = jest.fn();
 
-
-    // Subscribe to event "testEvent" with two handlers
+    // Subscribe to event "testEvent"
     const unsubscribe1 = eventHub.on('testEvent', handler1);
-
 
     // Emit the event "testEvent" with payload
     eventHub.emit('testEvent', { data: 'testPayload' });
 
-    // Check if the handlers are called with the correct arguments
+    // Check if the handler is called with the correct arguments
     expect(handler1).toHaveBeenCalledWith({
       event: 'testEvent',
-      data: 'testPayload',
+      content: { data: 'testPayload' }, // Update this line
+      headers: expect.any(Array), // Expect headers to be an array
     });
 
     expect(handler1).toHaveBeenCalledTimes(1);
-    // Unsubscribe one of the handlers
+
+    // Unsubscribe the handler
     unsubscribe1();
   });
 

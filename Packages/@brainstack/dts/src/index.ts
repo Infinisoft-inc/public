@@ -1,6 +1,6 @@
 import { isJsonString } from './validators/isJsonString';
-import { EventHub } from '@brainstack/hub';
-import { Logger } from '@brainstack/log';
+import { EventHub, createEventHub } from '@brainstack/hub';
+import { Logger, createLogger } from '@brainstack/log';
 
 export class DataTransformationService {
   constructor(private hub: EventHub, private log: Logger) {
@@ -17,15 +17,14 @@ export class DataTransformationService {
       }
     });
 
+
     // Listen for outgoing data, serialize it, and send it to its destination
-    this.hub.on('data.outgoing', (data: any) => {
+    this.hub.on('outgoing', (data: any) => {
       this.log.verbose('Received data for outgoing:', data);
       const serializedData = this.serializeMessage(data);
 
       if (serializedData) {
-        // Send serialized data to its destination
-        // For example, if using WebSocket, you would send it here
-        // this.websocket.send(serializedData);
+        this.hub.emit('micro.dts.rawdata.outgoing', { serializedData})
         this.log.verbose('Serialized and sent data:', serializedData);
       } else {
         this.log.error('Failed to serialize data:', data);
@@ -75,3 +74,4 @@ export class DataTransformationService {
   }
 
 }
+

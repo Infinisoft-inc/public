@@ -10,7 +10,7 @@ const run = () => {
 
   laurie.connect('ws://127.0.0.1:7777');
   setInterval(()=> {
-  laurie.hub.emit('micro.message.chat.outgoing', { name: 'JOJDHDHDGDHGF' });
+  laurie.hub.emit('data.outgoing', { name: 'JOJDHDHDGDHGF' });
   },5000);
   
 };

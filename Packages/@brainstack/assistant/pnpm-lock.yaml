@@ -6,23 +6,23 @@ settings:
 
 dependencies:
   '@brainstack/bridge-client-node':
-    specifier: ^1.0.21
-    version: 1.0.21
+    specifier: ^1.0.29
+    version: 1.0.29
   '@brainstack/bridge-server':
-    specifier: ^2.0.51
-    version: 2.0.51
+    specifier: ^2.0.59
+    version: 2.0.59
   '@brainstack/dts':
-    specifier: ^1.0.4
-    version: 1.0.4
+    specifier: ^1.0.12
+    version: 1.0.12
   '@brainstack/hub':
-    specifier: ^1.1.90
-    version: 1.1.90
+    specifier: ^1.2.1
+    version: 1.2.1
   '@brainstack/log':
-    specifier: ^1.1.93
-    version: 1.1.93
+    specifier: ^1.1.102
+    version: 1.1.102
   '@brainstack/state':
-    specifier: ^1.1.90
-    version: 1.1.90
+    specifier: ^1.1.98
+    version: 1.1.98
   '@types/node':
     specifier: ^20.10.5
     version: 20.10.5
@@ -399,18 +399,18 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@brainstack/bridge-client-node@1.0.21:
-    resolution: {integrity: sha512-z+SaVDfBF2fR5WpGhht3PQQ47Yby7ZJWeX0VwUttb8KJM9o2serLkmz69f5S9hnWjQqF57sQs1Zj5LLu6bfs6Q==}
+  /@brainstack/bridge-client-node@1.0.29:
+    resolution: {integrity: sha512-R1coYMIeJBWr6biNvN5vuE0yFlcLozowHnmpu10wEM+DMQ0noyNAy91xhQ+yHL2D/jigWIUtl1gNzy+BeD7I5w==}
     dependencies:
-      '@brainstack/hub': 1.1.90
-      '@brainstack/log': 1.1.93
+      '@brainstack/hub': 1.2.1
+      '@brainstack/log': 1.1.102
     dev: false
 
-  /@brainstack/bridge-server@2.0.51:
-    resolution: {integrity: sha512-MnTcHOoAut8+p4HZ51A5wLhuoYPmyFz/zRyFyczbqF93AVclZc90E5BLNBqX+D4Dmb8oCFBPM2dx3x5VUs/9pg==}
+  /@brainstack/bridge-server@2.0.59:
+    resolution: {integrity: sha512-HDroIL4lpEg5pqmBKXsiAujK+RxDze+sPjpn3XS+Jwis43VhjRtnWhgIjjJUjqZQFEpP3Lm/RmycLYidF35Vxw==}
     dependencies:
-      '@brainstack/hub': 1.1.90
-      '@brainstack/log': 1.1.93
+      '@brainstack/hub': 1.2.1
+      '@brainstack/log': 1.1.102
       ioredis: 5.3.2
       ws: 8.16.0
     transitivePeerDependencies:
@@ -419,25 +419,25 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@brainstack/dts@1.0.4:
-    resolution: {integrity: sha512-8Oy0R9dxqCPLUEbdkYkhMCZ29pZ+TZL74PWlWBAc1xAvGf+jWbXAxeeTGJtxOO0yhH8uhWfT8ILIJLfFrMjPrg==}
+  /@brainstack/dts@1.0.12:
+    resolution: {integrity: sha512-V1XvTyQycJPHIck/r7t68lt2DsDNR8F3CJJdoN+u0L+K2z+uQ0BEUtrMKD/svtcg1i86VxG9RSxD5k6rZu0KNA==}
     dependencies:
-      '@brainstack/hub': 1.1.90
-      '@brainstack/log': 1.1.93
+      '@brainstack/hub': 1.2.1
+      '@brainstack/log': 1.1.102
     dev: false
 
-  /@brainstack/hub@1.1.90:
-    resolution: {integrity: sha512-UJbyNBQSwGoCZX5QtxKksd5lTjMwabTXgjFHijYoCxT6KgN248mBDw5397pvEfZB7nksFTC46DUIziS1XcDk+Q==}
+  /@brainstack/hub@1.2.1:
+    resolution: {integrity: sha512-IlxjubgwOioQYtgXyTTEMBVMtr1wzzyltgIEgtAsJmTKsyM8B+cK5w6vBS2DzWKQW6LlRW3HFJFr3ZQO6h+GiA==}
     dependencies:
-      '@brainstack/log': 1.1.93
+      '@brainstack/log': 1.1.102
     dev: false
 
-  /@brainstack/log@1.1.93:
-    resolution: {integrity: sha512-nnpqtJ5j4FSxwgETD/c+Us8kMUeALMI41fG8LH0GmsDdpsbMY1Tr78xSm85xw+mhfAgELoxUdYmg3AEbRrGWyw==}
+  /@brainstack/log@1.1.102:
+    resolution: {integrity: sha512-DA6uKXuFw1fs33grX9FAytCKMYp7uuyR6RhrJKxgHQWTWmJpWnI9L+nkWWO/TYzsAeNuXKoY+V+36/I9fBEYJA==}
     dev: false
 
-  /@brainstack/state@1.1.90:
-    resolution: {integrity: sha512-9hQ2VPKD2NHTQl8a1bbUpYqp498ILiXFyUoOwAML4y/svKnDdl1GduW0NgDdM5djWG5TWzdPv4ygaN6ZTS2PQQ==}
+  /@brainstack/state@1.1.98:
+    resolution: {integrity: sha512-Jdq4MDqUntYc0aW5J7u5oC3b0wFsG+jC4GC6WB9UCzvh0XEmDRHLsoo2/IEJG8qEbl/i3QysIa/OLLv5uzn+Hw==}
     dev: false
 
   /@cspotcode/source-map-support@0.8.1:
