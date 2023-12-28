@@ -1,7 +1,7 @@
 {
   "name": "@brainstack/tools",
   "description": "Brainstack Tools SDK",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [],
