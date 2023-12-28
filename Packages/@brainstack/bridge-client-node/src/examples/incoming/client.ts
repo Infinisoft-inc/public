@@ -1,13 +1,13 @@
 // Modified client.ts
-import { BridgeClient } from '../..'; // Adjust the import path
+import { BridgeClientNode } from '../..'; // Adjust the import path
 import { createLogger } from '@brainstack/log';
 import { createEventHub } from '@brainstack/hub';
 
 const logger = createLogger();
 const hub = createEventHub();
-const client = new BridgeClient({ logger, hub });
+const client = new BridgeClientNode({ logger, hub });
 
-client.connect('ws://localhost:8888');
+// client.connect();
 
 // Send a message to the server
 setTimeout(() => {

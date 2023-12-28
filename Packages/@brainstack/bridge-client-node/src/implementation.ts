@@ -3,7 +3,7 @@ import WebSocket from 'ws';
 import { createEventHub, EventHub } from '@brainstack/hub';
 import { BridgeClientOptions } from './abstraction';
 
-class BridgeClient {
+class BridgeClientNode {
   private ws?: WebSocket;
   private reconnectInterval: number;
   private maxReconnectAttempts: number;
@@ -11,12 +11,18 @@ class BridgeClient {
   private shouldAttemptReconnect: boolean;
   public logger: Logger;
   public hub: EventHub;
+  public onMessage?: (data: any) => void;
+  private host: string;
+  private port: number;
 
   constructor(options?: BridgeClientOptions) {
     this.reconnectInterval = options?.reconnectInterval || 5000;
     this.maxReconnectAttempts = options?.maxReconnectAttempts || 10;
     this.reconnectAttempts = 0;
     this.shouldAttemptReconnect = true;
+    this.host = options?.host || 'localhost';
+    this.port = options?.port || 8080;
+    this.onMessage = options?.onMessage;
     this.logger =
       options?.logger ||
       createLogger(
@@ -31,54 +37,43 @@ class BridgeClient {
           logger: this.logger,
         }),
       });
-
     this.logger.verbose(
-      'BridgeClient initialized with URL:',
-      'Reconnect Interval:',
-      this.reconnectInterval,
-      'Max Reconnect Attempts:',
-      this.maxReconnectAttempts
+      'BridgeClient initialized with default settings.'
     );
   }
 
-  public connect(url: string): void {
+  public connect(host: string, port: number): void {
+    this.host = host;
+    this.port = port;
+    const url = `ws://${host}:${port}`;
     this.logger.verbose('Attempting to connect to WebSocket server at:', url);
     this.ws = new WebSocket(url);
 
-    // Listen for events from the Event Hub to send to the WebSocket server
-    this.hub.on(/^(macro|meso)\.dts\.rawdata\.outgoing$/, (payload: any) => {
-      try {
-        if (this.ws?.readyState === WebSocket.OPEN) {
-          this.logger.verbose(
-            'Sending message to WebSocket server. Payload:',
-            payload
-          );
-          this.ws.send(payload);
-        }
-      } catch (err) {
-        this.logger.error(err);
-      }
-    });
-
-    // Set up WebSocket event listeners
-    this.ws.addEventListener('open', () => {
+    this.ws.on('open', () => {
       this.reconnectAttempts = 0;
       this.logger.verbose(
         'WebSocket connection established. Reconnect attempts reset to 0.'
       );
     });
 
-    this.ws.addEventListener('message', (payload) => {
-      this.hub.emit('micro.websocket.rawdata.incoming', payload.data);
+    this.ws.on('message', (event) => {
+      const messageData = event; // Corrected to access data from event
+      if (this.onMessage) {
+        this.onMessage(messageData);
+      }
       this.logger.verbose(
-        'Received message from server. Payload:',
-        payload.data
+        'Received message from server. Message:',
+        messageData
       );
     });
 
-    this.ws.addEventListener('close', (e) => {
+    this.setupEventListeners();
+  }
+
+  private setupEventListeners(): void {
+    this.ws?.on('close', (e) => {
       if (this.shouldAttemptReconnect) {
-        this.attemptReconnect(e.target.url);
+        this.attemptReconnect();
         this.logger.verbose(
           'WebSocket connection closed. Attempting to reconnect...'
         );
@@ -89,14 +84,18 @@ class BridgeClient {
       }
     });
 
-    this.ws.addEventListener('error', (error) => {
+    this.ws?.on('error', (error) => {
       this.logger.error('WebSocket encountered an error:', error);
     });
   }
 
-  private attemptReconnect(url: string): void {
+  private attemptReconnect(): void {
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
-      setTimeout(() => this.connect(url), this.reconnectInterval);
+      setTimeout(() => {
+        if (this.host && this.port) {
+          this.connect(this.host, this.port);
+        }
+      }, this.reconnectInterval);
       this.reconnectAttempts++;
       this.logger.verbose(
         `Reconnect attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts}. Trying again in ${this.reconnectInterval}ms.`
@@ -109,4 +108,4 @@ class BridgeClient {
   }
 }
 
-export { BridgeClient };
+export { BridgeClientNode };
