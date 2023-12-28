@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/log",
-  "version": "1.1.110",
+  "version": "1.1.111",
   "description": "A Micro Logger Package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
