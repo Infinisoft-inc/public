@@ -104,20 +104,92 @@ document.addEventListener('DOMContentLoaded', () => {
 
     UserTalkEvent.listen((data) => {
         console.log(data?.detail)
-        socket.send({ action: 'talk', payload: 'Hi my name is steve!' });
-
+        const d = JSON.stringify(data?.detail)
+        console.log(JSON.parse(d))
+        socket.send(d);
     })
     // Connection opened
     socket.addEventListener('open', (event) => {
         console.log('Connected to the server');
-        socket.send(JSON.stringify({ action: 'talk', payload: 'Hi my name is steve!' }))
-        // You can send messages to server once the connection is open
     });
-``
+    
+
+    class AudioPlaybackQueue {
+        constructor() {
+            this.queue = [];
+            this.isPlaying = false;
+        }
+    
+        enqueue(audioBlob) {
+            this.queue.push(audioBlob);
+            if (!this.isPlaying) {
+                this.playNext();
+            }
+        }
+    
+        playNext() {
+            if (this.queue.length === 0) {
+                this.isPlaying = false;
+                return;
+            }
+    
+            this.isPlaying = true;
+            const audioBlob = this.queue.shift();
+            const audio = new Audio(URL.createObjectURL(audioBlob));
+            audio.play();
+    
+            audio.onended = () => {
+                this.playNext();
+            };
+        }
+    }
+    
+    // Function to convert base64 string to Blob
+    function base64ToBlob(base64, mimeType) {
+        const byteCharacters = atob(base64);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        return new Blob([byteArray], { type: mimeType });
+    }
+    
+    // Initialize the audio playback queue
+    const audioQueue = new AudioPlaybackQueue();
+
+
+
+
+
     // Listen for messages from the server
     socket.addEventListener('message', (event) => {
         console.log('Message from server ', event.data);
+
+        try {
+            const message = JSON.parse(event.data);
+    
+            if (message.action === 'answer' && message.payload.audio) {
+                const audioBase64 = message.payload.audio;
+                const audioBlob = base64ToBlob(audioBase64, 'audio/wav');
+    
+                // Enqueue the audio Blob for playback
+                audioQueue.enqueue(audioBlob);
+            }
+        } catch (error) {
+            console.error('Error processing message from server:', error);
+        }
     });
+
+    function base64ToBlob(base64, mimeType) {
+        const byteCharacters = atob(base64);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        return new Blob([byteArray], { type: mimeType });
+    }
 
     // Listen for possible errors
     socket.addEventListener('error', (event) => {

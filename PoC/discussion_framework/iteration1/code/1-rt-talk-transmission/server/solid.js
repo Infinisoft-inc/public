@@ -16,12 +16,13 @@ wss.on('connection', (ws, req) => {
     clients.set(uuid, { ws: ws, metadata: {} });
     ws.uuid = uuid;
 
+    console.log("Client connected: ", uuid)
+
     ws.on('message', (data) => {
         try {
-            console.log(data)
-
-            // Ensure that 'data' is a string before parsing
-            const message = (typeof data === 'string') ? JSON.parse(data) : JSON.parse(data);
+            console.log(data.toString('utf8'))
+            const message = JSON.parse(data.toString('utf8'))
+            console.log(message)
             if (message && message.action && message.payload) {
                 handleIncomingMessage(ws, message);
             } else {
@@ -40,18 +41,11 @@ wss.on('connection', (ws, req) => {
         console.error(`WebSocket error: ${error}`);
     });
 
-    safeSendMessage(ws, { action: 'welcome', payload: 'Welcome to the WebSocket server!' });
+    // safeSendMessage(ws, { action: 'welcome', payload: 'Welcome to the WebSocket server!' });how could we define 
 });
 
-function handleIncomingMessage(ws, data) {
-    let message;
-    try {
-        message = data//JSON.parse(data);
-    } catch (e) {
-        console.error('Invalid JSON:', e);
-        return;
-    }
 
+async function handleIncomingMessage(ws, message) {
     switch (message.action) {
         case 'broadcast':
             broadcast(message.payload, ws);
@@ -60,14 +54,118 @@ function handleIncomingMessage(ws, data) {
             sendMessageToClient(message.payload.targetUuid, message.payload.message);
             break;
         case 'talk':
-            // Handle 'talk' action
             console.log('Talk action received:', message.payload);
+            try {
+                // Check if the transcript is similar to the previous ones
+                if (!isSimilar(message.payload.text)) {
+                    // Process the transcript as it's not similar
+                    onNewTranscript(message.payload.text);
+                    const audioBuffer = await handleAudioRequest(message.payload.text);
+                    const audioBase64 = audioBuffer.toString('base64');
+                    ws.send(JSON.stringify({ action: "answer", payload: { audio: audioBase64 } }));
+                } else {
+                    console.log("Dropped similar transcript:", message.payload.text);
+                }
+            } catch (error) {
+                console.error('Error handling talk action:', error);
+            }
             break;
         // Add other cases as needed
         default:
             console.log('Unknown action:', message.action);
     }
 }
+
+
+async function handleAudioRequest(text) {
+    try {
+        const audioBuffer = await postTextAndGetAudio(text);
+        return audioBuffer;
+    } catch (error) {
+        console.error(error);
+        throw error; // Propagate the error
+    }
+}
+
+async function postTextAndGetAudio(text) {
+    const url = 'http://127.0.0.1:5000/tts';
+    const data = { text: text };
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Get the response as an ArrayBuffer and convert it to a Node.js Buffer
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = Buffer.from(arrayBuffer);
+        return audioBuffer;
+    } catch (error) {
+        console.error('Error during fetch:', error);
+        throw error; // Propagate the error
+    }
+}
+
+
+
+let spokenTexts = []; // Array to store spoken texts
+const ttl = 60000; // Time-to-live in milliseconds (e.g., 60000ms = 1 minute)
+
+function onNewTranscript(transcript) {
+    if (isSimilar(transcript)) {
+        console.log("Echo detected.");
+        // Handle the echo (e.g., ignore the transcript, notify the user, etc.)
+    } else {
+        // Add the transcript to spokenTexts with a timestamp
+        const item = { text: transcript, timestamp: Date.now() };
+        spokenTexts.push(item);
+
+        // Set a timeout to remove the item after TTL
+        setTimeout(() => {
+            removeItem(item);
+        }, ttl);
+
+        // Continue processing the transcript
+        // ...
+    }
+}
+
+function removeItem(itemToRemove) {
+    spokenTexts = spokenTexts.filter(item => item !== itemToRemove);
+}
+
+function isSimilar(transcript) {
+    const uniqueWords = new Set(transcript.trim().toLowerCase().split(/\s+/));
+    let matchCount = 0;
+    let similarityPercentage = 0;
+
+    // Consider only the last spoken text for echo detection
+    if (spokenTexts.length > 0) {
+        const lastSpokenText = spokenTexts[spokenTexts.length - 1];
+        const lastSpokenWords = new Set(lastSpokenText.text.trim().toLowerCase().split(/\s+/));
+
+        uniqueWords.forEach(word => {
+            if (lastSpokenWords.has(word)) {
+                matchCount++;
+            }
+        });
+
+        const totalUniqueWords = uniqueWords.size;
+        similarityPercentage = totalUniqueWords > 0 ? (matchCount / totalUniqueWords) * 100 : 0;
+    }
+
+    console.log(`Similarity Percentage: ${similarityPercentage}%`);
+    return similarityPercentage > 50; // Adjust this threshold as needed
+}
+
 
 
 function sendMessageToClient(uuid, message) {
