@@ -1,0 +1,6 @@
+{
+  "action": "answer",
+  "payload": {
+    "audioData": "base64_encoded_audio_data_here"
+  }
+}

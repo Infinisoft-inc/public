@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Speech to WebSocket Demo</title>
+    <script src="speechApp.js"></script>
+</head>
+<body>
+    <button id="startButton">Start Speech Recognition</button>
+
+    <script>
+        document.getElementById('startButton').addEventListener('click', () => {
+            const app = new ApplicationController('ws://localhost:8181'); // Replace with your WebSocket server URL
+            app.start();
+        });
+    </script>
+</body>
+</html>
