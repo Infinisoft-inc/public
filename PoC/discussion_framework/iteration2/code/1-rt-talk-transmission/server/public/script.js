@@ -112,38 +112,38 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.addEventListener('open', (event) => {
         console.log('Connected to the server');
     });
-    
+
 
     class AudioPlaybackQueue {
         constructor() {
             this.queue = [];
             this.isPlaying = false;
         }
-    
+
         enqueue(audioBlob) {
             this.queue.push(audioBlob);
             if (!this.isPlaying) {
                 this.playNext();
             }
         }
-    
+
         playNext() {
             if (this.queue.length === 0) {
                 this.isPlaying = false;
                 return;
             }
-    
+
             this.isPlaying = true;
             const audioBlob = this.queue.shift();
             const audio = new Audio(URL.createObjectURL(audioBlob));
             audio.play();
-    
+
             audio.onended = () => {
                 this.playNext();
             };
         }
     }
-    
+
     // Function to convert base64 string to Blob
     function base64ToBlob(base64, mimeType) {
         const byteCharacters = atob(base64);
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const byteArray = new Uint8Array(byteNumbers);
         return new Blob([byteArray], { type: mimeType });
     }
-    
+
     // Initialize the audio playback queue
     const audioQueue = new AudioPlaybackQueue();
 
@@ -167,19 +167,46 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Message from server ', event.data);
 
         try {
-            const message = JSON.parse(event.data);
-    
+            const message = JSON.parse(event.data)
+
             if (message.action === 'answer' && message.payload.audio) {
                 const audioBase64 = message.payload.audio;
                 const audioBlob = base64ToBlob(audioBase64, 'audio/wav');
-    
+
                 // Enqueue the audio Blob for playback
                 audioQueue.enqueue(audioBlob);
             }
+
+            // Check for the specific 'update' action
+            if (message.action === 'update') {
+                const { focus, spokenTexts } = message.payload;
+                updateFocusDisplay(focus);
+                updateSpokenTextsDisplay(spokenTexts);
+            }
+
         } catch (error) {
             console.error('Error processing message from server:', error);
         }
     });
+
+
+
+    function updateFocusDisplay(newFocus) {
+        console.log(`updateFocusDisplay: `, newFocus)
+        document.getElementById('focusDisplay').textContent = `Focus: ${newFocus}`;
+    }
+
+    function updateSpokenTextsDisplay(newSpokenTexts) {
+        console.log(`updateSpokenTextsDisplay: `, newSpokenTexts)
+        const list = document.getElementById('spokenTextsDisplay');
+        list.innerHTML = ''; // Clear existing list
+        newSpokenTexts.forEach(textItem => {
+            const listItem = document.createElement('li');
+            listItem.textContent = textItem;
+            list.appendChild(listItem);
+        });
+    }
+
 
     function base64ToBlob(base64, mimeType) {
         const byteCharacters = atob(base64);
