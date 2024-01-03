@@ -1,6 +1,0 @@
-{
-  "action": "talk",
-  "payload": {
-    "text": "Hello, this is a test message."
-  }
-}
