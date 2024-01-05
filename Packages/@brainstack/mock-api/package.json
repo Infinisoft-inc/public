@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/mock-api",
-  "version": "1.1.105",
+  "version": "1.1.106",
   "private": true,
   "description": "A mock API server",
   "bin": {

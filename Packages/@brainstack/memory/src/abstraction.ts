@@ -7,10 +7,10 @@ export interface IMemoryItem {
   content: any;
   createdAt: Date;
   lastAccessed: Date;
-  referenceCount: number;
+  weight: number;
 }
 
-export interface IMemoryLayer {
+export interface IMemoryLayer extends Iterable<IMemoryItem> {
   [uid: string]: IMemoryItem;
 }
 
@@ -19,14 +19,20 @@ export interface ITransferThreshold {
   shortTermToLongTerm: number;
 }
 
-export interface IMemory {
+export interface IMemory extends Iterable<IMemoryItem> {
+  attention: IMemoryLayer;
+  shortTerm: IMemoryLayer;
+  longTerm: IMemoryLayer;
+  evaluationIntervalMs: number;
+  evaluationIntervalId: NodeJS.Timeout | null;
   addMemoryItem(content: any, layer?: IMemoryLayer): UID;
   getMemoryItem(uid: UID, layer?: IMemoryLayer): IMemoryItem | undefined;
   updateMemoryItem(uid: UID, content: any, layer?: IMemoryLayer): void;
   removeMemoryItem(uid: UID, layer?: IMemoryLayer): void;
   transferMemoryItem(uid: UID, from: IMemoryLayer, to: IMemoryLayer): void;
   recallMemory(query: string): IMemoryItem[];
-  subscribeToRecall(callback: (item: IMemoryItem) => void): void;
   startEvaluationCycle(): void;
   stopEvaluationCycle(): void;
+
+  [uid: UID]: IMemoryItem;
 }
