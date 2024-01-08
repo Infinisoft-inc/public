@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/crud",
-  "version": "1.0.109",
+  "version": "1.0.110",
   "description": "A Micro CRUD Package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

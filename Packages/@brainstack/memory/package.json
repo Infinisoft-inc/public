@@ -1,8 +1,8 @@
 {
   "name": "@brainstack/memory",
-  "version": "1.0.50",
+  "version": "1.0.51",
   "description": "A Micro Memory Management",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [
     "brainstack",
