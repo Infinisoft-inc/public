@@ -1,7 +1,7 @@
 {
   "name": "@brainstack/assistant",
   "private": true,
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
@@ -35,12 +35,12 @@
     "coverageDirectory": "coverage"
   },
   "dependencies": {
-    "@brainstack/bridge-client-node": "^1.0.47",
-    "@brainstack/bridge-server": "^2.0.77",
-    "@brainstack/dts": "^1.0.30",
-    "@brainstack/hub": "^1.2.19",
-    "@brainstack/log": "^1.1.120",
-    "@brainstack/state": "^1.1.116",
+    "@brainstack/bridge-client-node": "^1.0.48",
+    "@brainstack/bridge-server": "^2.0.78",
+    "@brainstack/dts": "^1.0.31",
+    "@brainstack/hub": "^1.2.20",
+    "@brainstack/log": "^1.1.121",
+    "@brainstack/state": "^1.1.117",
     "@types/node": "^20.10.5"
   }
 }
