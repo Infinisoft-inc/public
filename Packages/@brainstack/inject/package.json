@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/inject",
-  "version": "1.2.115",
+  "version": "1.2.116",
   "description": "A Micro Dependency Injection Package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
