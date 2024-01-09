@@ -1,65 +1,128 @@
-import { IMemoryLayer, ITransferThreshold } from '../abstraction';
+import { ITransferThreshold } from '../abstraction';
+import { IMemoryCell } from '../cells/base';
 import { Memory } from '../implementation';
+import { generateUUID } from '../utils/generateuuid';
 
 describe('Memory', () => {
   let memory: Memory;
-  let transferThresholds: ITransferThreshold;
+  const transferThreshold: ITransferThreshold = {
+    attentionToShortTerm: 5,
+    shortTermToLongTerm: 3,
+  };
 
   beforeEach(() => {
-    transferThresholds = { attentionToShortTerm: 5, shortTermToLongTerm: 10 };
-    memory = new Memory();
+    memory = new Memory(transferThreshold);
+  });
+
+  // Test addMemoryItem
+  it('should add a memory item to the specified layer', () => {
+    const item: IMemoryCell = {
+      uid: generateUUID(),
+      content: 'hu',
+      createdAt: new Date(),
+      lastAccessed: new Date(),
+      weight: 0,
+      associations: [],
+    };
+    memory.addMemoryCell(item, 'attention');
+    expect(memory.getMemoryCell(item.uid, 'attention')).toEqual(item);
+  });
+
+  // Test getMemoryItem and check weight increase
+  it('should retrieve and increase weight of a memory item', () => {
+    const item: IMemoryCell = {
+      uid: generateUUID(),
+      content: 'some content',
+      createdAt: new Date(),
+      lastAccessed: new Date(),
+      weight: 0,
+      associations: [],
+    };
+    memory.addMemoryCell(item, 'attention');
+    const initialWeight = item.weight;
+    const retrievedItem = memory.getMemoryCell(item.uid, 'attention');
+    expect(retrievedItem?.weight).toBeGreaterThan(initialWeight);
+  });
+
+  // Test updateMemoryItem
+  it('should update a memory item', () => {
+    const item: IMemoryCell = {
+      uid: generateUUID(),
+      content: 'hu',
+      createdAt: new Date(),
+      lastAccessed: new Date(),
+      weight: 0,
+      associations: [],
+    };
+    memory.addMemoryCell(item, 'attention');
+    memory.updateMemoryCell(item.uid, 'new content', 'attention');
+    const updatedItem = memory.getMemoryCell(item.uid, 'attention');
+    expect(updatedItem?.content).toBe('new content');
+  });
+
+  // Test removeMemoryItem
+  it('should remove a memory item', () => {
+    const item: IMemoryCell = {
+      uid: generateUUID(),
+      content: 'hu',
+      createdAt: new Date(),
+      lastAccessed: new Date(),
+      weight: 0,
+      associations: [],
+    };
+    memory.addMemoryCell(item, 'attention');
+    memory.removeMemoryCell(item.uid, 'attention');
+    expect(memory.getMemoryCell(item.uid, 'attention')).toBeUndefined();
+  });
+
+  // Test recall functionality
+  it('should recall memory items based on query', () => {
+    const item1: IMemoryCell = {
+      uid: generateUUID(),
+      content: 'query cat',
+      createdAt: new Date(),
+      lastAccessed: new Date(),
+      weight: 0,
+      associations: [],
+    };
+    const item2: IMemoryCell = {
+      uid: generateUUID(),
+      content: 'query dog',
+      createdAt: new Date(),
+      lastAccessed: new Date(),
+      weight: 0,
+      associations: [],
+    };
+    memory.addMemoryCell(item1, 'attention');
+    memory.addMemoryCell(item2, 'shortTerm');
+    const results = memory.recall('query');
+    expect(results).toContainEqual(item1);
+    expect(results).toContainEqual(item2);
+  });
+
+  // Test transfer functionality
+  it('should transfer a memory item between layers', () => {
+    const item: IMemoryCell = {
+      uid: generateUUID(),
+      content: 'hnumeb 2',
+      createdAt: new Date(),
+      lastAccessed: new Date(),
+      weight: 0,
+      associations: [],
+    };
+    memory.addMemoryCell(item, 'attention');
+    memory.transferCell(item.uid, 'attention', 'shortTerm');
+    expect(memory.getMemoryCell(item.uid, 'shortTerm')).toEqual(item);
+    expect(memory.getMemoryCell(item.uid, 'attention')).toBeUndefined();
+  });
+
+  // Test startEvaluationCycle and stopEvaluationCycle
+  it('should start and stop evaluation cycle', () => {
+    jest.useFakeTimers();
     memory.startEvaluationCycle();
-  });
-
-  afterEach(() => {
+    jest.advanceTimersByTime(15000); // Fast-forward time
+    // Assertions to verify evaluation logic
     memory.stopEvaluationCycle();
+    jest.useRealTimers();
   });
-
-  describe('addMemoryItem', () => {
-    it('should add an item to memory and return a UID', () => {
-      const content = { note: 'This is a test note' };
-      const uid = memory.addMemoryItem(content);
-      expect(typeof uid).toBe('number');
-      expect(memory.getMemoryItem(uid)).toHaveProperty('content', content);
-    });
-  });
-
-  describe('getMemoryItem', () => {
-    it('should return undefined for a non-existing item', () => {
-      expect(memory.getMemoryItem(999)).toBeUndefined();
-    });
-
-    it('should retrieve an existing item from memory', () => {
-      const content = { note: 'This is a test note' };
-      const uid = memory.addMemoryItem(content);
-      const item = memory.getMemoryItem(uid);
-      expect(item).toBeDefined();
-      expect(item).toHaveProperty('uid', uid);
-      expect(item).toHaveProperty('content', content);
-    });
-  });
-
-  describe('updateMemoryItem', () => {
-    it('should update the content of an existing item', () => {
-      const content = { note: 'Update test' };
-      const uid = memory.addMemoryItem({ note: 'Original note' });
-      memory.updateMemoryItem(uid, content);
-      const item = memory.getMemoryItem(uid);
-      expect(item).toBeDefined();
-      expect(item).toHaveProperty('content', content);
-    });
-  });
-
-  describe('removeMemoryItem', () => {
-    it('should remove an item from memory', () => {
-      const uid = memory.addMemoryItem({ note: 'To be removed' });
-      memory.removeMemoryItem(uid);
-      expect(memory.getMemoryItem(uid)).toBeUndefined();
-    });
-  });
-
-  // ... More unit tests for transferMemoryItem, recallMemory, etc.
-
-  // You may also want to test the evaluation cycle logic, transfer thresholds, 
-  // reference count updates, subscription notifications, and so on.
 });

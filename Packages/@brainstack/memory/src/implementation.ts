@@ -1,198 +1,206 @@
-import { IMemoryItem, UID, IMemoryLayer } from './abstraction';
+import { IMemory, ITransferThreshold } from './abstraction';
+import { IMemoryCell, UID } from './cells/base';
+import { TTLMemoryCell } from './cells/ttl';
+import { mapToObject } from './utils/map2Object';
 
-export class Memory implements IMemory, Iterable<IMemoryItem> {
-  private attention: IMemoryLayer;
-  private shortTerm: IMemoryLayer;
-  private longTerm: IMemoryLayer;
+const TTL_EXTENSION_TIME_MS = 10000; // 10 seconds, for example
+
+export class Memory implements IMemory {
+  private attention: Map<UID, IMemoryCell> = new Map();
+  private shortTerm: Map<UID, IMemoryCell> = new Map();
+  private longTerm: Map<UID, IMemoryCell> = new Map();
+  private transferThreshold: ITransferThreshold;
   private evaluationIntervalMs: number = 15000;
   private evaluationIntervalId: NodeJS.Timeout | null = null;
 
-constructor(){
-  this.attention={} as any
-  this.shortTerm={} as any
-  this.longTerm={} as any
-}
-
-  public addMemoryItem(
-    content: any,
-    layer: IMemoryLayer = this.attention
-  ): UID {
-    const uid: UID = Memory.getNextUid();
-    const timestamp = new Date();
-    const memoryItem: IMemoryItem = {
-      uid,
-      content,
-      createdAt: timestamp,
-      lastAccessed: timestamp,
-      weight: 0,
-    };
-    layer[uid] = memoryItem;
-    return uid;
+  constructor(transferThreshold: ITransferThreshold, private debug: boolean = false) {
+    this.transferThreshold = transferThreshold;
   }
 
-  public getMemoryItem(uid: UID): IMemoryItem | null {
-    // Retrieve the memory item from all layers
-    return this.attention[uid] || this.shortTerm[uid] || this.longTerm[uid];
+  public dump() {
+    if (this.debug) {
+      return {
+        attention:mapToObject(this.attention),
+        shortTerm:mapToObject(this.shortTerm),
+        longTerm:mapToObject(this.longTerm),
+        transferThreshold: this.transferThreshold,
+        evaluationIntervalMs: this.evaluationIntervalMs,
+      };
+    }
+   
+    throw new Error('Debug mode disabled!')
   }
 
-  public updateMemoryItem(uid: UID, content: any): void {
-    // Update content within memory item across all layers
-    if (this.attention[uid]) this.attention[uid].content = content;
-    if (this.shortTerm[uid]) this.shortTerm[uid].content = content;
-    if (this.longTerm[uid]) this.longTerm[uid].content = content;
-    // Update lastAccessed and increment referenceCount
+  addMemoryCell(
+    item: IMemoryCell,
+    layer: 'attention' | 'shortTerm' | 'longTerm'
+  ) {
+    this.getLayer(layer).set(item.uid, item);
+    return item;
   }
 
-  public transferMemoryItem(
+  getMemoryCell(
     uid: UID,
-    from: IMemoryLayer,
-    to: IMemoryLayer
+    layer: 'attention' | 'shortTerm' | 'longTerm'
+  ): IMemoryCell | undefined {
+    const item = this.getLayer(layer).get(uid);
+    if (item) {
+      item.lastAccessed = new Date();
+      item.weight += 1; // Increase weight on access
+      this.evaluateItemTransfer(item, uid); // Evaluate for potential layer transfer
+    }
+    return item;
+  }
+
+  updateMemoryCell(
+    uid: UID,
+    updatedContent: any,
+    layer: 'attention' | 'shortTerm' | 'longTerm'
   ): void {
-    // Transfer memory items between layers validated by reference count
+    const item = this.getLayer(layer).get(uid);
+    if (item) {
+      item.content = updatedContent;
+      item.lastAccessed = new Date();
+    }
   }
 
-  public removeMemoryItem(uid: UID): void {
-    // Remove the memory item from all layers
-    delete this.attention[uid];
-    delete this.shortTerm[uid];
-    delete this.longTerm[uid];
+  removeMemoryCell(
+    uid: UID,
+    layer: 'attention' | 'shortTerm' | 'longTerm'
+  ): void {
+    this.getLayer(layer).delete(uid);
   }
 
-  public recallMemory(query: string): IMemoryItem[] {
-    // Search for memory items containing the query across all layers
-    // Return match results
-    throw new DOMException('Not Implemented');
+  transferCell(
+    uid: UID,
+    fromLayer: 'attention' | 'shortTerm' | 'longTerm',
+    toLayer: 'attention' | 'shortTerm' | 'longTerm'
+  ): void {
+    const item = this.getLayer(fromLayer).get(uid);
+    if (item) {
+      this.getLayer(toLayer).set(uid, item);
+      this.getLayer(fromLayer).delete(uid);
+    }
   }
 
-  public startEvaluationCycle(): void {
-    // Begin the periodic evaluation cycle for memory management
+  private getLayer(
+    name: 'attention' | 'shortTerm' | 'longTerm'
+  ): Map<UID, IMemoryCell> {
+    switch (name) {
+      case 'attention':
+        return this.attention;
+      case 'shortTerm':
+        return this.shortTerm;
+      case 'longTerm':
+        return this.longTerm;
+    }
+  }
+
+  recall(query: string): IMemoryCell[] {
+    const results: IMemoryCell[] = [];
+    [this.attention, this.shortTerm, this.longTerm].forEach((layer) => {
+      layer.forEach((item) => {
+        if (this.matchesQuery(item, query)) {
+          item.lastAccessed = new Date();
+          item.weight += 1; // Increase weight on recall
+          this.evaluateItemTransfer(item, item.uid); // Evaluate for potential layer transfer
+          results.push(item);
+        }
+      });
+    });
+    return results;
+  }
+
+  private matchesQuery(item: IMemoryCell, query: string): boolean {
+    return JSON.stringify(item).includes(query);
+  }
+
+  startEvaluationCycle(): void {
     if (this.evaluationIntervalId) clearInterval(this.evaluationIntervalId);
-    this.evaluationIntervalId = setInterval(
-      this.evaluateMemory.bind(this),
-      this.evaluationIntervalMs
-    );
+    this.evaluationIntervalId = setInterval(() => {
+      this.evaluateMemory();
+    }, this.evaluationIntervalMs);
   }
 
-  public stopEvaluationCycle(): void {
-    // Stop the periodic evaluation cycle if needed
+  stopEvaluationCycle(): void {
     if (this.evaluationIntervalId) clearInterval(this.evaluationIntervalId);
+    this.evaluationIntervalId = null;
   }
 
   private evaluateMemory(): void {
-    const now = Date.now();
-    const forgettingRate = 0.01; // forgetting rate in minutes
-    const decayRate = 0.9; // decay rate for memory strength
-    const boostRate = 1.5; // boost rate for memory strength
-    // Evaluate memory items in attention layer
-    for (const item of this.attention) {
-      const age = (now - item.lastAccessed.getTime()) / 1000; // age in seconds
-      const weight = Math.pow(1 - age / forgettingRate, decayRate);
-      item.weight = weight;
-    }
-    // Evaluate memory items in short-term layer
-    for (const item of this.shortTerm) {
-      const age = (now - item.lastAccessed.getTime()) / 1000; // age in seconds
-      const weight = Math.pow(1 - age / forgettingRate, decayRate);
-      item.weight = weight;
-    }
-    // Evaluate memory items in long-term layer
-    for (const item of this.longTerm) {
-      const age = (now - item.lastAccessed.getTime()) / 1000; // age in seconds
-      const weight = Math.pow(1 - age / forgettingRate, decayRate);
-      item.weight = weight;
-    }
-    // Recall memory items with the highest weight
-    const recallItems = [];
-    for (const item of this.attention) {
-      if (item.weight > 0) {
-        recallItems.push(item);
-      }
-    }
-    for (const item of this.shortTerm) {
-      if (item.weight > 0) {
-        recallItems.push(item);
-      }
-    }
-    for (const item of this.longTerm) {
-      if (item.weight > 0) {
-        recallItems.push(item);
-      }
-    }
-    this.recallMemory(recallItems);
-  }
+    const now = new Date().getTime();
+    const layers = {
+      attention: this.attention,
+      shortTerm: this.shortTerm,
+      longTerm: this.longTerm,
+    };
 
-  private static getNextUid(): UID {
-    // Placeholder for generating unique identifiers incrementally
-    return 0;
-  }
+    Object.entries(layers).forEach(([layerName, layer]) => {
+      layer.forEach((item, uid) => {
+        const timeSinceLastAccess = now - item.lastAccessed.getTime();
+        item.weight -= timeSinceLastAccess / 100000; // Decrease weight over time
 
-  // Implement the iterator for IMemoryLayer
-  [Symbol.iterator](): Iterator<IMemoryItem> {
-    return new MemoryIterator(this.attention);
-  }
-}
-
-// Extend the IMemoryLayer interface to return the iterator
-
-// Implementing the iterator for IMemory
-export class MemoryIterator implements Iterator<IMemoryItem> {
-  private memory: IMemoryLayer;
-  private currentUid: UID | null = null;
-
-  constructor(memory: IMemoryLayer) {
-    this.memory = memory;
-  }
-
-  next(): IteratorResult<IMemoryItem> {
-    const memoryItem = this.getNextMemoryItem();
-    if (memoryItem) {
-      return { value: memoryItem, done: false };
-    } else {
-      return { value: null as any, done: true };
-    }
-  }
-
-  private getNextMemoryItem(): IMemoryItem | null {
-    const nextUid =
-      this.currentUid !== null ? this.findNextUid() : this.findFirstUid();
-    if (nextUid !== null) {
-      this.currentUid = nextUid;
-      return this.memory.getMemoryItem(nextUid);
-    } else {
-      return null;
-    }
-  }
-
-  private findFirstUid(): UID | null {
-    for (const uid in this.memory) {
-      if (this.memory.hasOwnProperty(uid)) {
-        return parseInt(uid);
-      }
-    }
-    return null;
-  }
-
-  private findNextUid(): UID | null {
-    let foundCurrentUid = false;
-    for (const uid in this.memory) {
-      if (this.memory.hasOwnProperty(uid)) {
-        if (foundCurrentUid) {
-          return parseInt(uid);
-        } else if (parseInt(uid) === this.currentUid) {
-          foundCurrentUid = true;
+        if (item instanceof TTLMemoryCell && item.isExpired()) {
+          const threshold =
+            layerName === 'shortTerm'
+              ? this.transferThreshold.shortTermToLongTerm
+              : this.transferThreshold.attentionToShortTerm;
+          if (item.weight < threshold) {
+            this.removeMemoryCell(
+              uid,
+              layerName as 'attention' | 'shortTerm' | 'longTerm'
+            ); // Remove if below threshold
+          } else {
+            item.extendTTL(TTL_EXTENSION_TIME_MS); // Optionally extend TTL
+            this.evaluateItemTransfer(item, uid); // Evaluate for transfer
+          }
+        } else {
+          this.evaluateItemTransfer(item, uid); // Regular transfer logic for non-TTL items
         }
-      }
+      });
+    });
+  }
+
+  private evaluateItemTransfer(item: IMemoryCell, uid: UID): void {
+    if (
+      item.weight < this.transferThreshold.attentionToShortTerm &&
+      this.attention.has(uid)
+    ) {
+      this.transferCell(uid, 'attention', 'shortTerm');
+    } else if (
+      item.weight < this.transferThreshold.shortTermToLongTerm &&
+      this.shortTerm.has(uid)
+    ) {
+      this.transferCell(uid, 'shortTerm', 'longTerm');
     }
-    return null;
+  }
+
+  addAssociation(uid1: UID, uid2: UID) {
+    const item1 = this.findMemoryCell(uid1);
+    const item2 = this.findMemoryCell(uid2);
+
+    if (item1 && item2) {
+      item1.associations.push(uid2);
+      item2.associations.push(uid1);
+    }
+  }
+
+  // Method to retrieve all associations of a memory cell
+  getAssociations(uid: UID): IMemoryCell[] {
+    const item = this.findMemoryCell(uid);
+    return item
+      ? (item.associations
+          .map((assocUid) => this.findMemoryCell(assocUid))
+          .filter((item) => item !== undefined) as IMemoryCell[])
+      : [];
+  }
+
+  // Helper method to find a memory cell across all layers
+  private findMemoryCell(uid: UID): IMemoryCell | undefined {
+    return (
+      this.attention.get(uid) ||
+      this.shortTerm.get(uid) ||
+      this.longTerm.get(uid)
+    );
   }
 }
-
-// Extend the IMemory interface to return the iterator
-export interface IMemory {
-  [Symbol.iterator](): Iterator<IMemoryItem>;
-}
-
-// Implement the iterator in the Memory class
-Memory.prototype[Symbol.iterator] = function (): Iterator<IMemoryItem> {
-  return new MemoryIterator(this);
-};

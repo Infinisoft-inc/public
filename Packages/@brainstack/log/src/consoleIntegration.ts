@@ -1,37 +1,23 @@
 import { LoggerIntegration } from "./abstraction";
 
-/**
- * Default console integration.
- * Provides logging methods that are bound to the console object.
- */
 export const consoleIntegration: LoggerIntegration = {
-  /**
-   * Logs a message to the console.
-   * @param message - The message to log.
-   */
-  log: console.log.bind(console),
+  log: (message: string, ...optionalParams: any[]) => {
+    console.log(`[LOG] [${new Date().toISOString()}]`, message, ...optionalParams);
+  },
 
-  /**
-   * Logs an informational message to the console.
-   * @param message - The message to log.
-   */
-  info: console.info.bind(console),
+  info: (message: string, ...optionalParams: any[]) => {
+    console.info(`[INFO] [${new Date().toISOString()}]`, message, ...optionalParams);
+  },
 
-  /**
-   * Logs a warning message to the console.
-   * @param message - The message to log.
-   */
-  warn: console.warn.bind(console),
+  warn: (message: string, ...optionalParams: any[]) => {
+    console.warn(`[WARN] [${new Date().toISOString()}]`, message, ...optionalParams);
+  },
 
-  /**
-   * Logs an error message to the console.
-   * @param message - The message to log.
-   */
-  error: console.error.bind(console),
+  error: (message: string, ...optionalParams: any[]) => {
+    console.error(`[ERROR] [${new Date().toISOString()}]`, message, ...optionalParams);
+  },
 
-  /**
-   * Logs a verbose message to the console.
-   * @param message - The message to log.
-   */
-  verbose: console.log.bind(console),
+  verbose: (message: string, ...optionalParams: any[]) => {
+    console.log(`[VERBOSE] [${new Date().toISOString()}]`, message, ...optionalParams);
+  },
 };
