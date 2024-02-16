@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/store",
-  "version": "1.0.120",
+  "version": "1.0.121",
   "description": "An Micro Pub Sub Event Driven State Management",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -39,8 +39,8 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@brainstack/hub": "^1.2.28",
-    "@brainstack/state": "^1.1.125"
+    "@brainstack/hub": "^1.2.29",
+    "@brainstack/state": "^1.1.126"
   },
   "gitHead": "20fa43a689b4828b7ba951d7ff55a15cfc38438d"
 }
