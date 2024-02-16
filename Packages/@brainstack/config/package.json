@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/config",
-  "version": "1.0.125",
+  "version": "1.0.126",
   "description": "A Micro Config Manager Package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
   "scripts": {
     "test": "SET_OPTIONS=--experimental-vm-modules && jest --coverage index.test.ts",
     "test:dev": "jest --watchAll",
-    "build": "echo tsc",
+    "build": "tsc",
     "build:watch": "tsc --watch",
     "start": "node dist/index.js",
     "types": "tsc --declaration --outDir ../typings/config --emitDeclarationOnly"
