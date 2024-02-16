@@ -3,7 +3,7 @@ import { uuidv1 } from './utils'; // Ensure uuidv1 is correctly imported
 
 export interface EventHub {
   on: (event: string | RegExp, handler: Function) => () => void;
-  emit: (event: string, content?: any) => void;
+  emit: (event: string, payload?: any) => void;
   uuid: string;
 }
 
@@ -21,7 +21,7 @@ export interface EventHeader {
 
 export interface EventPayload {
   event: string;
-  content: any;
+  payload: any;
   headers: EventHeader[];
 }
 
@@ -51,10 +51,10 @@ export const createEventHub: EventHubFactory = (
     return () => handlers.delete(handlerId);
   };
 
-  function emit(event: string, content: any = {}): void {
+  function emit(event: string, payload: any = {}): void {
     const eventData: EventPayload = {
       event,
-      content,
+      ...payload,
       headers: [
         {
           uuid,
