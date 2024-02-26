@@ -1,22 +1,17 @@
 {
-  "name": "@brainstack/hub",
-  "version": "1.2.34",
-  "description": "A Micro Pub/Sub Package",
+  "name": "@brainstack/diagram",
+  "version": "1.0.1",
+  "description": "A package for generating URLs for PlantUML diagrams in various formats including image, PNG, SVG, and textual representations. Ideal for embedding or sharing UML diagrams across documentation or web applications.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [
-    "pub/sub",
-    "event bus",
-    "message hub",
-    "messaging",
-    "publish/subscribe",
-    "message broker",
-    "message queue",
-    "real-time communication",
-    "microservices",
-    "distributed systems"
+    "plantuml",
+    "diagram",
+    "uml",
+    "visualization",
+    "documentation"
   ],
-  "author": "Infini SoftWorld <info@infinisoft.dev>",
+  "author": "Martin Ouimet <mart@ibrain.one>",
   "license": "MIT",
   "scripts": {
     "test": "set NODE_OPTIONS=--experimental-vm-modules && jest --coverage index.test.ts",
@@ -24,7 +19,7 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "start": "node dist/index.js",
-    "types": "tsc --declaration --outDir ../typings/hub --emitDeclarationOnly"
+    "types": "tsc --declaration --outDir ../typings/diagram --emitDeclarationOnly"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",
@@ -36,9 +31,5 @@
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.4.2"
-  },
-  "dependencies": {
-    "@brainstack/log": "^1.1.135"
-  },
-  "gitHead": "6530b41c9ade26e3bcbbb5d563d6ae0a43432373"
+  }
 }
