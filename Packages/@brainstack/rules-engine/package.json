@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/rules-engine",
-  "version": "1.0.60",
+  "version": "1.0.61",
   "description": "A lightweight rules engine to evaluate conditional logic.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -33,5 +33,5 @@
     "ts-jest": "^26.0.0",
     "typescript": "^4.0.0"
   },
-  "gitHead": "f2610881dc3e9ca01cc389bf83007e3dc4303e72"
+  "gitHead": "f462e386d680f087bfc20ebd8b85a9c0c57bfd71"
 }
