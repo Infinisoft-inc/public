@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/inject",
-  "version": "1.2.130",
+  "version": "1.2.131",
   "description": "A Micro Dependency Injection Package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -36,5 +36,5 @@
     "ts-node": "^10.9.1",
     "typescript": "^4.4.2"
   },
-  "gitHead": "32511ca9685d730c24ea7d34b5200d0cc71092fa"
+  "gitHead": "f4f60bb9f73b3ff71da1bf8a4cd18c325c16db0b"
 }
