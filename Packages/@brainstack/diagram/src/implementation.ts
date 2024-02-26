@@ -1846,7 +1846,7 @@ var DiagramModule = (function () {
    * // Output: "http://www.plantuml.com/plantuml/svg/[compressed-code]"
    */
   function generate_svg(code) {
-    return `${config.baseUrl}/svgv` + compress(code);
+    return `${config.baseUrl}/svg/` + compress(code);
   }
 
   /**
