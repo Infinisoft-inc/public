@@ -1,13 +1,13 @@
 # @brainstack/diagram
 
-This package provides a convenient way to generate URLs for PlantUML diagrams, making it easy to embed or share UML diagrams in various formats. Whether you need to generate images, PNGs, SVGs, or textual representations of your diagrams, `@brainstack/diagram` has you covered.
+This package offers a streamlined method to generate URLs for PlantUML diagrams, simplifying the embedding or sharing process of UML diagrams across various formats. Whether you're looking to produce images, PNGs, SVGs, or textual representations of your diagrams, `@brainstack/diagram` is equipped to meet your needs.
 
 ## Features
 
-- Generate URLs for PlantUML diagrams in multiple formats (Image, PNG, SVG, TXT).
-- Easy to use with any PlantUML code.
-- No need for a local PlantUML server; uses the PlantUML web server for diagram generation.
-- Suitable for documentation, educational purposes, or any project needing UML diagram visualization.
+- Supports generating URLs for PlantUML diagrams in multiple formats: Image, PNG, SVG, TXT.
+- User-friendly, compatible with any PlantUML code.
+- Eliminates the requirement for a local PlantUML server by utilizing the PlantUML web server for diagram generation.
+- Ideal for documentation, educational projects, or any application that benefits from UML diagram visualization.
 
 ## Installation
 
@@ -17,13 +17,13 @@ npm install @brainstack/diagram
 
 ## Usage
 
-First, import the `DiagramModule` from the package:
+Start by importing the `DiagramModule` from the package:
 
 ```javascript
-import DiagramModule from '@brainstack/diagram';
+import { DiagramModule } from '@brainstack/diagram';
 ```
 
-Then, use the functions provided to generate URLs for your PlantUML diagrams:
+You can then generate URLs for your PlantUML diagrams as follows:
 
 ```javascript
 // Example PlantUML code
@@ -32,6 +32,11 @@ Alice -> Bob: Hello Bob, how are you?
 Note right of Bob: Bob thinks
 Bob --> Alice: I am good thanks!
 `;
+
+// Optionally, configure the base URL if you want to use a custom PlantUML server
+DiagramModule.setConfig({
+  baseUrl: 'https://custom-plantuml-server.com',
+});
 
 // Generate and log URL for an image
 console.log(DiagramModule.generate_img(umlCode));
@@ -46,17 +51,28 @@ console.log(DiagramModule.generate_svg(umlCode));
 console.log(DiagramModule.generate_txt(umlCode));
 ```
 
+### Configuration
+
+The `setConfig` method allows you to customize the configuration, such as changing the base URL of the PlantUML server.
+
+```javascript
+// Change the base URL of the PlantUML server
+DiagramModule.setConfig({ baseUrl: 'https://custom-plantuml-server.com' });
+```
+
+This is particularly useful if you prefer to use a specific version of the PlantUML server or require a server within your network for privacy reasons.
+
 ## Documentation
 
-For more detailed information on using `@brainstack/diagram`, please refer to the package documentation.
+For a more comprehensive guide on utilizing `@brainstack/diagram`, please consult the package documentation.
 
 ## Contributing
 
-Contributions to `@brainstack/diagram` are welcome! Please read our [contributing guidelines](CONTRIBUTING.md) for more information.
+We welcome contributions to `@brainstack/diagram`! For contribution guidelines, please refer to our [contributing guidelines](CONTRIBUTING.md).
 
 ## License
 
-`@brainstack/diagram` is available under the [MIT License](LICENSE).
+`@brainstack/diagram` is licensed under the [MIT License](LICENSE).
 
 ## Author
 

@@ -1783,6 +1783,33 @@ var DiagramModule = (function () {
     return encode64(deflate(s, 9));
   }
 
+  // Configuration object with default base URL
+  let config = {
+    baseUrl: 'https://www.plantuml.com/plantuml',
+  };
+
+  /**
+   * Sets or updates the configuration for the DiagramModule.
+   * This function allows for customization of the module's settings,
+   * such as changing the base URL of the PlantUML server.
+   *
+   * @param {Object} newConfig - The new configuration settings to apply.
+   * Properties in this object will overwrite existing configuration settings.
+   * For example, to change the base URL, provide `{ baseUrl: "https://new-plantuml-server.com" }`.
+   *
+   * @example
+   * // Change the base URL of the PlantUML server
+   * setConfig({ baseUrl: "https://custom-plantuml-server.com" });
+   *
+   * // Now, when generating a diagram URL, the new base URL will be used
+   * const umlCode = 'Alice -> Bob: Hello, Bob!';
+   * console.log(DiagramModule.generate_png(umlCode));
+   * // Outputs: "https://custom-plantuml-server.com/plantuml/png/[compressed-code]"
+   */
+  function setConfig(newConfig) {
+    config = { ...config, ...newConfig };
+  }
+
   /**
    * Generates the URL for an image representation of a PlantUML diagram.
    * @param {string} code - The PlantUML code to be visualized.
@@ -1793,7 +1820,7 @@ var DiagramModule = (function () {
    * // Output: "http://www.plantuml.com/plantuml/img/[compressed-code]"
    */
   function generate_img(code) {
-    return 'http://www.plantuml.com/plantuml/img/' + compress(code);
+    return `${config.baseUrl}/img/` + compress(code);
   }
 
   /**
@@ -1806,7 +1833,7 @@ var DiagramModule = (function () {
    * // Output: "http://www.plantuml.com/plantuml/png/[compressed-code]"
    */
   function generate_png(code) {
-    return 'http://www.plantuml.com/plantuml/png/' + compress(code);
+    return `${config.baseUrl}/png/` + compress(code);
   }
 
   /**
@@ -1819,7 +1846,7 @@ var DiagramModule = (function () {
    * // Output: "http://www.plantuml.com/plantuml/svg/[compressed-code]"
    */
   function generate_svg(code) {
-    return 'http://www.plantuml.com/plantuml/svg/' + compress(code);
+    return `${config.baseUrl}/svgv` + compress(code);
   }
 
   /**
@@ -1832,10 +1859,11 @@ var DiagramModule = (function () {
    * // Output: "http://www.plantuml.com/plantuml/txt/[compressed-code]"
    */
   function generate_txt(code) {
-    return 'http://www.plantuml.com/plantuml/txt/' + compress(code);
+    return `${config.baseUrl}/txt/` + compress(code);
   }
 
   return {
+    setConfig,
     generate_img,
     generate_png,
     generate_svg,
