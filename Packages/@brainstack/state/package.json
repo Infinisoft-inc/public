@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/state",
-  "version": "1.1.141",
+  "version": "1.1.142",
   "description": "A Micro State Management",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -38,5 +38,5 @@
     "ts-node": "^10.9.1",
     "typescript": "^4.4.2"
   },
-  "gitHead": "c81a8bb3f85c2bb2025e4282554dab75420dca14"
+  "gitHead": "573ef1dc392e5b613f26edd34a8991523a0d653c"
 }
