@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/diagram",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "A package for generating URLs for PlantUML diagrams in various formats including image, PNG, SVG, and textual representations. Ideal for embedding or sharing UML diagrams across documentation or web applications.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,5 +35,5 @@
     "ts-node": "^10.9.1",
     "typescript": "^4.4.2"
   },
-  "gitHead": "134a798acb95d839ecb91d7991509afbb3756422"
+  "gitHead": "6fb816b2c56628298b56bc096418e65068017e28"
 }
