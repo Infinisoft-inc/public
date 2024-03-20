@@ -1,20 +1,18 @@
 {
-  "name": "@brainstack/auth",
-  "version": "1.0.146",
-  "description": "The Brainstack Auth SDK is a powerful tool for managing user authentication in various applications. It provides a unified interface to interact with authentication methods, abstracting the underlying complexities and offering a streamlined API.",
+  "name": "@brainstack/nlsh",
+  "version": "1.0.1",
+  "description": "Node.js Natural Language Shell Terminal",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [
-    "authentication",
-    "user authentication",
-    "auth SDK",
-    "security"
+    "cli",
+    "shell",
+    "terminal",
+    "natural language",
+    "AI"
   ],
-  "author": "Infini SoftWorld <info@infinisoft.dev>",
+  "author": "Martin Ouimet",
   "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Infinisoft-inc/public.git"
@@ -29,18 +27,26 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "start": "node dist/index.js",
-    "types": "tsc --declaration --outDir ../typings/auth --emitDeclarationOnly"
+    "types": "tsc --declaration --outDir ../typings/nlsh --emitDeclarationOnly",
+    "install:global": "npm link"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",
     "@babel/preset-env": "^7.22.5",
     "@babel/preset-typescript": "^7.22.5",
+    "@brainstack/log": "^1.1.149",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.7.10",
+    "dotenv": "^16.4.5",
     "jest": "^29.5.0",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.4.2"
   },
-  "gitHead": "3d420d82aa80c5aa6d6b3cf394e5f1b3443d059e"
+  "dependencies": {
+    "@brainstack/openai-assistantapi": "^1.0.9"
+  },
+  "bin": {
+    "nlsh": "node dist/index.js"
+  }
 }
