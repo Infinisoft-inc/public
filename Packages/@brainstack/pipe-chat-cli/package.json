@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/pipe-chat-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "CLI tool to discuss with AI to about data source and apply changes.",
   "main": "dist/index.js",
   "publishConfig": {
@@ -34,5 +34,6 @@
     "ai"
   ],
   "author": "Martin Ouimet <mouimet@infinisoft.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "gitHead": "f104e79c4714b8b35a89f33beba4f362fea7f36d"
 }
