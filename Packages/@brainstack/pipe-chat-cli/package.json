@@ -1,0 +1,38 @@
+{
+  "name": "@brainstack/pipe-chat-cli",
+  "version": "1.0.1",
+  "description": "CLI tool to discuss with AI to about data source and apply changes.",
+  "main": "dist/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "deploy": "./deploy.sh"
+  },
+  "bin": {
+    "pipe-chat-cli": "./dist/index.js"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5",
+    "openai": "^4.52.2",
+    "postgres": "^3.4.4",
+    "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "@types/readline-sync": "^1.4.8",
+    "typescript": "^5.0.4"
+  },
+  "keywords": [
+    "supabase",
+    "openai",
+    "cli",
+    "database",
+    "ai"
+  ],
+  "author": "Martin Ouimet <mouimet@infinisoft.com>",
+  "license": "MIT"
+}

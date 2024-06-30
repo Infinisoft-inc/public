@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/nlsh",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Node.js Natural Language Shell Terminal",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -37,7 +37,8 @@
     "@babel/core": "^7.22.5",
     "@babel/preset-env": "^7.22.5",
     "@babel/preset-typescript": "^7.22.5",
-    "@brainstack/log": "^1.1.150",
+    "@brainstack/config": "^1.0.146",
+    "@brainstack/log": "^1.1.151",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.7.10",
     "dotenv": "^16.4.5",
@@ -47,10 +48,10 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@brainstack/openai-assistantapi": "^1.0.10"
+    "@brainstack/openai-assistantapi": "^1.0.11"
   },
   "bin": {
-    "nlsh": "node dist/index.js"
+    "nlsh": "bin/nlsh"
   },
-  "gitHead": "25ec3688dd3f8021424e4fb69891cb40d89013bb"
+  "gitHead": "ab88f9a669b12d6aac9b6f720a9f42b32f1684a4"
 }
