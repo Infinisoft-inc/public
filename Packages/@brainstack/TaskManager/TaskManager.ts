@@ -7,9 +7,10 @@ import {
   EventTask,
   TaskId,
 } from "./types";
-import { uuid } from "uuidv4";
+import { uuidv1 } from "./utils";
 
-const generateUUID = () => uuid();
+
+const generateUUID = () => uuidv1();
 
 // Create a new task
 // Define separate types for each task type

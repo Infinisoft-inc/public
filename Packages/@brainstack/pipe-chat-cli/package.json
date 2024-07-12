@@ -15,13 +15,18 @@
     "pipe-chat-cli": "./dist/index.js"
   },
   "dependencies": {
+    "@brainstack/diagram": "^1.0.19",
+    "@brainstack/inject": "^1.2.145",
+    "@brainstack/log": "^1.1.153",
     "commander": "^12.1.0",
     "dotenv": "^16.4.5",
+    "figlet": "^1.7.0",
     "openai": "^4.52.2",
     "postgres": "^3.4.4",
     "readline-sync": "^1.4.10"
   },
   "devDependencies": {
+    "@types/figlet": "^1.5.8",
     "@types/node": "^20.14.9",
     "@types/readline-sync": "^1.4.8",
     "typescript": "^5.0.4"
@@ -35,5 +40,5 @@
   ],
   "author": "Martin Ouimet <mouimet@infinisoft.com>",
   "license": "MIT",
-  "gitHead": "e74ee41c3afcccdea153792ad21e1e703036227d"
+  "gitHead": "9cf7d340825c11f46e24bf863692be01f20270bc"
 }

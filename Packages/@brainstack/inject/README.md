@@ -12,69 +12,73 @@ npm install @brainstack/inject
 
 ## Usage
 
-Import the `inject` function and use it to create a dependency container. You can then register, get, and search for dependencies in the container.
+Import the `inject` function and use it to create a dependency container. You can then register and get for dependencies in the container.
 
 ### Importing
 
-```javascript
-import { inject, Dependency } from '@brainstack/inject';
+```typescript
+import { inject } from '@brainstack/inject';
 ```
 
 ### Creating a Dependency Container
 
-```javascript
+```typescript
 const container = inject();
 ```
 
 ### Registering a Dependency
 
-```javascript
-const dependency: Dependency = {
-  id: 'testDependency',
-  name: 'Test Dependency',
-  description: 'A test dependency',
-  instance: {
-    /* your instantiated object */
-  },
-};
+```typescript
+interface Logger {
+  log(message: string): void;
+}
 
-const unregister = container.register(dependency);
+class ConsoleLogger implements Logger {
+  log(message: string) {
+    console.log(message);
+  }
+}
+
+const logger = new ConsoleLogger();
+
+const unregister = container.register<Logger>('logger', logger);
 ```
 
 ### Getting a Dependency
 
-```javascript
-const retrievedDependency = container.get('testDependency');
+```typescript
+const retrievedLogger = container.get<Logger>('logger');
+retrievedLogger.log('Hello, world!');
 ```
 
-### Searching for Dependencies
+## Examples
 
-```javascript
-const searchResults = container.search('Test');
-```
+### Example 1: Registering and Retrieving a Logger Service
 
-### Complete Example
-
-```javascript
-import { inject, Dependency } from '@brainstack/inject';
+```typescript
+import { inject } from '@brainstack/inject';
 
 const container = inject();
 
-const dependency: Dependency = {
-  id: 'testDependency',
-  name: 'Test Dependency',
-  description: 'A test dependency',
-  instance: {
-    /* your instantiated object */
-  },
-};
+interface Logger {
+  log(message: string): void;
+}
 
-const unregister = container.register(dependency);
+class ConsoleLogger implements Logger {
+  log(message: string) {
+    console.log(message);
+  }
+}
 
-const retrievedDependency = container.get('testDependency');
+const logger = new ConsoleLogger();
 
-const searchResults = container.search('Test');
+container.register<Logger>('logger', logger);
+
+const retrievedLogger = container.get<Logger>('logger');
+retrievedLogger.log('Hello, world!');
 ```
+
+In this example, we define a `Logger` interface and create a `ConsoleLogger` class that implements this interface. We then register an instance of `ConsoleLogger` with the ID `'logger'` in the dependency container. Finally, we retrieve the logger service using the `get` method and use it to log a message.
 
 ## API
 
@@ -84,15 +88,16 @@ Creates a new dependency container.
 
 Returns: Dependency container object with methods.
 
-#### `register(dependency: Dependency): () => void`
+#### `register<T>(id: string, instance: T): () => void`
 
 Registers a new dependency in the container.
 
-- `dependency`: An object containing the dependency details (id, name, description, instance).
+- `id`: The ID of the dependency.
+- `instance`: The instantiated object of the dependency.
 
-Returns: A function to unregister the dependency.
+Returns: A function to unregister the API section of the README.md file:
 
-#### `get(id: string): Dependency | undefined`
+#### `get<T>(id: string): T | undefined`
 
 Gets a dependency from the container by its ID.
 
@@ -100,24 +105,16 @@ Gets a dependency from the container by its ID.
 
 Returns: The retrieved dependency or `undefined` if not found.
 
-#### `search(term: string): Dependency[]`
-
-Searches for dependencies by name or description containing the search term.
-
-- `term`: The search term.
-
-Returns: An array of matching dependencies.
-
-# Contributing
+## Contributing
 
 Contributions are welcome! If you would like to contribute to this module, please follow these guidelines:
 
-Fork the repository  
-Create a new branch for your changes  
-Make your changes and commit them with descriptive commit messages  
-Push your changes to your fork  
+Fork the repository
+Create a new branch for your changes
+Make your changes and commit them with descriptive commit messages
+Push your changes to your fork
 Submit a pull request
 
-# License
+## License
 
 This module is released under the MIT License.

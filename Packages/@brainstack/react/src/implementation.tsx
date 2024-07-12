@@ -24,7 +24,7 @@ const createUseOn =
 const createBrainStackProvider =
   (core: any, BrainStackContext: any): React.FC<BrainStackProviderProps> =>
   ({ children }) => {
-    React.useSyncExternalStore(core.store.subscribe, core.store.getState);
+    React.useSyncExternalStore(core.store.subscribe, core.store.getState, core.store.getState);
 
     return (
       <BrainStackContext.Provider value={{ ...core }}>

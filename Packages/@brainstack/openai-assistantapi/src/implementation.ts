@@ -4,7 +4,7 @@ import { createEventHub, EventHub } from '@brainstack/hub';
 import { OpenAIAssistantInterface } from './abstraction';
 
 export class OpenAIAssistant implements OpenAIAssistantInterface {
-  private openai: OpenAI;
+  public openai: OpenAI;
   private thread: any;
   private logger: Logger;
   private status: string;

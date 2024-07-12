@@ -1,17 +1,34 @@
-import { Dependency } from './abstraction';
+/**
+ * @brainstack/inject
+ * A lightweight dependency injection library for JavaScript and TypeScript, designed to facilitate dependency management and injection in your projects.
+ * @module DependencyInjection
+ */
 
-export const inject = <T>() => {
-  const container: Record<string, Dependency<T>> = {};
+/**
+ * Creates a new dependency injection container.
+ * @function
+ * @returns {{ register: <T>(id: string, instance: T) => () => void, get: <T>(id: string) => T | undefined }}
+ */
+export const inject = () => {
+  const container: Record<string, any> = {};
 
-  const register = (dependency: Dependency<T>): (() => void) => {
-    const id = dependency.id;
+  /**
+   * Registers a new instance with the given ID.
+   * @function
+   * @template T
+   * @param {string} id - The ID of the instance.
+   * @param {T} instance - The instance to register.
+   * @returns {() => void} - A function to unregister the instance.
+   * @throws {Error} - If an instance with the given ID is already registered.
+   */
+  const register = <T>(id: string, instance: T): (() => void) => {
     if (id in container) {
       throw new Error(
-        `A dependency with the ID '${id}' is already registered.`
+        `An instance with the ID '${id}' is already registered.`
       );
     }
 
-    container[id] = dependency;
+    container[id] = instance;
 
     const unregister = () => {
       delete container[id];
@@ -20,19 +37,19 @@ export const inject = <T>() => {
     return unregister;
   };
 
-  const get = (id: string): Dependency<T> | undefined => {
+  /**
+   * Retrieves the instance with the given ID.
+   * @function
+   * @template T
+   * @param {string} id - The ID of the instance.
+   * @returns {T | undefined} - The instance with the given ID, or undefined if no such instance is registered.
+   */
+  const get = <T>(id: string): T | undefined => {
     return container[id];
-  };
-
-  const search = (term: string): Dependency<T>[] => {
-    return Object.values(container).filter(
-      (dep) => dep.name.includes(term) || dep.description.includes(term)
-    );
   };
 
   return {
     register,
     get,
-    search,
   };
 };
