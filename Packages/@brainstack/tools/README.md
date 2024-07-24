@@ -1,78 +1,111 @@
-# Brainstack Tools SDK
+**@brainstack/tools**
+=====================
 
-Welcome to the Brainstack Tools SDK – a versatile toolkit designed to provide essential functionalities for various applications.
+A collection of tools for building chat completion models with OpenAI.
 
-## Description
+**Getting Started**
+-------------------
 
-Brainstack Tools SDK offers a comprehensive set of tools and utilities that can be integrated into your software projects. It provides a streamlined way to manage and utilize a variety of tools, making your development process more efficient and effective.
+To use this package, you'll need to create a new tool by extending the `BaseTool` abstract class. This class provides a basic implementation of a tool, including configuration management and a definition for the OpenAI Chat Completion model.
 
-## Installation
+**Creating a New Tool**
+---------------------
 
-To install Brainstack Tools SDK, run the following command:
+To create a new tool, follow these steps:
 
-```bash
-npm install @brainstack/tools
-```
+1. Create a new file for your tool, e.g. `MyTool.ts`.
+2. Import the `BaseTool` class from `@brainstack/tools`.
+3. Extend the `BaseTool` class and implement the required abstract methods:
+	* `name`: a string that identifies your tool.
+	* `description`: a string that describes what your tool does.
+	* `args`: an object that defines the input parameters for your tool.
+	* `loadConfig()`: a method that loads the configuration for your tool.
+	* `execute(args)`: a method that executes your tool with the given input parameters.
+4. Implement any additional logic or functionality required by your tool.
 
-or if you're using `yarn`:
-
-```bash
-yarn add @brainstack/tools
-```
-
-## Usage
-
-Here's a quick example to get you started with Brainstack Tools SDK:
-
+Here's an example of what your `MyTool.ts` file might look like:
 ```typescript
-import { ToolSDK } from '@brainstack/tools';
+import { BaseTool } from '@brainstack/tools';
 
-const sdk = new ToolSDK();
+interface MyConfig {
+  foo: string;
+  bar: number;
+}
 
-// Add a new tool
-sdk.addTool({
-    tool: "exampleTool",
-    description: "This is an example tool.",
-    argument: "exampleArg",
-    examples: [
-        {
-            intention: "Example intention",
-            expectation: "Example expectation",
-            outcome: "Example outcome",
-            usage: "exampleTool(exampleArg)"
-        }
-    ]
-});
+class MyTool extends BaseTool<MyConfig> {
+  name = 'My Tool';
+  description = 'This is my tool';
+  args = {
+    foo: { type: 'string', description: 'Foo parameter' },
+    bar: { type: 'number', description: 'Bar parameter' },
+  };
 
-// Generate tool descriptions
-console.log(sdk.generateDescriptions());
+  protected loadConfig(): MyConfig {
+    // Load configuration from a file or database
+    return { foo: 'default foo', bar: 42 };
+  }
+
+  execute(args: any): Promise<string> {
+    // Execute your tool logic here
+    return Promise.resolve(`Hello, world! Foo is ${args.foo} and bar is ${args.bar}`);
+  }
+}
 ```
+**Using Your Tool**
+-----------------
 
-## Features
+Once you've created your tool, you can use it in your application like this:
+```typescript
+const tools: Tools = {
+  database: new DatabaseTool(),
+  finance: new MockTool(),
+};
 
-- **Tool Management**: Easily add and manage tool descriptions.
-- **JSON Import**: Import tool configurations from JSON.
-- **Description Generation**: Generate formatted descriptions for your tools.
+const userInput = 'What is the stock price of Apple?';
+const context = 'finance';
 
-## API Reference
-
-You can find more detailed API documentation in the `dist/index.d.ts` file.
-
-## Building and Developing
-
-To build the SDK, run:
-
-```bash
-npm run build
+const aiResponse = await this.aiService.askWithTool(
+  userInput,
+  context,
+  tools
+);
+console.log(aiResponse);
 ```
+In this example, we create an object `tools` that contains instances of different tools. We then pass this object to the `askWithTool` method, along with the user input and context. The `askWithTool` method will determine which tool to use based on the context and execute the tool with the given input parameters.
 
-This will compile the TypeScript source files to JavaScript and generate type definitions in the `dist` folder.
+**Configuration Management**
+-------------------------
 
-## Contributing
+The `BaseTool` class provides basic configuration management features. You can save and read configuration values using the `saveConfig()` and `readConfig()` methods.
 
-Contributions are welcome! Feel free to submit pull requests or open issues to improve the SDK or add new functionalities.
+For example:
+```typescript
+const myTool = new MyTool();
+myTool.saveConfig('foo', 'new foo value');
+console.log(myTool.readConfig('foo')); // Output: "new foo value"
+```
+**Definition for OpenAI Chat Completion**
+------------------------------------
 
-## License
+The `BaseTool` class also provides a `definition` property that returns a OpenAI Chat Completion model definition for your tool.
 
-This project is licensed under the [MIT License](LICENSE).
-
+For example:
+```typescript
+console.log(myTool.definition);
+// Output:
+// {
+//   type: "function",
+//   function: {
+//     name: "My Tool",
+//     description: "This is my tool",
+//     parameters: {
+//       type: "object",
+//       properties: {
+//         foo: { type: "string", description: "Foo parameter" },
+//         bar: { type: "number", description: "Bar parameter" },
+//       },
+//       required: ["foo", "bar"],
+//     },
+//   },
+// }
+```

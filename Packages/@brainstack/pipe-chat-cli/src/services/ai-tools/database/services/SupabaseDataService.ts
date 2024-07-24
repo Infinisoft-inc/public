@@ -1,5 +1,5 @@
 import { writeFileSync } from "fs";
-import { IDataService } from "./IDataService";
+import { IDataService } from "../../../data/IDataService";
 import postgres from "postgres";
 
 export class SupabaseDataService implements IDataService {

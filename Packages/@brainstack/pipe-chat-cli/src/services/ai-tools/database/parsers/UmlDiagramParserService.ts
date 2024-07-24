@@ -1,4 +1,4 @@
-import { IParserService } from "./IParserService";
+import { IParserService } from "../../../parsers/IParserService";
 import { DiagramModule } from "@brainstack/diagram";
 
 export class UmlDiagramParserService implements IParserService {
@@ -8,11 +8,12 @@ export class UmlDiagramParserService implements IParserService {
     return /@startuml[\s\S]*@enduml/.test(message);
   }
 
-  async run(message: string): Promise<void> {
+  async run(message: string) {
     const instructions = message.match(/@startuml([\s\S]*@enduml)/)?.[1];
 
     if (this.shouldRun(message) && instructions) {
       await this.action(instructions);
+      return "A database diagram was generated and url was given to user.";
     }
   }
 

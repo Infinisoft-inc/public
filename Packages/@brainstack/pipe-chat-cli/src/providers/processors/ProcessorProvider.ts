@@ -23,6 +23,7 @@ export class ProcessorProvider implements IProcessorProvider {
 
   async process(message: string) {
     const allPromises = this.parsers.map((parser) => parser.run(message));
-    await Promise.all(allPromises);
+    const results = await Promise.all(allPromises);
+    return results.filter(Boolean).join('\n') as string;
   }
 }
