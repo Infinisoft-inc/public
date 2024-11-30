@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/dts",
-  "version": "1.0.64",
+  "version": "1.0.65",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,7 +17,7 @@
   "author": "Infinisoft World",
   "license": "ISC",
   "devDependencies": {
-    "@brainstack/bridge-client-node": "^1.0.81",
+    "@brainstack/bridge-client-node": "^1.0.82",
     "@types/jest": "^27.0.1",
     "@types/ws": "^8.5.10",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
@@ -37,8 +37,8 @@
     "coverageDirectory": "coverage"
   },
   "dependencies": {
-    "@brainstack/hub": "^1.2.53",
-    "@brainstack/log": "^1.1.154",
+    "@brainstack/hub": "^1.2.54",
+    "@brainstack/log": "^1.1.155",
     "ws": "^8.16.0"
   },
   "gitHead": "9cf7d340825c11f46e24bf863692be01f20270bc"
