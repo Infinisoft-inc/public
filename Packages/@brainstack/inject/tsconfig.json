@@ -10,7 +10,9 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
-    "skipLibCheck":true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "paths": {
       "common/*": [
         "../typings/common/*"
@@ -20,8 +22,10 @@
   "include": [
     "src"
   ],
-  "exclude":[
+  "exclude": [
     "node_modules",
-     "__tests__" 
+    "__tests__",
+    "jest.config.js",
+    "index.test.ts"
   ]
 }

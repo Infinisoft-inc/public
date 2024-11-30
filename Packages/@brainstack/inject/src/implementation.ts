@@ -1,55 +1,64 @@
-/**
- * @brainstack/inject
- * A lightweight dependency injection library for JavaScript and TypeScript, designed to facilitate dependency management and injection in your projects.
- * @module DependencyInjection
- */
+// src/implementation.ts
+import 'reflect-metadata';
+
+const container: Record<string, any> = {};
 
 /**
- * Creates a new dependency injection container.
- * @function
- * @returns {{ register: <T>(id: string, instance: T) => () => void, get: <T>(id: string) => T | undefined }}
+ * Registers a service instance in the container.
+ * @param id - The unique identifier for the service.
+ * @param instance - The instance of the service to register.
+ * @returns A function to unregister the service.
  */
-export const inject = () => {
-  const container: Record<string, any> = {};
+export function register<T>(id: string, instance: T) {
+  if (container[id]) {
+    throw new Error(`An instance with the ID '${id}' is already registered.`);
+  }
+  container[id] = instance;
 
-  /**
-   * Registers a new instance with the given ID.
-   * @function
-   * @template T
-   * @param {string} id - The ID of the instance.
-   * @param {T} instance - The instance to register.
-   * @returns {() => void} - A function to unregister the instance.
-   * @throws {Error} - If an instance with the given ID is already registered.
-   */
-  const register = <T>(id: string, instance: T): (() => void) => {
-    if (id in container) {
-      throw new Error(
-        `An instance with the ID '${id}' is already registered.`
-      );
-    }
+  return () => {
+    delete container[id]
+  }
+}
 
-    container[id] = instance;
+/**
+ * Retrieves an instance from the container by its ID.
+ * @param id - The unique identifier for the service.
+ * @returns The instance of the service or undefined if not found.
+ */
+export function get<T>(id: string): T | undefined {
+  return container[id];
+}
 
-    const unregister = () => {
-      delete container[id];
-    };
+/**
+ * Decorator to mark constructor parameters for dependency injection.
+ * @param target - The target class.
+ * @param propertyKey - The name of the method or property.
+ * @param parameterIndex - The index of the parameter to inject.
+ */
+export function Inject(target: any, propertyKey: string | symbol | undefined, parameterIndex: number) {
+  const existingInjectedParams: number[] = Reflect.getMetadata('inject_params', target, propertyKey!) || [];
+  existingInjectedParams.push(parameterIndex);
+  Reflect.defineMetadata('inject_params', existingInjectedParams, target, propertyKey!);
+}
 
-    return unregister;
-  };
+/**
+ * Service decorator to register service classes.
+ * @param constructor - The constructor of the service class.
+ * @returns The constructor of the service class.
+ */
+export function Service<T extends { new(...args: any[]): {} }>(constructor: T) {
+  const serviceInstance = new constructor();
+  register(constructor.name, serviceInstance);
+  return constructor;
+}
 
-  /**
-   * Retrieves the instance with the given ID.
-   * @function
-   * @template T
-   * @param {string} id - The ID of the instance.
-   * @returns {T | undefined} - The instance with the given ID, or undefined if no such instance is registered.
-   */
-  const get = <T>(id: string): T | undefined => {
-    return container[id];
-  };
-
-  return {
-    register,
-    get,
-  };
-};
+/**
+ * Resolves dependencies for a class and creates an instance.
+ * @param ctor - The constructor of the class to instantiate.
+ * @returns An instance of the class with dependencies resolved.
+ */
+export function getInstance<T>(ctor: new (...args: any[]) => T): T {
+  const paramTypes = Reflect.getMetadata('design:paramtypes', ctor) || [];
+  const params = paramTypes.map((param: any) => get(param.name));
+  return new ctor(...params);
+}

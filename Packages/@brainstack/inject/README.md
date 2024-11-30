@@ -12,20 +12,13 @@ npm install @brainstack/inject
 
 ## Usage
 
-Import the `inject` function and use it to create a dependency container. You can then register and get for dependencies in the container.
+Import the `register`, `get`, `Inject`, `Service`, and `getInstance` functions to create a dependency container. You can then register and get dependencies in the container.
 
 ### Importing
 
 ```typescript
-import { inject } from '@brainstack/inject';
+import { register, get, Inject, Service, getInstance } from '@brainstack/inject';
 ```
-
-### Creating a Dependency Container
-
-```typescript
-const container = inject();
-```
-
 ### Registering a Dependency
 
 ```typescript
@@ -41,14 +34,52 @@ class ConsoleLogger implements Logger {
 
 const logger = new ConsoleLogger();
 
-const unregister = container.register<Logger>('logger', logger);
+const unregister = register<Logger>('logger', logger);
 ```
 
 ### Getting a Dependency
 
 ```typescript
-const retrievedLogger = container.get<Logger>('logger');
+const retrievedLogger = get<Logger>('logger');
 retrievedLogger.log('Hello, world!');
+```
+
+### Using Decorators
+
+#### Service Decorator
+
+You can use the `@Service` decorator to automatically register a service class.
+
+```typescript
+@Service
+class ConsoleLogger implements Logger {
+  log(message: string) {
+    console.log(message);
+  }
+}
+```
+
+#### Inject Decorator
+
+You can use the `@Inject` decorator to mark constructor parameters for dependency injection.
+
+```typescript
+class UserService {
+  constructor(@Inject private logger: Logger) {}
+
+  logUserAction(action: string) {
+    this.logger.log(`User performed action: \${action}`);
+  }
+}
+```
+
+### Resolving Dependencies
+
+You can resolve dependencies and create instances using the `getInstance` function.
+
+```typescript
+const userService = getInstance(UserService);
+userService.logUserAction('login');
 ```
 
 ## Examples
@@ -56,9 +87,7 @@ retrievedLogger.log('Hello, world!');
 ### Example 1: Registering and Retrieving a Logger Service
 
 ```typescript
-import { inject } from '@brainstack/inject';
-
-const container = inject();
+import { register, get } from '@brainstack/inject';
 
 interface Logger {
   log(message: string): void;
@@ -71,33 +100,48 @@ class ConsoleLogger implements Logger {
 }
 
 const logger = new ConsoleLogger();
+register<Logger>('logger', logger);
 
-container.register<Logger>('logger', logger);
-
-const retrievedLogger = container.get<Logger>('logger');
+const retrievedLogger = get<Logger>('logger');
 retrievedLogger.log('Hello, world!');
 ```
 
-In this example, we define a `Logger` interface and create a `ConsoleLogger` class that implements this interface. We then register an instance of `ConsoleLogger` with the ID `'logger'` in the dependency container. Finally, we retrieve the logger service using the `get` method and use it to log a message.
+### Example 2: Using Decorators
+
+```typescript
+import { Inject, Service, getInstance } from '@brainstack/inject';
+
+@Service
+class ConsoleLogger implements Logger {
+  log(message: string) {
+    console.log(message);
+  }
+}
+
+class UserService {
+  constructor(@Inject private logger: Logger) {}
+
+  logUserAction(action: string) {
+    this.logger.log(`User performed action: \${action}`);
+  }
+}
+
+const userService = getInstance(UserService);
+userService.logUserAction('login');
+```
 
 ## API
 
-### `inject()`
-
-Creates a new dependency container.
-
-Returns: Dependency container object with methods.
-
-#### `register<T>(id: string, instance: T): () => void`
+### `register<T>(id: string, instance: T): () => void`
 
 Registers a new dependency in the container.
 
 - `id`: The ID of the dependency.
 - `instance`: The instantiated object of the dependency.
 
-Returns: A function to unregister the API section of the README.md file:
+Returns: A function to unregister the service.
 
-#### `get<T>(id: string): T | undefined`
+### `get<T>(id: string): T | undefined`
 
 Gets a dependency from the container by its ID.
 
@@ -105,15 +149,27 @@ Gets a dependency from the container by its ID.
 
 Returns: The retrieved dependency or `undefined` if not found.
 
+### `Inject(target: any, propertyKey: string | symbol | undefined, parameterIndex: number)`
+
+Decorator to mark constructor parameters for dependency injection.
+
+### `Service<T extends { new(...args: any[]): {} }>(constructor: T)`
+
+Service decorator to register service classes.
+
+### `getInstance<T>(ctor: new (...args: any[]) => T): T`
+
+Resolves dependencies for a class and creates an instance.
+
 ## Contributing
 
 Contributions are welcome! If you would like to contribute to this module, please follow these guidelines:
 
-Fork the repository
-Create a new branch for your changes
-Make your changes and commit them with descriptive commit messages
-Push your changes to your fork
-Submit a pull request
+1. Fork the repository
+2. Create a new branch for your changes
+3. Make your changes and commit them with descriptive commit messages
+4. Push your changes to your fork
+5. Submit a pull request
 
 ## License
 
