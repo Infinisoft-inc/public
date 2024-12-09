@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/react",
-  "version": "1.3.160",
+  "version": "1.3.161",
   "description": "Brainstack React Package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -49,10 +49,10 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@brainstack/core": "^1.2.151"
+    "@brainstack/core": "^1.2.152"
   },
   "jest": {
     "testEnvironment": "jsdom"
   },
-  "gitHead": "415f911c57fe477359319acde251026ce846ce16"
+  "gitHead": "9406246b96d4bf9383eabc87e7fb5f830b50df04"
 }

@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/log",
-  "version": "1.1.158",
+  "version": "1.1.159",
   "description": "A Micro Logger Package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -37,7 +37,7 @@
     "ts-node": "^10.9.1",
     "typescript": "^4.4.2"
   },
-  "gitHead": "415f911c57fe477359319acde251026ce846ce16",
+  "gitHead": "9406246b96d4bf9383eabc87e7fb5f830b50df04",
   "dependencies": {
     "reflect-metadata": "^0.2.2"
   }

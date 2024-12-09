@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/hub",
-  "version": "1.2.57",
+  "version": "1.2.58",
   "description": "A Micro Pub/Sub Package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -38,7 +38,7 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@brainstack/log": "^1.1.158"
+    "@brainstack/log": "^1.1.159"
   },
-  "gitHead": "415f911c57fe477359319acde251026ce846ce16"
+  "gitHead": "9406246b96d4bf9383eabc87e7fb5f830b50df04"
 }
