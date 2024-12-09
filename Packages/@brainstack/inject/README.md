@@ -1,10 +1,10 @@
 # @brainstack/inject
 
-A lightweight dependency injection library for JavaScript and TypeScript, designed to facilitate dependency management and injection in your projects.
+[![Coverage Status](./coverage/lcov-report/badge.svg)](./coverage/lcov-report/index.html)
+
+A lightweight dependency injection library for JavaScript and TypeScript, designed to facilitate dependency management and injection in your projects.  Specifically enhanced for monorepo implementations like iBrain One, supporting singleton and transient services, custom scopes, and hierarchical dependency injection.
 
 ## Installation
-
-You can install the package using npm:
 
 ```bash
 npm install @brainstack/inject
@@ -12,154 +12,118 @@ npm install @brainstack/inject
 
 ## Usage
 
-Import the `register`, `get`, `Inject`, `Service`, and `getInstance` functions to create a dependency container. You can then register and get dependencies in the container.
+### 1. Create a Container
 
-### Importing
+Create an instance of the `Container` class. Each module or package in your iBrain One monorepo should have its own container instance:
 
 ```typescript
-import { register, get, Inject, Service, getInstance } from '@brainstack/inject';
+import { Container, Service, Inject } from '@brainstack/inject';
+
+const container = new Container();
 ```
-### Registering a Dependency
+
+### 2. Register Services
+
+Register your services with the container using the `register` method. Use the `@Service` decorator for easy registration of classes as services.
 
 ```typescript
-interface Logger {
-  log(message: string): void;
+// Registering an instance
+class Logger {
+  log(message: string) {
+    console.log(message);
+  }
 }
+const logger = new Logger();
+container.register(Logger, logger);
 
-class ConsoleLogger implements Logger {
+// Using @Service decorator (singleton)
+@Service(container)
+class ConsoleLogger {
   log(message: string) {
     console.log(message);
   }
 }
 
-const logger = new ConsoleLogger();
-
-const unregister = register<Logger>('logger', logger);
-```
-
-### Getting a Dependency
-
-```typescript
-const retrievedLogger = get<Logger>('logger');
-retrievedLogger.log('Hello, world!');
-```
-
-### Using Decorators
-
-#### Service Decorator
-
-You can use the `@Service` decorator to automatically register a service class.
-
-```typescript
-@Service
-class ConsoleLogger implements Logger {
-  log(message: string) {
-    console.log(message);
-  }
+// Registering a transient service (factory function)
+class APIService {
+  constructor(private baseUrl: string) { }
+  getData() {}
 }
+
+container.register('apiService', () => new APIService('/api'), true); // true for transient
 ```
 
-#### Inject Decorator
+### 3. Inject Dependencies
 
-You can use the `@Inject` decorator to mark constructor parameters for dependency injection.
+Use the `@Inject` decorator to inject dependencies into your classes' constructors:
 
 ```typescript
 class UserService {
-  constructor(@Inject private logger: Logger) {}
+  constructor(@Inject private logger: Logger, @Inject private apiServiceFactory: () => APIService) {}
 
   logUserAction(action: string) {
-    this.logger.log(`User performed action: \${action}`);
+    this.logger.log(`User performed action: ${action}`);
+    const apiService = this.apiServiceFactory(); // Instantiate transient service
+    apiService.getData();
   }
 }
 ```
 
-### Resolving Dependencies
+### 4. Resolve Instances
 
-You can resolve dependencies and create instances using the `getInstance` function.
+Get instances of your classes with dependencies resolved using `container.getInstance()`. For transient services, get the factory function using `container.get()` and call the factory to create the instance.
 
 ```typescript
-const userService = getInstance(UserService);
+const userService = container.getInstance(UserService); // Dependencies are injected
 userService.logUserAction('login');
+
+// Transient instantiation
+const apiServiceFactory = container.get('apiService');
+if (typeof apiServiceFactory === 'function') {
+    const apiService = apiServiceFactory();
+    apiService.getData();
+}
+
 ```
 
-## Examples
+## Service Scopes and Lifecycles
 
-### Example 1: Registering and Retrieving a Logger Service
+`@brainstack/inject` supports different service scopes and lifecycles, specifically designed to work efficiently within a monorepo architecture like iBrain One:
 
-```typescript
-import { register, get } from '@brainstack/inject';
+*   **Singleton (default):** When you decorate a class with `@Service`, a single instance of that service is created and shared within the `Container` it's registered with.  This is the default behavior and is ideal for services that should have one instance per module or custom scope.
+*   **Transient:** Use a factory function and register it with the `transient` flag set to true in the `register` method.  This is best for services where you need a new instance each time they are injected.
+*   **Module/File Scope:** When you use the `@Service` decorator *without* providing a `Container` instance, the service is registered in a default, module-scoped container. This is useful for services that should be singletons *within* a specific module, without needing to create and manage a dedicated `Container` instance in that module. This ensures one instance per module/file where the service is injected without having to create custom containers.
 
-interface Logger {
-  log(message: string): void;
-}
+## Parent/Child Containers (Hierarchical DI)
 
-class ConsoleLogger implements Logger {
-  log(message: string) {
-    console.log(message);
-  }
-}
-
-const logger = new ConsoleLogger();
-register<Logger>('logger', logger);
-
-const retrievedLogger = get<Logger>('logger');
-retrievedLogger.log('Hello, world!');
-```
-
-### Example 2: Using Decorators
+For more complex scenarios or cross-package dependencies in your iBrain One monorepo, you can use parent/child containers.  Services registered in the parent container are available to child containers:
 
 ```typescript
-import { Inject, Service, getInstance } from '@brainstack/inject';
+const parentContainer = new Container();
+const childContainer = new Container(parentContainer);
 
-@Service
-class ConsoleLogger implements Logger {
-  log(message: string) {
-    console.log(message);
-  }
+@Service(parentContainer)
+class SharedService {/* ... */}
+
+class ChildService {
+  constructor(@Inject private sharedService: SharedService) {} // Injected from parent
 }
 
-class UserService {
-  constructor(@Inject private logger: Logger) {}
-
-  logUserAction(action: string) {
-    this.logger.log(`User performed action: \${action}`);
-  }
-}
-
-const userService = getInstance(UserService);
-userService.logUserAction('login');
+const childServiceInstance = childContainer.getInstance(ChildService);
 ```
 
 ## API
 
-### `register<T>(id: string, instance: T): () => void`
+*   **`class Container`**
+    *   `register<T>(id: ServiceIdentifier<T> | string | symbol, instanceOrFactory: T | (() => T), transient?: boolean): () => void`
+    *   `get<T>(id: ServiceIdentifier<T> | string | symbol): T | (() => T) | undefined`
+    *   `getInstance<T>(ctor: new (...args: any[]) => T): T`
+    *   `reset(): void`
+    *   `getRegisteredServiceIdentifiers(): (ServiceIdentifier<any> | string | symbol)[]`
 
-Registers a new dependency in the container.
+*   **`@Service(container?: Container)`**
 
-- `id`: The ID of the dependency.
-- `instance`: The instantiated object of the dependency.
-
-Returns: A function to unregister the service.
-
-### `get<T>(id: string): T | undefined`
-
-Gets a dependency from the container by its ID.
-
-- `id`: The ID of the dependency.
-
-Returns: The retrieved dependency or `undefined` if not found.
-
-### `Inject(target: any, propertyKey: string | symbol | undefined, parameterIndex: number)`
-
-Decorator to mark constructor parameters for dependency injection.
-
-### `Service<T extends { new(...args: any[]): {} }>(constructor: T)`
-
-Service decorator to register service classes.
-
-### `getInstance<T>(ctor: new (...args: any[]) => T): T`
-
-Resolves dependencies for a class and creates an instance.
+*   **`@Inject`**
 
 ## Contributing
 
@@ -174,3 +138,4 @@ Contributions are welcome! If you would like to contribute to this module, pleas
 ## License
 
 This module is released under the MIT License.
+
