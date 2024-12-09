@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/memory",
-  "version": "1.0.89",
+  "version": "1.0.90",
   "description": "A Micro Memory Management",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -43,6 +43,6 @@
   },
   "gitHead": "415f911c57fe477359319acde251026ce846ce16",
   "dependencies": {
-    "@brainstack/log": "^1.1.157"
+    "@brainstack/log": "^1.1.158"
   }
 }
