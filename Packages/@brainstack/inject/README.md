@@ -1,7 +1,5 @@
 # @brainstack/inject
 
-[![Coverage Status](./coverage/lcov-report/badge.svg)](./coverage/lcov-report/index.html)
-
 A lightweight dependency injection library for JavaScript and TypeScript, designed to facilitate dependency management and injection in your projects.  Specifically enhanced for monorepo implementations like iBrain One, supporting singleton and transient services, custom scopes, and hierarchical dependency injection.
 
 ## Installation
