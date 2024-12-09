@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/openai-assistantapi",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "A simplified interface for integrating OpenAI's Assistant API into applications.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -44,7 +44,7 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@brainstack/hub": "^1.2.55",
+    "@brainstack/hub": "^1.2.56",
     "openai": "^4.28.4"
   },
   "gitHead": "3efbe310e96e6c571b8dfa34dec4b3286a6fb6a1"
