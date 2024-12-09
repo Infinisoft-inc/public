@@ -1,6 +1,6 @@
 # @brainstack/inject
 
-A lightweight dependency injection library for JavaScript and TypeScript, designed to facilitate dependency management and injection in your projects.  Specifically enhanced for monorepo implementations like iBrain One, supporting singleton and transient services, custom scopes, and hierarchical dependency injection.
+A lightweight dependency injection library for JavaScript and TypeScript, designed to facilitate dependency management and injection in your projects. Specifically enhanced for monorepo implementations like iBrain One, supporting singleton and transient services, custom scopes, and hierarchical dependency injection.
 
 ## Installation
 
@@ -44,7 +44,7 @@ class ConsoleLogger {
 
 // Registering a transient service (factory function)
 class APIService {
-  constructor(private baseUrl: string) { }
+  constructor(private baseUrl: string) {}
   getData() {}
 }
 
@@ -57,7 +57,10 @@ Use the `@Inject` decorator to inject dependencies into your classes' constructo
 
 ```typescript
 class UserService {
-  constructor(@Inject private logger: Logger, @Inject private apiServiceFactory: () => APIService) {}
+  constructor(
+    @Inject private logger: Logger,
+    @Inject private apiServiceFactory: () => APIService
+  ) {}
 
   logUserAction(action: string) {
     this.logger.log(`User performed action: ${action}`);
@@ -78,30 +81,31 @@ userService.logUserAction('login');
 // Transient instantiation
 const apiServiceFactory = container.get('apiService');
 if (typeof apiServiceFactory === 'function') {
-    const apiService = apiServiceFactory();
-    apiService.getData();
+  const apiService = apiServiceFactory();
+  apiService.getData();
 }
-
 ```
 
 ## Service Scopes and Lifecycles
 
 `@brainstack/inject` supports different service scopes and lifecycles, specifically designed to work efficiently within a monorepo architecture like iBrain One:
 
-*   **Singleton (default):** When you decorate a class with `@Service`, a single instance of that service is created and shared within the `Container` it's registered with.  This is the default behavior and is ideal for services that should have one instance per module or custom scope.
-*   **Transient:** Use a factory function and register it with the `transient` flag set to true in the `register` method.  This is best for services where you need a new instance each time they are injected.
-*   **Module/File Scope:** When you use the `@Service` decorator *without* providing a `Container` instance, the service is registered in a default, module-scoped container. This is useful for services that should be singletons *within* a specific module, without needing to create and manage a dedicated `Container` instance in that module. This ensures one instance per module/file where the service is injected without having to create custom containers.
+- **Singleton (default):** When you decorate a class with `@Service`, a single instance of that service is created and shared within the `Container` it's registered with. This is the default behavior and is ideal for services that should have one instance per module or custom scope.
+- **Transient:** Use a factory function and register it with the `transient` flag set to true in the `register` method. This is best for services where you need a new instance each time they are injected.
+- **Module/File Scope:** When you use the `@Service` decorator _without_ providing a `Container` instance, the service is registered in a default, module-scoped container. This is useful for services that should be singletons _within_ a specific module, without needing to create and manage a dedicated `Container` instance in that module. This ensures one instance per module/file where the service is injected without having to create custom containers.
 
 ## Parent/Child Containers (Hierarchical DI)
 
-For more complex scenarios or cross-package dependencies in your iBrain One monorepo, you can use parent/child containers.  Services registered in the parent container are available to child containers:
+For more complex scenarios or cross-package dependencies in your iBrain One monorepo, you can use parent/child containers. Services registered in the parent container are available to child containers:
 
 ```typescript
 const parentContainer = new Container();
 const childContainer = new Container(parentContainer);
 
 @Service(parentContainer)
-class SharedService {/* ... */}
+class SharedService {
+  /* ... */
+}
 
 class ChildService {
   constructor(@Inject private sharedService: SharedService) {} // Injected from parent
@@ -112,16 +116,17 @@ const childServiceInstance = childContainer.getInstance(ChildService);
 
 ## API
 
-*   **`class Container`**
-    *   `register<T>(id: ServiceIdentifier<T> | string | symbol, instanceOrFactory: T | (() => T), transient?: boolean): () => void`
-    *   `get<T>(id: ServiceIdentifier<T> | string | symbol): T | (() => T) | undefined`
-    *   `getInstance<T>(ctor: new (...args: any[]) => T): T`
-    *   `reset(): void`
-    *   `getRegisteredServiceIdentifiers(): (ServiceIdentifier<any> | string | symbol)[]`
+- **`class Container`**
 
-*   **`@Service(container?: Container)`**
+  - `register<T>(id: ServiceIdentifier<T> | string | symbol, instanceOrFactory: T | (() => T), transient?: boolean): () => void`
+  - `get<T>(id: ServiceIdentifier<T> | string | symbol): T | (() => T) | undefined`
+  - `getInstance<T>(ctor: new (...args: any[]) => T): T`
+  - `reset(): void`
+  - `getRegisteredServiceIdentifiers(): (ServiceIdentifier<any> | string | symbol)[]`
 
-*   **`@Inject`**
+- **`@Service(container?: Container)`**
+
+- **`@Inject`**
 
 ## Contributing
 
@@ -136,4 +141,3 @@ Contributions are welcome! If you would like to contribute to this module, pleas
 ## License
 
 This module is released under the MIT License.
-
