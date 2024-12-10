@@ -2,6 +2,8 @@
 import 'reflect-metadata';
 import { ServiceIdentifier } from './abstraction';
 
+
+
 /**
  * A dependency injection container.  Manages the registration and resolution of dependencies.
  * Each module or package should create its own instance of `Container`.
@@ -23,42 +25,44 @@ export class Container {
    * @throws {Error} If a service with the same ID is already registered.
    */
   register<T>(
-    id: ServiceIdentifier<T> | string,
+    id: ServiceIdentifier<T> | string | (new (...args: any[]) => T),
     instanceOrFactory: T | (() => T),
     transient = false
-  ): () => void {
-    const idStr = id.toString();
+): () => void {
+    const idKey = typeof id === 'function' ? id.name : id;
 
-    if (this._container[idStr]) {
-      throw new Error(
-        `An instance with the ID '${idStr}' is already registered.`
-      );
+    if (!idKey) {
+        throw new Error(`Invalid service identifier: ${id}`);
+    }
+
+    if (this._container[idKey]) {
+        throw new Error(`An instance with the ID '${idKey}' is already registered.`);
     }
 
     if (transient) {
-      this._container[idStr] = instanceOrFactory;
+        this._container[idKey] = instanceOrFactory;
     } else {
-      this._container[idStr] =
-        typeof instanceOrFactory === 'function'
-          ? instanceOrFactory
-          : () => instanceOrFactory; // store as factory for consistent instantiation
+        this._container[idKey] =
+            typeof instanceOrFactory === 'function'
+                ? instanceOrFactory
+                : () => instanceOrFactory; // Store as factory for consistent instantiation
     }
 
     return () => {
-      delete this._container[idStr];
+        delete this._container[idKey];
     };
-  }
+}
 
-  /**
-   * Retrieves a service or factory from the container by its ID.
-   * @param id - The service identifier (class, string or Symbol).
-   * @returns The service instance or factory function, or `undefined` if not found.
-   */
-  get<T>(
-    id: ServiceIdentifier<T> | string | symbol
-  ): T | (() => T) | undefined {
-    return this._container[id.toString()];
-  }
+get<T>(id: ServiceIdentifier<T> | string | (new (...args: any[]) => T)): T | undefined {
+    const idKey = typeof id === 'function' ? id.name : id;
+
+    if (!idKey) {
+        throw new Error(`Invalid service identifier: ${id}`);
+    }
+
+    const instance = this._container[idKey];
+    return typeof instance === 'function' ? instance() : instance;
+}
 
   /**
    * Resolves dependencies for a class and creates an instance.

@@ -1,5 +1,8 @@
 // @brainstack/inject/src/__tests__/index.test.ts
+import 'reflect-metadata';
 import { Container, Inject, Service } from '../implementation';
+
+
 
 describe('inject', () => {
   let container: Container;
@@ -8,17 +11,45 @@ describe('inject', () => {
     container = new Container(); // Create a new Container instance before each test
   });
 
+  
   it('should register and get an instance', () => {
-    const unregister = container.register('test', 'instance');
-    // get now returns a factory, so we must execute to compare to value.
-    const instance = container.get('test');
-    expect(typeof instance).toBe('function');
-    if (typeof instance === 'function') {
-      expect(instance()).toBe('instance');
-    }
+    class Test {}
+    container.register(Test, new Test()); // Register an instance of the Test class
+    expect(container.get(Test)).toBeInstanceOf(Test); // Check if we can get the instance back
+  });
 
+  it('should register and get an instance then unregister and get undefined', () => {
+    class Test {}
+    const unregister = container.register(Test, new Test()); // Register an instance of the Test class
+    expect(container.get(Test)).toBeInstanceOf(Test); // Check if we can get the instance back
     unregister();
-    expect(container.get('test')).toBeUndefined();
+    expect(container.get(Test)).toBeUndefined();
+  });
+
+  it('should register throw an errpr invalid identifier', () => {
+    expect(() => container.register(() => 'test', 'instance')).toThrow(
+      new Error("Invalid service identifier: () => 'test'")
+    );
+  });
+
+  it('should get throw an errpr invalid identifier', () => {
+    expect(() => container.get(() => 'test')).toThrow(
+      new Error("Invalid service identifier: () => 'test'")
+    );
+  });
+
+  it('should return the result of calling a factory function when instance is a function', () => {
+    // Arrange
+    const factoryFunction = jest.fn(() => 'test result');
+    const serviceId = 'testService';
+
+    // Act
+    container.register(serviceId, factoryFunction);
+    const result = container.get(serviceId);
+
+    // Assert
+    expect(factoryFunction).toHaveBeenCalledTimes(1);
+    expect(result).toBe('test result');
   });
 
   it('should throw an error if a dependency is not registered', () => {
