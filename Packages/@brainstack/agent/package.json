@@ -1,6 +1,6 @@
 {
   "name": "@brainstack/agent",
-  "version": "1.0.158",
+  "version": "1.0.159",
   "private": true,
   "description": "Brainstack Model Agent Lib",
   "main": "dist/index.js",
