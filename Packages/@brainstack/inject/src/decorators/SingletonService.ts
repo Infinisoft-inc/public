@@ -16,9 +16,9 @@ export function SingletonService<T extends { new (...args: any[]): any }>(
       super(...args);
 
       const container = SingletonContainer.getInstance();
-      let instance = container.getOrRegister<T>(target);
+      container.getOrRegister<T>(target);
 
-      return instance
+      return target;
     }
   };
 }

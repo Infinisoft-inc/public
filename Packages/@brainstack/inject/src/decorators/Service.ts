@@ -44,6 +44,6 @@ export function Service<T extends new (...args: any[]) => any>(
 
     containerInstance.register(constructor.name, factory); // Register the factory.
 
-    return constructor; // Return the original constructor
+    return constructor;
   };
 }
