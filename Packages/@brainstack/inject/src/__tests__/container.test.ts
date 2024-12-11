@@ -1,8 +1,7 @@
 // @brainstack/inject/src/__tests__/index.test.ts
 import 'reflect-metadata';
-import { Container, Inject, Service } from '../implementation';
-
-
+import { Inject, Service } from '../decorators';
+import { Container } from '../container';
 
 describe('inject', () => {
   let container: Container;
@@ -11,7 +10,6 @@ describe('inject', () => {
     container = new Container(); // Create a new Container instance before each test
   });
 
-  
   it('should register and get an instance', () => {
     class Test {}
     container.register(Test, new Test()); // Register an instance of the Test class

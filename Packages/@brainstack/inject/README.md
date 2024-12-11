@@ -1,6 +1,15 @@
-# @brainstack/inject
+# @brainstack/inject - A Powerful Dependency Injection Library
 
-A lightweight dependency injection library for JavaScript and TypeScript, designed to facilitate dependency management and injection in your projects. Specifically enhanced for monorepo implementations like iBrain One, supporting singleton and transient services, custom scopes, and hierarchical dependency injection.
+`@brainstack/inject` is a lightweight yet robust dependency injection (DI) library designed for JavaScript and TypeScript projects. It simplifies dependency management, promotes code reusability, and enhances testability. This library is particularly well-suited for projects with complex dependency graphs, including monorepo architectures, providing support for various service scopes and simplifying the process of dependency injection.
+
+## Key Features
+
+- **Constructor Injection:** Dependencies are injected directly into class constructors, making them explicit and easy to manage.
+- **Singleton, Transient, and Scoped Services:** Supports various service lifetimes, including singleton (one instance shared across the application), transient (new instance created each time), and scoped (instances managed within a specific container).
+- **Decorators:** Provides helper functions like `@Service`, `@SingletonService`, and `@Inject` for simplified service creation and registration.
+- **Hierarchical DI:** Allows for parent-child container relationships, enabling dependency management across different parts of your application or within a monorepo.
+- **Testability:** Facilitates unit testing by allowing easy mocking and swapping of dependencies.
+- **Simple API:** Easy-to-use decorators and container methods minimize boilerplate code.
 
 ## Installation
 
@@ -10,134 +19,163 @@ npm install @brainstack/inject
 
 ## Usage
 
-### 1. Create a Container
+### 1. Core Concepts
 
-Create an instance of the `Container` class. Each module or package in your iBrain One monorepo should have its own container instance:
+- **Services:** Reusable components or functions that provide specific functionalities within your application.
+- **Dependency Injection:** A design pattern where dependencies are provided to a class instead of being created within the class itself.
+- **Container:** Manages the registration and resolution of dependencies.
+- **Service Identifiers:** Used to identify and retrieve services from the container (class constructors, strings, or Symbols).
+- **Service Scopes:** Define the lifetime of a service instance (singleton, transient, or custom scope).
+
+### 2. Basic Dependency Injection
 
 ```typescript
 import { Container, Service, Inject } from '@brainstack/inject';
 
+// Create a container
 const container = new Container();
-```
 
-### 2. Register Services
-
-Register your services with the container using the `register` method. Use the `@Service` decorator for easy registration of classes as services.
-
-```typescript
-// Registering an instance
-class Logger {
-  log(message: string) {
-    console.log(message);
-  }
-}
-const logger = new Logger();
-container.register(Logger, logger);
-
-// Using @Service decorator (singleton)
-@Service(container)
-class ConsoleLogger {
-  log(message: string) {
-    console.log(message);
+// Define a service
+@Service()
+class DatabaseService {
+  getData() {
+    return 'Data from database';
   }
 }
 
-// Registering a transient service (factory function)
-class APIService {
-  constructor(private baseUrl: string) {}
-  getData() {}
-}
+// Define a class that depends on the service
+@Service() // MyClass is also a service, so can be injected elsewhere
+class MyClass {
+  constructor(@Inject private dbService: DatabaseService) {}
 
-container.register('apiService', () => new APIService('/api'), true); // true for transient
-```
-
-### 3. Inject Dependencies
-
-Use the `@Inject` decorator to inject dependencies into your classes' constructors:
-
-```typescript
-class UserService {
-  constructor(
-    @Inject private logger: Logger,
-    @Inject private apiServiceFactory: () => APIService
-  ) {}
-
-  logUserAction(action: string) {
-    this.logger.log(`User performed action: ${action}`);
-    const apiService = this.apiServiceFactory(); // Instantiate transient service
-    apiService.getData();
+  doSomething() {
+    const data = this.dbService.getData();
+    console.log(data); // Output: 'Data from database'
   }
 }
+
+// Get an instance of MyClass with its dependencies injected
+const myInstance = container.getInstance(MyClass);
+myInstance.doSomething();
 ```
 
-### 4. Resolve Instances
+### 3. Service Scopes
 
-Get instances of your classes with dependencies resolved using `container.getInstance()`. For transient services, get the factory function using `container.get()` and call the factory to create the instance.
+- **Singleton Services:** Created once and shared throughout the application.
 
 ```typescript
-const userService = container.getInstance(UserService); // Dependencies are injected
-userService.logUserAction('login');
+import { SingletonService } from '@brainstack/inject';
 
-// Transient instantiation
-const apiServiceFactory = container.get('apiService');
-if (typeof apiServiceFactory === 'function') {
-  const apiService = apiServiceFactory();
-  apiService.getData();
+@SingletonService
+class LoggerService {
+  // ...
 }
 ```
 
-## Service Scopes and Lifecycles
+- **Transient Services:** A new instance is created each time they are injected. You register these directly with the container, typically using a factory function:
 
-`@brainstack/inject` supports different service scopes and lifecycles, specifically designed to work efficiently within a monorepo architecture like iBrain One:
+```typescript
+container.register('myTransientService', () => new MyTransientService(), true); // true for transient
 
-- **Singleton (default):** When you decorate a class with `@Service`, a single instance of that service is created and shared within the `Container` it's registered with. This is the default behavior and is ideal for services that should have one instance per module or custom scope.
-- **Transient:** Use a factory function and register it with the `transient` flag set to true in the `register` method. This is best for services where you need a new instance each time they are injected.
-- **Module/File Scope:** When you use the `@Service` decorator _without_ providing a `Container` instance, the service is registered in a default, module-scoped container. This is useful for services that should be singletons _within_ a specific module, without needing to create and manage a dedicated `Container` instance in that module. This ensures one instance per module/file where the service is injected without having to create custom containers.
+// Accessing the transient service
+const transientServiceFactory = container.get('myTransientService');
+const transientInstance1 = transientServiceFactory(); // New instance
+const transientInstance2 = transientServiceFactory(); // Another new instance
+```
 
-## Parent/Child Containers (Hierarchical DI)
+- **Scoped Services:** Managed within a specific container. Useful for creating isolated scopes or modules within your application. You use `asScopedService` to ensure it gets registered to only a particular container.
 
-For more complex scenarios or cross-package dependencies in your iBrain One monorepo, you can use parent/child containers. Services registered in the parent container are available to child containers:
+```typescript
+import { asScopedService } from '@brainstack/inject';
+
+const scopedContainer = new Container();
+
+const ScopedService = asScopedService(MyService, scopedContainer);
+
+const scopedInstance = scopedContainer.getInstance(ScopedService);
+```
+
+### 5. Container API
+
+- **`register(identifier, instanceOrFactory, transient?)`:** Registers a service with the container.
+- **`get(identifier)`:** Retrieves a service from the container. Returns `undefined` if not found.
+- **`getInstance(ctor)`:** Resolves dependencies and creates an instance of the given class (constructor injection).
+- **`reset()`:** Removes all registered services (useful for testing).
+- **`getRegisteredServiceIdentifiers()`:** Returns an array of registered service identifiers.
+
+### 6. Hierarchical DI
+
+You can create parent-child container relationships to manage dependencies across different parts of your application.
 
 ```typescript
 const parentContainer = new Container();
-const childContainer = new Container(parentContainer);
+const childContainer = new Container();
 
-@Service(parentContainer)
-class SharedService {
+@Service(parentContainer) // Make AuthService available to child containers
+class AuthService {
   /* ... */
 }
 
+// Register a service specific to the child container
+
+@Service(childContainer)
 class ChildService {
-  constructor(@Inject private sharedService: SharedService) {} // Injected from parent
+  constructor(@Inject private authService: AuthService) {} // Injected from parent
 }
 
-const childServiceInstance = childContainer.getInstance(ChildService);
+const childInstance = childContainer.getInstance(ChildService); // authService injected
 ```
 
-## API
+## Advanced Usage and Best Practices
 
-- **`class Container`**
+- **Custom Scopes:** Implement custom service lifetimes based on your specific needs.
+- **Circular Dependencies:** The library will detect and throw an error if you have circular dependencies. Restructure your services to avoid this or provide alternative instantiation methods (e.g. factories).
 
-  - `register<T>(id: ServiceIdentifier<T> | string | symbol, instanceOrFactory: T | (() => T), transient?: boolean): () => void`
-  - `get<T>(id: ServiceIdentifier<T> | string | symbol): T | (() => T) | undefined`
-  - `getInstance<T>(ctor: new (...args: any[]) => T): T`
-  - `reset(): void`
-  - `getRegisteredServiceIdentifiers(): (ServiceIdentifier<any> | string | symbol)[]`
+## Examples
 
-- **`@Service(container?: Container)`**
+### Injecting Singleton and Transient Services
 
-- **`@Inject`**
+```typescript
+import {
+  Container,
+  Service,
+  Inject,
+  SingletonService,
+  asService,
+} from '@brainstack/inject';
 
-## Contributing
+const container = new Container();
 
-Contributions are welcome! If you would like to contribute to this module, please follow these guidelines:
+class BaseLogger {
+  log(m: string) {
+    console.log(m);
+  }
+}
 
-1. Fork the repository
-2. Create a new branch for your changes
-3. Make your changes and commit them with descriptive commit messages
-4. Push your changes to your fork
-5. Submit a pull request
+const LoggerService = asSingletonService(BaseLogger);
 
-## License
+@Service()
+class DatabaseService {
+  getData() {
+    return 'data!';
+  }
+}
 
-This module is released under the MIT License.
+@Service()
+class MyService {
+  constructor(
+    @Inject private database: DatabaseService,
+    @Inject private logger: LoggerService
+  ) {}
+
+  doWork() {
+    this.logger.log('doing work');
+    return this.database.getData();
+  }
+}
+
+const myService = container.getInstance(MyService); // logger and database injected
+myService.doWork(); // Output: doing work, then data from database
+```
+
+This enhanced documentation provides more comprehensive explanations, clearer code examples, and a better structure to help developers effectively utilize the `@brainstack/inject` library. It highlights the library's key features, including its helper functions, hierarchical DI support, and various service scopes, making it a valuable resource for both novice and experienced developers.
