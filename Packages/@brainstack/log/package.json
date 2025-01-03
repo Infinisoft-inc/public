@@ -37,7 +37,7 @@
     "ts-node": "^10.9.1",
     "typescript": "^4.4.2"
   },
-  "gitHead": "539c0b59aefc9e51ca62f398c3d6c6b1fea0c6e8",
+  "gitHead": "3ec17032293a74e137ec846d4a6045173ee6e8ec",
   "dependencies": {
     "reflect-metadata": "^0.2.2"
   }
