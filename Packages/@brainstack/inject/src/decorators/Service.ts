@@ -17,33 +17,27 @@ import { Container,defaultContainerMap } from "../container";
  *
  */
 
-export function Service<T extends new (...args: any[]) => any>(
-  container?: Container
-) {
+// Service.ts
+
+export function Service<T extends new (...args: any[]) => any>(container?: Container) {
   return (constructor: T) => {
-    const containerInstance = container ||
-      (() => {
-        // IIFE to initialize default on first use
-        const moduleId = module.id; // Get the module's unique ID
-        if (!defaultContainerMap.has(moduleId)) {
-          defaultContainerMap.set(moduleId, new Container());
-        }
+    const containerInstance = container || defaultContainerMap.get(module.id) || (() => {
+      const moduleId = module.id;
+      defaultContainerMap.set(moduleId, new Container());
+      return defaultContainerMap.get(moduleId)!;
+    })();
 
-        return defaultContainerMap.get(moduleId)!;
-      })();
+    let instance: InstanceType<T> | null = null; 
 
-    // Use a factory function for instantiation control; captured 'instance' variable.
-    let instance: InstanceType<T> | null = null;
-    const factory = () => {
+    const factory = (...args: any[]) => {  // <-- Add ...args
       if (!instance) {
-        instance = containerInstance.getInstance(constructor); // Proper instantiation.
+        instance = containerInstance.getInstance(constructor);
       }
-
       return instance;
     };
 
-    containerInstance.register(constructor.name, factory); // Register the factory.
-
+    containerInstance.register(constructor.name, factory);
     return constructor;
   };
 }
+

@@ -1,0 +1,19 @@
+Dependencies for ./package.json:
+{
+  "reflect-metadata": "^0.2.2"
+}
+
+Dependencies for ./node_modules/undici-types/package.json:
+null
+
+Dependencies for ./node_modules/@types/jest/package.json:
+{
+  "expect": "^29.0.0",
+  "pretty-format": "^29.0.0"
+}
+
+Dependencies for ./node_modules/@types/node/package.json:
+{
+  "undici-types": "~6.20.0"
+}
+

@@ -1,0 +1,23 @@
+{
+  "name": "@brainstack/hub-examples-understanding",
+  "version": "1.0.0",
+  "description": "Understanding Event-Driven Architecture with @brainstack/hub - Examples",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "start": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "@brainstack/hub": "latest",
+    "@brainstack/log": "latest"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.24",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

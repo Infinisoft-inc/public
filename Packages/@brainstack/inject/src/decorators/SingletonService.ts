@@ -1,3 +1,4 @@
+import { Container } from '../container';
 import { SingletonContainer } from '../container/SingletonContainer';
 
 /**
@@ -7,18 +8,29 @@ import { SingletonContainer } from '../container/SingletonContainer';
  *
  * @param target The target class to be decorated.
  */
-export function SingletonService<T extends { new (...args: any[]): any }>(
-  target: T
-): T {
-  return class extends target {
-    constructor(...args: any[]) {
-      // Call the base class constructor
-      super(...args);
 
-      const container = SingletonContainer.getInstance();
-      container.getOrRegister<T>(target);
+import { defaultContainerMap } from '../container/Container'; // Import defaultContainerMap
 
-      return target;
-    }
+export function SingletonService<T extends { new (...args: any[]): any }>(target: T): any {
+  const container = SingletonContainer.getInstance();
+  const key = target.name;
+
+  const factory = (...args: any[]) => {
+    return container.getOrRegister<T>(target, ...args);
   };
+
+
+  Object.defineProperty(factory, 'name', { value: target.name, writable: false });
+
+    // Get the module-scoped container (important!)
+    const moduleId = module.id; // Get the module ID of where it's being used.
+    const defaultContainer = defaultContainerMap.get(moduleId) || new Container();
+
+    // Register with the module's default container
+    defaultContainer.register(key, factory, false); // The 'false' here ensures it's registered as a singleton within the module.
+    // Add to default container if it doesn't exist
+    if (!defaultContainerMap.has(moduleId))
+        defaultContainerMap.set(moduleId, defaultContainer);
+
+  return factory;
 }

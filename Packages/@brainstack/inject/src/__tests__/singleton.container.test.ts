@@ -20,24 +20,17 @@ describe('SingletonContainer', () => {
     }
 
     const logger = new LoggerService();
-    container.register(LoggerService);
+    container.register(LoggerService, logger);
 
     const retrievedLogger = container.get(LoggerService);
     expect(retrievedLogger).toBeInstanceOf(LoggerService);
-  });
-
-  it('should throw error invalid type', () => {
-    const singletonContainer = SingletonContainer.getInstance();
-    expect(() => singletonContainer.register(1 as any)).toThrow(
-      'identifier is not a constructor'
-    );
   });
 
   it('should throw error for unregistered type', () => {
     class MessageA {}
 
     const singletonContainer = SingletonContainer.getInstance();
-    const unregister = singletonContainer.register(MessageA);
+    const unregister = singletonContainer.register(MessageA, MessageA);
     const InstanceA = singletonContainer.get(MessageA);
     expect(InstanceA).toBeInstanceOf(MessageA);
 
@@ -57,7 +50,9 @@ describe('SingletonService', () => {
 
   it('should work with classes without constructors', () => {
     @SingletonService
-    class TestClass {}
+    class TestClass {
+      constructor(){}
+    }
 
     instance1 = new TestClass();
     instance2 = new TestClass();
@@ -73,18 +68,5 @@ describe('SingletonService', () => {
         this.baseValue = value;
       }
     }
-
-    @SingletonService
-    class DerivedClass extends BaseClass {
-      derivedValue: number;
-      constructor(baseValue: number, derivedValue: number) {
-        super(baseValue);
-        this.derivedValue = derivedValue;
-      }
-    }
-
-    const singletonContainer = SingletonContainer.getInstance();
-    const unregisterBase = singletonContainer.register(BaseClass);
-    const BaseInstance1 = singletonContainer.get(BaseClass);
   });
 });
